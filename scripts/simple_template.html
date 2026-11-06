@@ -130,16 +130,16 @@ footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:
 @media (prefers-reduced-motion:no-preference){.d,.nav,.todaybtn{transition:background-color .15s}}
 </style>
 
-<div class="wrap" id="app">
+<div class="wrap" id="app" dir="rtl">
   <header>
     <div class="t">
-      <h1 id="h1">Hijri Calendar for Morocco</h1>
+      <h1 id="h1">التقويم الهجري للمغرب</h1>
       <p class="sub" id="sub"></p>
     </div>
     <div class="lang" role="group" aria-label="Language">
-      <button type="button" id="lang-en" data-l="en" lang="en">English</button>
-      <button type="button" id="lang-fr" data-l="fr" lang="fr">Français</button>
       <button type="button" id="lang-ar" data-l="ar" lang="ar">العربية</button>
+      <button type="button" id="lang-fr" data-l="fr" lang="fr">Français</button>
+      <button type="button" id="lang-en" data-l="en" lang="en">English</button>
     </div>
   </header>
 
@@ -180,6 +180,12 @@ M.forEach((m,i) => { m.t1 = m.t0 + m.len; m.i = i; });
 const pStart = m => m.fc ? (m.dist[m.s] ?? 0) : 1;
 const lenSure = m => { const n = M[m.i+1]; return pStart(m) >= 0.9 && (!n || pStart(n) >= 0.9); };
 const altStart = m => { if (!m.fc) return null; const o = Object.entries(m.dist).filter(([d]) => d !== m.s).sort((a,b) => b[1]-a[1]); return o.length && o[0][1] >= 0.1 ? dn(o[0][0]) : null; };
+const pct = p => { const v = p*100; return v >= 99.5 ? '>99%' : v < 0.5 ? '<1%' : Math.round(v) + '%'; };
+const bp = p => `<bdi dir="ltr" class="num">${pct(p)}</bdi>`;
+const pAt = (m, t) => m.fc ? (m.dist[iso(t)] ?? 0) : 1;
+const expChip = p => `<span class="chip exp">${T().expected} <b class="num" dir="ltr">${pct(p)}</b></span>`;
+const okChip = () => `<span class="chip ok">${T().confirmed}</span>`;
+const mChip = m => m.fc ? expChip(pStart(m)) : okChip();
 const monthAt = t => M.find(m => t >= m.t0 && t < m.t1);
 const FIRST = M[0].t0, LAST = M[M.length-1].t1 - 1;
 
@@ -211,6 +217,7 @@ const L = {
     range:(a,b)=>`Pick a date between ${a} and ${b}.`,
     yearT:y=>`Holidays in ${y} AH`, prevY:'Previous year', nextY:'Next year',
     foot:m=>`Month starts follow the official announcements of Morocco's Ministry of Habous and Islamic Affairs up to ${m}. Later months are forecasts based on crescent visibility maps, so an expected date can move by one day. Always check the Ministry's announcement before a holiday.`,
+    pctNote:'The percentage next to an expected date is how certain that date is.',
     detail:'Detailed forecast and evidence', updated:d=>`Data updated ${d}.`,
     H:{newyear:'Islamic New Year',ashura:'Ashura',mawlid:'Eid al-Mawlid (Prophet’s Birthday)',mawlid2:'Eid al-Mawlid, day 2',isra:'Isra and Mi’raj',
        ramadan:'First day of Ramadan',fitr:'Eid al-Fitr',fitr2:'Eid al-Fitr, day 2',arafah:'Day of Arafah',adha:'Eid al-Adha',adha2:'Eid al-Adha, day 2'}
@@ -237,6 +244,7 @@ const L = {
     range:(a,b)=>`Choisissez une date entre le ${a} et le ${b}.`,
     yearT:y=>`Fêtes de l’an ${y} H`, prevY:'Année précédente', nextY:'Année suivante',
     foot:m=>`Les débuts de mois suivent les annonces officielles du ministère des Habous et des Affaires islamiques jusqu’à ${m}. Les mois suivants sont des prévisions fondées sur les cartes de visibilité du croissant : une date prévue peut se décaler d’un jour. Vérifiez toujours l’annonce du ministère avant une fête.`,
+    pctNote:'Le pourcentage à côté d\u2019une date prévue indique son degré de certitude.',
     detail:'Prévisions détaillées et justificatifs', updated:d=>`Données mises à jour le ${d}.`,
     H:{newyear:'Nouvel An de l’Hégire',ashura:'Achoura',mawlid:'Aïd al-Mawlid (naissance du Prophète)',mawlid2:'Aïd al-Mawlid, 2e jour',isra:'Al-Isra wal-Miraj',
        ramadan:'Premier jour du Ramadan',fitr:'Aïd al-Fitr',fitr2:'Aïd al-Fitr, 2e jour',arafah:'Jour d’Arafat',adha:'Aïd al-Adha',adha2:'Aïd al-Adha, 2e jour'}
@@ -264,13 +272,14 @@ const L = {
     range:(a,b)=>`اختر تاريخًا بين ${a} و${b}.`,
     yearT:y=>`مناسبات سنة ${y} هـ`, prevY:'السنة السابقة', nextY:'السنة التالية',
     foot:m=>`تتبع بدايات الشهور الإعلانات الرسمية لوزارة الأوقاف والشؤون الإسلامية حتى ${m}. الشهور اللاحقة توقعات مبنية على خرائط رؤية الهلال، وقد يتغير التاريخ المتوقع بيوم واحد. تحقق دائمًا من إعلان الوزارة قبل أي مناسبة.`,
+    pctNote:'النسبة المئوية بجانب كل تاريخ متوقع تبيّن درجة اليقين في ذلك التاريخ.',
     detail:'التوقعات المفصلة والأدلة', updated:d=>`آخر تحديث للبيانات: ${d}.`,
     H:{newyear:'رأس السنة الهجرية',ashura:'عاشوراء',mawlid:'عيد المولد النبوي',mawlid2:'عيد المولد النبوي (اليوم الثاني)',isra:'الإسراء والمعراج',
        ramadan:'أول أيام رمضان',fitr:'عيد الفطر',fitr2:'عيد الفطر (اليوم الثاني)',arafah:'يوم عرفة',adha:'عيد الأضحى',adha2:'عيد الأضحى (اليوم الثاني)'}
   }
 };
-let lang = 'en';
-try { const v = localStorage.getItem('hijri-simple-lang'); if (L[v]) lang = v; else if ((navigator.language||'').startsWith('ar')) lang='ar'; else if ((navigator.language||'').startsWith('fr')) lang='fr'; } catch(e) {}
+let lang = 'ar';
+try { const v = localStorage.getItem('hijri-simple-lang'); if (L[v]) lang = v; } catch(e) {}
 const T = () => L[lang];
 
 const wdi = t => (new Date(t*DAY).getUTCDay() + 6) % 7; // 0 = Monday
@@ -284,10 +293,10 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 // every holiday occurrence across the data
 const ALLH = [];
 M.forEach(m => HOL.forEach(([hm,d,key,pub]) => { if (m.hm===hm && d<=m.len) {
-  const a = altStart(m); ALLH.push({m, d, key, pub, t:m.t0+d-1, alt: a===null ? null : a+d-1, fc:m.fc, p:pStart(m)}); } }));
+  const a = altStart(m); ALLH.push({m, d, key, pub, t:m.t0+d-1, alt: a===null ? null : a+d-1, pa: a===null ? 0 : pAt(m, a), fc:m.fc, p:pStart(m)}); } }));
 
 function status(h) {
-  return h.fc ? `<span class="chip exp" title="${esc(h.alt!==null?T().couldBe(gdate(h.alt)):'')}">${T().expected}</span>` : `<span class="chip ok">${T().confirmed}</span>`;
+  return h.fc ? expChip(h.p) : okChip();
 }
 function rel(t) { const n = t - TODAY; return n >= 0 ? T().inDays(n) : T().ago(-n); }
 
@@ -297,7 +306,7 @@ function renderToday() {
   const d = TODAY - m.t0 + 1;
   el.innerHTML = `<span class="label">${x.today}</span>
     <div class="bigdate">${d} ${x.hm[m.hm-1]} ${m.hy}</div>
-    <div class="greg">${gdate(TODAY)}</div>
+    <div class="greg">${gdate(TODAY)}${m.fc ? ' · ' + x.expected + ' <b class="num" dir="ltr">' + pct(pStart(m)) + '</b>' : ''}</div>
     <div class="muted" style="font-size:14px">${x.dayOf(d, lenSure(m) ? m.len : x.or2930)} · ${x.sunset}</div>`;
 }
 function renderNext() {
@@ -308,7 +317,7 @@ function renderNext() {
   const row = (h, big) => `<div class="${big?'nextname':''}" style="${big?'':'font-weight:600'}">${x.H[h.key]}</div>
     <div class="when"><span>${gdate(h.t)}</span>${status(h)}</div>
     <div class="when"><span class="count">${rel(h.t)}</span><span class="muted" style="font-size:14px">${h.d} ${x.hm[h.m.hm-1]} ${h.m.hy}</span></div>
-    ${h.fc && h.alt!==null ? `<p class="note">${x.couldBe(gdate(h.alt))}</p>` : ''}`;
+    ${h.fc && h.alt!==null ? `<p class="note">${x.couldBe(`${gdate(h.alt)} (${bp(h.pa)})`)}</p>` : ''}`;
   el.innerHTML = `<span class="label">${x.next}</span>${row(h,true)}`;
   if (r && r !== h) el.innerHTML += `<div style="border-top:1px solid var(--line);padding-top:10px;margin-top:4px;display:flex;flex-direction:column;gap:4px">${row(r,false)}</div>`;
 }
@@ -325,8 +334,8 @@ function renderCal() {
       <div class="mt"><h2>${hname(m)} ${x.ah}</h2><span class="span">${span}</span></div>
       <button type="button" class="nav" id="nextM" aria-label="${x.nextM}" ${VIEW===M.length-1?'disabled':''}><span>›</span></button>
     </div>
-    <div class="mmeta">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span></div>
-    ${m.fc ? `<div class="banner">${x.monthExp(gdate(m.t0), a!==null ? gdate(a) : '')}</div>` : ''}
+    <div class="mmeta">${mChip(m)}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span></div>
+    ${m.fc ? `<div class="banner">${x.monthExp(`${gdate(m.t0)} (${bp(pStart(m))})`, a!==null ? `${gdate(a)} (${bp(pAt(m,a))})` : '')}</div>` : ''}
     <div class="dow">${x.ws.map(w=>`<span>${w}</span>`).join('')}</div><div class="grid">`;
   for (let i = 0; i < wdi(m.t0); i++) h += `<div class="d empty" aria-hidden="true"></div>`;
   for (let d = 1; d <= m.len; d++) {
@@ -334,7 +343,7 @@ function renderCal() {
     const cls = ['d']; if (wdi(t)===4) cls.push('fri'); if (m.hm===9) cls.push('rmd');
     if (hh) cls.push(hh[3] ? 'hol' : 'obs'); if (t===TODAY) cls.push('today'); if (t===PICK) cls.push('pick');
     const showM = gd===1 || d===1;
-    h += `<div class="${cls.join(' ')}" title="${esc(`${d} ${x.hm[m.hm-1]} ${m.hy} = ${gdate(t)}${hh?' · '+x.H[hh[2]]:''}`)}">
+    h += `<div class="${cls.join(' ')}" title="${esc(`${d} ${x.hm[m.hm-1]} ${m.hy} = ${gdate(t)}${m.fc?' · '+x.expected+' '+pct(pStart(m)):''}${hh?' · '+x.H[hh[2]]:''}`)}">
       <span class="h">${d}</span><span class="g${gd===1?' gm':''}">${showM ? gd+' '+x.gs[gmo] : gd}</span></div>`;
   }
   h += `</div><div class="legend">
@@ -395,8 +404,8 @@ function renderConv() {
   if (!m) { out.innerHTML = `<p class="note">${x.range(gdate(FIRST,{wd:false}), gdate(LAST,{wd:false}))}</p>`; return; }
   const a = altStart(m);
   out.innerHTML = `<div class="muted" style="font-size:14px">${gdate(t)}</div><div class="res">${hdate(t)}</div>
-    <div class="when">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}</div>
-    ${m.fc && a!==null ? `<p class="note">${x.couldBe(`${t-a+1} ${x.hm[m.hm-1]}`)}</p>` : ''}
+    <div class="when">${mChip(m)}</div>
+    ${m.fc && a!==null ? `<p class="note">${x.couldBe(`${t-a+1} ${x.hm[m.hm-1]} (${bp(pAt(m,a))})`)}</p>` : ''}
     <button type="button" class="linkbtn" id="showIn">${x.show}</button>`;
   document.getElementById('showIn').onclick = () => { PICK = t; go(m.i); document.getElementById('cal').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); };
 }
@@ -405,7 +414,7 @@ convIn.value = iso(Math.min(Math.max(TODAY, FIRST), LAST));
 
 function renderFoot() {
   const x = T(), lastOff = [...M].reverse().find(m => !m.fc);
-  document.getElementById('foot').innerHTML = `<p>${x.foot(hname(lastOff))}</p>
+  document.getElementById('foot').innerHTML = `<p>${x.foot(hname(lastOff))} ${x.pctNote}</p>
     <p>${x.updated(gdate(dn(D.built),{wd:false}))}${DETAIL ? ` <a href="${DETAIL}">${x.detail}</a>` : ''}</p>`;
 }
 function setLang(l) {

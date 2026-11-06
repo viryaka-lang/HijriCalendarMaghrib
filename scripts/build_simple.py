@@ -5,7 +5,7 @@ import json, os, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-HEAD = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
+HEAD = ('<!doctype html>\n<html lang="ar">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n')
 
 
