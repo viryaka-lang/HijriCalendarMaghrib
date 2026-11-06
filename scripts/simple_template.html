@@ -1,0 +1,421 @@
+<title>Hijri Calendar Morocco</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Easy-to-read Hijri calendar for Morocco: today's Islamic date, every month with the Gregorian date beside each day, and the dates of Ramadan and the Eids.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: a green "today" card and a "next holiday" card side by side; then one big month grid with arrows, beside the month's holidays and a date converter; then the year's holidays as a list. Stacks to one column on phones. */
+:root{
+  --bg:#F2F5F2; --surface:#FFFFFF; --ink:#14211C; --muted:#5A6A62; --line:#DAE2DD;
+  --accent:#136F55; --accent-ink:#FFFFFF; --accent-soft:#E0EFE8;
+  --brass:#8F6410; --brass-soft:#F6E8C6;
+  --rmd:#2D4A8A; --rmd-soft:#E8EDF8;
+  --red:#C1272D;
+  --display:"Reem Kufi","IBM Plex Sans Arabic","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
+  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
+  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(26px,4.4vw,38px)}
+h2{font-size:22px}
+p{margin:0}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+header .t{display:flex;flex-direction:column;gap:6px;min-width:0}
+header .sub{color:var(--muted);max-width:60ch}
+.lang{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+
+.top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.top{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.label{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+[dir="rtl"] .label{letter-spacing:0;text-transform:none;font-size:14px}
+.todaycard{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.todaycard .label,.todaycard .muted{color:inherit;opacity:.82}
+.bigdate{font-family:var(--display);font-size:clamp(30px,5.6vw,46px);line-height:1.1;font-weight:600}
+.greg{font-size:18px;font-weight:500}
+.nextname{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.2}
+.when{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.count{font-weight:600;color:var(--accent)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--accent-soft);color:var(--accent)}
+.chip.exp{background:var(--brass-soft);color:var(--brass)}
+.chip.pub{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:500}
+.note{font-size:14px;color:var(--muted)}
+
+.main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.mhead{display:flex;align-items:center;gap:10px}
+.mhead .mt{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;gap:2px}
+.mhead h2{font-size:clamp(22px,3.6vw,28px)}
+.mhead .span{color:var(--muted);font-size:14.5px}
+.nav{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1}
+.nav:hover{background:var(--accent-soft)}
+.nav:disabled{opacity:.35;cursor:default;background:var(--surface)}
+[dir="rtl"] .nav span{display:inline-block;transform:scaleX(-1)}
+.mmeta{display:flex;flex-wrap:wrap;gap:6px 10px;justify-content:center;align-items:center;font-size:14px;color:var(--muted)}
+.banner{font-size:14.5px;padding:10px 12px;border-radius:10px;background:var(--brass-soft);color:var(--ink)}
+.banner b{color:var(--brass)}
+.dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.dow span{text-align:center;font-size:12.5px;font-weight:600;color:var(--muted);padding-bottom:2px}
+.d{position:relative;min-height:62px;border-radius:10px;background:var(--bg);padding:6px 7px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border:2px solid transparent}
+.d.empty{background:transparent}
+.d .h{font-family:var(--display);font-size:22px;font-weight:600;line-height:1}
+.d .g{font-size:12px;color:var(--muted);text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d .g.gm{color:var(--ink);font-weight:600}
+.d.fri{background:color-mix(in srgb,var(--accent-soft) 55%,var(--bg))}
+.d.rmd{background:var(--rmd-soft)}
+.d.rmd .h{color:var(--rmd)}
+.d.hol{background:var(--brass-soft)}
+.d.hol .h{color:var(--brass)}
+.d.obs::after{content:"";position:absolute;top:8px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:var(--brass)}
+.d.today{border-color:var(--red)}
+.d.pick{box-shadow:0 0 0 2px var(--accent) inset}
+@media (max-width:460px){.d{min-height:52px;padding:4px 5px;border-radius:8px}.d .h{font-size:18px}.d .g{font-size:11px}.dow,.grid{gap:3px}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none}
+.todaybtn{align-self:center;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 16px;cursor:pointer;font-weight:500}
+.todaybtn:hover{background:var(--accent-soft)}
+
+.hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.hlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
+.hlist li:first-child{border-top:0;padding-top:2px}
+.hlist .hn{font-weight:600}
+.hlist .hd{grid-column:1;font-size:14px;color:var(--muted)}
+.hlist .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hlist li.past{opacity:.55}
+.hlist li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
+.empty-note{font-size:14.5px;color:var(--muted)}
+
+.conv{display:flex;flex-direction:column;gap:10px}
+.conv input{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);max-width:100%;width:100%}
+.conv .res{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2}
+.linkbtn{align-self:flex-start;border:0;background:none;color:var(--accent);padding:0;cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+.yhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ynav{display:flex;gap:8px;align-items:center}
+.ynav .nav{width:38px;height:38px;font-size:19px}
+.ytbl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+@media (max-width:700px){.ytbl{grid-template-columns:1fr}}
+.ytbl li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
+.ytbl li.past{opacity:.55}
+.ytbl .hn{font-weight:600}
+.ytbl li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
+.ytbl .hd{grid-column:1;font-size:14px;color:var(--muted)}
+.ytbl .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:13.5px}
+
+footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:75ch}
+@media (prefers-reduced-motion:no-preference){.d,.nav,.todaybtn{transition:background-color .15s}}
+</style>
+
+<div class="wrap" id="app">
+  <header>
+    <div class="t">
+      <h1 id="h1">Hijri Calendar for Morocco</h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-en" data-l="en" lang="en">English</button>
+      <button type="button" id="lang-fr" data-l="fr" lang="fr">Français</button>
+      <button type="button" id="lang-ar" data-l="ar" lang="ar">العربية</button>
+    </div>
+  </header>
+
+  <section class="top">
+    <div class="card todaycard" id="today"></div>
+    <div class="card" id="next"></div>
+  </section>
+
+  <section class="main">
+    <div class="card" id="cal" aria-live="polite"></div>
+    <div class="side">
+      <div class="card" id="mhol"></div>
+      <div class="card conv">
+        <h3 id="convT"></h3>
+        <label class="note" for="convIn" id="convH"></label>
+        <input type="date" id="convIn">
+        <div id="convOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="year"></section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D = __SIMPLE_DATA__;
+const DETAIL = "__DETAIL_LINK__";
+const DAY = 864e5;
+const dn = s => Date.UTC(+s.slice(0,4), +s.slice(5,7)-1, +s.slice(8,10)) / DAY;
+const iso = n => new Date(n*DAY).toISOString().slice(0,10);
+const now = new Date();
+const TODAY = dn(now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'));
+
+const M = D.months.map(([hy,hm,s,len,fc,dist]) => ({hy,hm,s,len,fc:!!fc,dist:dist||null,t0:dn(s)}));
+M.forEach((m,i) => { m.t1 = m.t0 + m.len; m.i = i; });
+const pStart = m => m.fc ? (m.dist[m.s] ?? 0) : 1;
+const lenSure = m => { const n = M[m.i+1]; return pStart(m) >= 0.9 && (!n || pStart(n) >= 0.9); };
+const altStart = m => { if (!m.fc) return null; const o = Object.entries(m.dist).filter(([d]) => d !== m.s).sort((a,b) => b[1]-a[1]); return o.length && o[0][1] >= 0.1 ? dn(o[0][0]) : null; };
+const monthAt = t => M.find(m => t >= m.t0 && t < m.t1);
+const FIRST = M[0].t0, LAST = M[M.length-1].t1 - 1;
+
+const HOL = [ // [Hijri month, day, key, public holiday in Morocco]
+  [1,1,'newyear',1],[1,10,'ashura',0],[3,12,'mawlid',1],[3,13,'mawlid2',1],[7,27,'isra',0],
+  [9,1,'ramadan',0],[10,1,'fitr',1],[10,2,'fitr2',1],[12,9,'arafah',0],[12,10,'adha',1],[12,11,'adha2',1]];
+const holOf = (hm,d) => HOL.find(h => h[0]===hm && h[1]===d);
+
+const L = {
+  en: {
+    dir:'ltr', h1:'Hijri Calendar for Morocco',
+    sub:'Islamic dates as used in Morocco, with the Gregorian date beside each day.',
+    hm:['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Ula','Jumada al-Thani','Rajab','Shaban','Ramadan','Shawwal','Dhul-Qadah','Dhul-Hijjah'],
+    gm:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    gs:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    wd:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    ws:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ah:'AH', today:'Today', sunset:'The Islamic day begins at sunset.',
+    dayOf:(d,n)=>`Day ${d} of ${n}`, or2930:'29 or 30',
+    next:'Next holiday', inDays:n=>n===0?'Today':n===1?'Tomorrow':`In ${n} days`, ago:n=>n===1?'Yesterday':`${n} days ago`,
+    confirmed:'Confirmed', expected:'Expected', pub:'Public holiday',
+    couldBe:a=>`Depends on the moon sighting. It could be ${a}.`,
+    monthExp:(b,a)=>`<b>Not announced yet.</b> This month will most likely start on ${b}${a?`, or possibly ${a}`:''}. Dates depend on the moon sighting.`,
+    days:n=>`${n} days`, days2930:'29 or 30 days',
+    prev:'Previous month', nextM:'Next month', toToday:'Back to today',
+    lgToday:'Today', lgHol:'Public holiday', lgObs:'Religious occasion', lgRmd:'Ramadan', lgFri:'Friday',
+    inMonth:'Holidays this month', none:'No holidays or occasions this month.',
+    convT:'Convert a date', convH:'Pick a Gregorian date to see its Hijri date.', show:'Show in calendar',
+    range:(a,b)=>`Pick a date between ${a} and ${b}.`,
+    yearT:y=>`Holidays in ${y} AH`, prevY:'Previous year', nextY:'Next year',
+    foot:m=>`Month starts follow the official announcements of Morocco's Ministry of Habous and Islamic Affairs up to ${m}. Later months are forecasts based on crescent visibility maps, so an expected date can move by one day. Always check the Ministry's announcement before a holiday.`,
+    detail:'Detailed forecast and evidence', updated:d=>`Data updated ${d}.`,
+    H:{newyear:'Islamic New Year',ashura:'Ashura',mawlid:'Eid al-Mawlid (Prophet’s Birthday)',mawlid2:'Eid al-Mawlid, day 2',isra:'Isra and Mi’raj',
+       ramadan:'First day of Ramadan',fitr:'Eid al-Fitr',fitr2:'Eid al-Fitr, day 2',arafah:'Day of Arafah',adha:'Eid al-Adha',adha2:'Eid al-Adha, day 2'}
+  },
+  fr: {
+    dir:'ltr', h1:'Calendrier hégirien du Maroc',
+    sub:'Les dates islamiques en usage au Maroc, avec la date grégorienne à côté de chaque jour.',
+    hm:['Moharram','Safar','Rabia al-Awal','Rabia ath-Thani','Joumada al-Oula','Joumada ath-Thania','Rajab','Chaabane','Ramadan','Chaoual','Dou al-Qiada','Dou al-Hijja'],
+    gm:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    gs:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
+    wd:['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'],
+    ws:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+    ah:'H', today:'Aujourd’hui', sunset:'Le jour hégirien commence au coucher du soleil.',
+    dayOf:(d,n)=>`Jour ${d} sur ${n}`, or2930:'29 ou 30',
+    next:'Prochaine fête', inDays:n=>n===0?'Aujourd’hui':n===1?'Demain':`Dans ${n} jours`, ago:n=>n===1?'Hier':`Il y a ${n} jours`,
+    confirmed:'Confirmé', expected:'Prévu', pub:'Jour férié',
+    couldBe:a=>`Dépend de l’observation du croissant : cela pourrait être le ${a}.`,
+    monthExp:(b,a)=>`<b>Pas encore annoncé.</b> Ce mois commencera très probablement le ${b}${a?`, ou peut-être le ${a}`:''}. Les dates dépendent de l’observation du croissant.`,
+    days:n=>`${n} jours`, days2930:'29 ou 30 jours',
+    prev:'Mois précédent', nextM:'Mois suivant', toToday:'Revenir à aujourd’hui',
+    lgToday:'Aujourd’hui', lgHol:'Jour férié', lgObs:'Occasion religieuse', lgRmd:'Ramadan', lgFri:'Vendredi',
+    inMonth:'Fêtes de ce mois', none:'Aucune fête ni occasion ce mois-ci.',
+    convT:'Convertir une date', convH:'Choisissez une date grégorienne pour voir la date hégirienne.', show:'Voir dans le calendrier',
+    range:(a,b)=>`Choisissez une date entre le ${a} et le ${b}.`,
+    yearT:y=>`Fêtes de l’an ${y} H`, prevY:'Année précédente', nextY:'Année suivante',
+    foot:m=>`Les débuts de mois suivent les annonces officielles du ministère des Habous et des Affaires islamiques jusqu’à ${m}. Les mois suivants sont des prévisions fondées sur les cartes de visibilité du croissant : une date prévue peut se décaler d’un jour. Vérifiez toujours l’annonce du ministère avant une fête.`,
+    detail:'Prévisions détaillées et justificatifs', updated:d=>`Données mises à jour le ${d}.`,
+    H:{newyear:'Nouvel An de l’Hégire',ashura:'Achoura',mawlid:'Aïd al-Mawlid (naissance du Prophète)',mawlid2:'Aïd al-Mawlid, 2e jour',isra:'Al-Isra wal-Miraj',
+       ramadan:'Premier jour du Ramadan',fitr:'Aïd al-Fitr',fitr2:'Aïd al-Fitr, 2e jour',arafah:'Jour d’Arafat',adha:'Aïd al-Adha',adha2:'Aïd al-Adha, 2e jour'}
+  },
+  ar: {
+    dir:'rtl', h1:'التقويم الهجري للمغرب',
+    sub:'التواريخ الهجرية المعتمدة في المغرب، مع التاريخ الميلادي بجانب كل يوم.',
+    hm:['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'],
+    gm:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
+    gs:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
+    wd:['الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت','الأحد'],
+    ws:['إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت','أحد'],
+    ah:'هـ', today:'اليوم', sunset:'يبدأ اليوم الهجري عند غروب الشمس.',
+    dayOf:(d,n)=>`اليوم ${d} من ${n}`, or2930:'29 أو 30',
+    next:'المناسبة القادمة', inDays:n=>n===0?'اليوم':n===1?'غدًا':n===2?'بعد يومين':n<=10?`بعد ${n} أيام`:`بعد ${n} يومًا`,
+    ago:n=>n===1?'أمس':n===2?'قبل يومين':n<=10?`قبل ${n} أيام`:`قبل ${n} يومًا`,
+    confirmed:'مؤكد', expected:'متوقع', pub:'عطلة رسمية',
+    couldBe:a=>`حسب رؤية الهلال، قد يكون ${a}.`,
+    monthExp:(b,a)=>`<b>لم يُعلن بعد.</b> من المرجح أن يبدأ هذا الشهر يوم ${b}${a?`، أو ربما ${a}`:''}. تتوقف التواريخ على رؤية الهلال.`,
+    days:n=>`${n} يومًا`, days2930:'29 أو 30 يومًا',
+    prev:'الشهر السابق', nextM:'الشهر التالي', toToday:'العودة إلى اليوم',
+    lgToday:'اليوم', lgHol:'عطلة رسمية', lgObs:'مناسبة دينية', lgRmd:'رمضان', lgFri:'الجمعة',
+    inMonth:'مناسبات هذا الشهر', none:'لا توجد مناسبات في هذا الشهر.',
+    convT:'تحويل تاريخ', convH:'اختر تاريخًا ميلاديًا لمعرفة التاريخ الهجري الموافق له.', show:'عرض في التقويم',
+    range:(a,b)=>`اختر تاريخًا بين ${a} و${b}.`,
+    yearT:y=>`مناسبات سنة ${y} هـ`, prevY:'السنة السابقة', nextY:'السنة التالية',
+    foot:m=>`تتبع بدايات الشهور الإعلانات الرسمية لوزارة الأوقاف والشؤون الإسلامية حتى ${m}. الشهور اللاحقة توقعات مبنية على خرائط رؤية الهلال، وقد يتغير التاريخ المتوقع بيوم واحد. تحقق دائمًا من إعلان الوزارة قبل أي مناسبة.`,
+    detail:'التوقعات المفصلة والأدلة', updated:d=>`آخر تحديث للبيانات: ${d}.`,
+    H:{newyear:'رأس السنة الهجرية',ashura:'عاشوراء',mawlid:'عيد المولد النبوي',mawlid2:'عيد المولد النبوي (اليوم الثاني)',isra:'الإسراء والمعراج',
+       ramadan:'أول أيام رمضان',fitr:'عيد الفطر',fitr2:'عيد الفطر (اليوم الثاني)',arafah:'يوم عرفة',adha:'عيد الأضحى',adha2:'عيد الأضحى (اليوم الثاني)'}
+  }
+};
+let lang = 'en';
+try { const v = localStorage.getItem('hijri-simple-lang'); if (L[v]) lang = v; else if ((navigator.language||'').startsWith('ar')) lang='ar'; else if ((navigator.language||'').startsWith('fr')) lang='fr'; } catch(e) {}
+const T = () => L[lang];
+
+const wdi = t => (new Date(t*DAY).getUTCDay() + 6) % 7; // 0 = Monday
+const gparts = t => { const d = new Date(t*DAY); return [d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()]; };
+function gdate(t, o={}) { const [d,mo,y] = gparts(t); const x = T();
+  return (o.wd===false ? '' : x.wd[wdi(t)] + ' ') + d + ' ' + x.gm[mo] + (o.y===false ? '' : ' ' + y); }
+function hdate(t) { const m = monthAt(t); if (!m) return ''; const x = T(); return `${t-m.t0+1} ${x.hm[m.hm-1]} ${m.hy} ${x.ah}`; }
+function hname(m) { return `${T().hm[m.hm-1]} ${m.hy}`; }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// every holiday occurrence across the data
+const ALLH = [];
+M.forEach(m => HOL.forEach(([hm,d,key,pub]) => { if (m.hm===hm && d<=m.len) {
+  const a = altStart(m); ALLH.push({m, d, key, pub, t:m.t0+d-1, alt: a===null ? null : a+d-1, fc:m.fc, p:pStart(m)}); } }));
+
+function status(h) {
+  return h.fc ? `<span class="chip exp" title="${esc(h.alt!==null?T().couldBe(gdate(h.alt)):'')}">${T().expected}</span>` : `<span class="chip ok">${T().confirmed}</span>`;
+}
+function rel(t) { const n = t - TODAY; return n >= 0 ? T().inDays(n) : T().ago(-n); }
+
+function renderToday() {
+  const x = T(), m = monthAt(TODAY), el = document.getElementById('today');
+  if (!m) { el.innerHTML = `<span class="label">${x.today}</span><div class="greg">${gdate(TODAY)}</div>`; return; }
+  const d = TODAY - m.t0 + 1;
+  el.innerHTML = `<span class="label">${x.today}</span>
+    <div class="bigdate">${d} ${x.hm[m.hm-1]} ${m.hy}</div>
+    <div class="greg">${gdate(TODAY)}</div>
+    <div class="muted" style="font-size:14px">${x.dayOf(d, lenSure(m) ? m.len : x.or2930)} · ${x.sunset}</div>`;
+}
+function renderNext() {
+  const x = T(), el = document.getElementById('next');
+  const h = ALLH.find(h => h.t >= TODAY && h.pub && !/2$/.test(h.key)) || ALLH.find(h => h.t >= TODAY);
+  const r = ALLH.find(h => h.key==='ramadan' && h.t >= TODAY);
+  if (!h) { el.innerHTML = ''; el.hidden = true; return; }
+  const row = (h, big) => `<div class="${big?'nextname':''}" style="${big?'':'font-weight:600'}">${x.H[h.key]}</div>
+    <div class="when"><span>${gdate(h.t)}</span>${status(h)}</div>
+    <div class="when"><span class="count">${rel(h.t)}</span><span class="muted" style="font-size:14px">${h.d} ${x.hm[h.m.hm-1]} ${h.m.hy}</span></div>
+    ${h.fc && h.alt!==null ? `<p class="note">${x.couldBe(gdate(h.alt))}</p>` : ''}`;
+  el.innerHTML = `<span class="label">${x.next}</span>${row(h,true)}`;
+  if (r && r !== h) el.innerHTML += `<div style="border-top:1px solid var(--line);padding-top:10px;margin-top:4px;display:flex;flex-direction:column;gap:4px">${row(r,false)}</div>`;
+}
+
+let VIEW = (monthAt(TODAY) || (TODAY < FIRST ? M[0] : M[M.length-1])).i;
+let PICK = null;
+function renderCal() {
+  const x = T(), m = M[VIEW], el = document.getElementById('cal');
+  const end = m.t1 - 1, [, m0, y0] = gparts(m.t0), [, m1, y1] = gparts(end);
+  const span = `${gdate(m.t0,{wd:false,y:y0!==y1})} – ${gdate(end,{wd:false})}`;
+  const a = altStart(m);
+  let h = `<div class="mhead">
+      <button type="button" class="nav" id="prevM" aria-label="${x.prev}" ${VIEW===0?'disabled':''}><span>‹</span></button>
+      <div class="mt"><h2>${hname(m)} ${x.ah}</h2><span class="span">${span}</span></div>
+      <button type="button" class="nav" id="nextM" aria-label="${x.nextM}" ${VIEW===M.length-1?'disabled':''}><span>›</span></button>
+    </div>
+    <div class="mmeta">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span></div>
+    ${m.fc ? `<div class="banner">${x.monthExp(gdate(m.t0), a!==null ? gdate(a) : '')}</div>` : ''}
+    <div class="dow">${x.ws.map(w=>`<span>${w}</span>`).join('')}</div><div class="grid">`;
+  for (let i = 0; i < wdi(m.t0); i++) h += `<div class="d empty" aria-hidden="true"></div>`;
+  for (let d = 1; d <= m.len; d++) {
+    const t = m.t0 + d - 1, [gd, gmo] = gparts(t), hh = holOf(m.hm, d);
+    const cls = ['d']; if (wdi(t)===4) cls.push('fri'); if (m.hm===9) cls.push('rmd');
+    if (hh) cls.push(hh[3] ? 'hol' : 'obs'); if (t===TODAY) cls.push('today'); if (t===PICK) cls.push('pick');
+    const showM = gd===1 || d===1;
+    h += `<div class="${cls.join(' ')}" title="${esc(`${d} ${x.hm[m.hm-1]} ${m.hy} = ${gdate(t)}${hh?' · '+x.H[hh[2]]:''}`)}">
+      <span class="h">${d}</span><span class="g${gd===1?' gm':''}">${showM ? gd+' '+x.gs[gmo] : gd}</span></div>`;
+  }
+  h += `</div><div class="legend">
+      <span><i style="border:2px solid var(--red)"></i>${x.lgToday}</span>
+      <span><i style="background:var(--brass-soft);box-shadow:inset 0 0 0 1px var(--brass)"></i>${x.lgHol}</span>
+      <span><i style="background:var(--bg);position:relative"><b style="position:absolute;top:3px;inset-inline-end:3px;width:6px;height:6px;border-radius:50%;background:var(--brass)"></b></i>${x.lgObs}</span>
+      ${m.hm===9?`<span><i style="background:var(--rmd-soft);box-shadow:inset 0 0 0 1px var(--rmd)"></i>${x.lgRmd}</span>`:''}
+    </div>`;
+  const cur = monthAt(TODAY);
+  if (cur && cur.i !== VIEW) h += `<button type="button" class="todaybtn" id="toToday">${x.toToday}</button>`;
+  el.innerHTML = h;
+  document.getElementById('prevM').onclick = () => go(VIEW-1);
+  document.getElementById('nextM').onclick = () => go(VIEW+1);
+  const tb = document.getElementById('toToday'); if (tb) tb.onclick = () => { PICK = null; go(cur.i); };
+  renderMonthHol();
+}
+function go(i) { VIEW = Math.max(0, Math.min(M.length-1, i)); renderCal(); if (YEAR !== M[VIEW].hy) { YEAR = M[VIEW].hy; renderYear(); } }
+document.addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input,select,textarea')) return;
+  const rtl = T().dir==='rtl';
+  if (e.key==='ArrowLeft') go(VIEW + (rtl?1:-1)); else if (e.key==='ArrowRight') go(VIEW + (rtl?-1:1));
+});
+
+function holItem(h, showYear) {
+  const x = T();
+  return `<li class="${h.t<TODAY?'past':''} ${h.pub?'pub':''}">
+    <span class="hn">${x.H[h.key]}</span>
+    <span class="hd">${gdate(h.t)} · ${h.d} ${x.hm[h.m.hm-1]}${showYear?' '+h.m.hy:''}</span>
+    <span class="hs">${status(h)}<span class="muted">${rel(h.t)}</span></span></li>`;
+}
+function renderMonthHol() {
+  const x = T(), m = M[VIEW], hs = ALLH.filter(h => h.m === m);
+  document.getElementById('mhol').innerHTML = `<h3>${x.inMonth}</h3>` +
+    (hs.length ? `<ul class="hlist">${hs.map(h=>holItem(h,false)).join('')}</ul>` : `<p class="empty-note">${x.none}</p>`);
+}
+
+let YEAR = M[VIEW].hy;
+const YMIN = M[0].hy, YMAX = M[M.length-1].hy;
+function renderYear() {
+  const x = T(), hs = ALLH.filter(h => h.m.hy === YEAR && !/2$/.test(h.key));
+  const el = document.getElementById('year');
+  const [, , ga] = gparts(M.find(m=>m.hy===YEAR).t0), [, , gb] = gparts([...M].reverse().find(m=>m.hy===YEAR).t1-1);
+  el.innerHTML = `<div class="yhead"><div style="display:flex;flex-direction:column;gap:2px"><h2>${x.yearT(YEAR)}</h2><span class="muted" style="font-size:14px">${ga===gb?ga:ga+'–'+gb}</span></div>
+    <div class="ynav"><button type="button" class="nav" id="prevY" aria-label="${x.prevY}" ${YEAR<=YMIN?'disabled':''}><span>‹</span></button>
+    <button type="button" class="nav" id="nextY" aria-label="${x.nextY}" ${YEAR>=YMAX?'disabled':''}><span>›</span></button></div></div>
+    <ul class="ytbl">${hs.map(h=>holItem(h,false)).join('')}</ul>`;
+  document.getElementById('prevY').onclick = () => { YEAR--; renderYear(); };
+  document.getElementById('nextY').onclick = () => { YEAR++; renderYear(); };
+}
+
+const convIn = document.getElementById('convIn');
+convIn.min = iso(FIRST); convIn.max = iso(LAST);
+function renderConv() {
+  const x = T(), out = document.getElementById('convOut');
+  document.getElementById('convT').textContent = x.convT; document.getElementById('convH').textContent = x.convH;
+  if (!convIn.value) { out.innerHTML = ''; return; }
+  const t = dn(convIn.value), m = monthAt(t);
+  if (!m) { out.innerHTML = `<p class="note">${x.range(gdate(FIRST,{wd:false}), gdate(LAST,{wd:false}))}</p>`; return; }
+  const a = altStart(m);
+  out.innerHTML = `<div class="muted" style="font-size:14px">${gdate(t)}</div><div class="res">${hdate(t)}</div>
+    <div class="when">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}</div>
+    ${m.fc && a!==null ? `<p class="note">${x.couldBe(`${t-a+1} ${x.hm[m.hm-1]}`)}</p>` : ''}
+    <button type="button" class="linkbtn" id="showIn">${x.show}</button>`;
+  document.getElementById('showIn').onclick = () => { PICK = t; go(m.i); document.getElementById('cal').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); };
+}
+convIn.addEventListener('input', renderConv);
+convIn.value = iso(Math.min(Math.max(TODAY, FIRST), LAST));
+
+function renderFoot() {
+  const x = T(), lastOff = [...M].reverse().find(m => !m.fc);
+  document.getElementById('foot').innerHTML = `<p>${x.foot(hname(lastOff))}</p>
+    <p>${x.updated(gdate(dn(D.built),{wd:false}))}${DETAIL ? ` <a href="${DETAIL}">${x.detail}</a>` : ''}</p>`;
+}
+function setLang(l) {
+  lang = l; const x = T(), app = document.getElementById('app');
+  document.documentElement.lang = l; app.dir = x.dir;
+  document.getElementById('h1').textContent = x.h1; document.getElementById('sub').textContent = x.sub;
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.l===l));
+  try { localStorage.setItem('hijri-simple-lang', l); } catch(e) {}
+  renderToday(); renderNext(); renderCal(); renderYear(); renderConv(); renderFoot();
+}
+document.querySelectorAll('.lang button').forEach(b => b.onclick = () => setLang(b.dataset.l));
+setLang(lang);
+</script>

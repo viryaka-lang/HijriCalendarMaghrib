@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hijri Calendar Morocco</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Easy-to-read Hijri calendar for Morocco: today's Islamic date, every month with the Gregorian date beside each day, and the dates of Ramadan and the Eids.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: a green "today" card and a "next holiday" card side by side; then one big month grid with arrows, beside the month's holidays and a date converter; then the year's holidays as a list. Stacks to one column on phones. */
+:root{
+  --bg:#F2F5F2; --surface:#FFFFFF; --ink:#14211C; --muted:#5A6A62; --line:#DAE2DD;
+  --accent:#136F55; --accent-ink:#FFFFFF; --accent-soft:#E0EFE8;
+  --brass:#8F6410; --brass-soft:#F6E8C6;
+  --rmd:#2D4A8A; --rmd-soft:#E8EDF8;
+  --red:#C1272D;
+  --display:"Reem Kufi","IBM Plex Sans Arabic","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
+  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
+  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(26px,4.4vw,38px)}
+h2{font-size:22px}
+p{margin:0}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
+header .t{display:flex;flex-direction:column;gap:6px;min-width:0}
+header .sub{color:var(--muted);max-width:60ch}
+.lang{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.lang button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+
+.top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.top{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.label{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+[dir="rtl"] .label{letter-spacing:0;text-transform:none;font-size:14px}
+.todaycard{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.todaycard .label,.todaycard .muted{color:inherit;opacity:.82}
+.bigdate{font-family:var(--display);font-size:clamp(30px,5.6vw,46px);line-height:1.1;font-weight:600}
+.greg{font-size:18px;font-weight:500}
+.nextname{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.2}
+.when{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.count{font-weight:600;color:var(--accent)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--accent-soft);color:var(--accent)}
+.chip.exp{background:var(--brass-soft);color:var(--brass)}
+.chip.pub{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:500}
+.note{font-size:14px;color:var(--muted)}
+
+.main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.main{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.mhead{display:flex;align-items:center;gap:10px}
+.mhead .mt{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;gap:2px}
+.mhead h2{font-size:clamp(22px,3.6vw,28px)}
+.mhead .span{color:var(--muted);font-size:14.5px}
+.nav{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1}
+.nav:hover{background:var(--accent-soft)}
+.nav:disabled{opacity:.35;cursor:default;background:var(--surface)}
+[dir="rtl"] .nav span{display:inline-block;transform:scaleX(-1)}
+.mmeta{display:flex;flex-wrap:wrap;gap:6px 10px;justify-content:center;align-items:center;font-size:14px;color:var(--muted)}
+.banner{font-size:14.5px;padding:10px 12px;border-radius:10px;background:var(--brass-soft);color:var(--ink)}
+.banner b{color:var(--brass)}
+.dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.dow span{text-align:center;font-size:12.5px;font-weight:600;color:var(--muted);padding-bottom:2px}
+.d{position:relative;min-height:62px;border-radius:10px;background:var(--bg);padding:6px 7px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border:2px solid transparent}
+.d.empty{background:transparent}
+.d .h{font-family:var(--display);font-size:22px;font-weight:600;line-height:1}
+.d .g{font-size:12px;color:var(--muted);text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.d .g.gm{color:var(--ink);font-weight:600}
+.d.fri{background:color-mix(in srgb,var(--accent-soft) 55%,var(--bg))}
+.d.rmd{background:var(--rmd-soft)}
+.d.rmd .h{color:var(--rmd)}
+.d.hol{background:var(--brass-soft)}
+.d.hol .h{color:var(--brass)}
+.d.obs::after{content:"";position:absolute;top:8px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:var(--brass)}
+.d.today{border-color:var(--red)}
+.d.pick{box-shadow:0 0 0 2px var(--accent) inset}
+@media (max-width:460px){.d{min-height:52px;padding:4px 5px;border-radius:8px}.d .h{font-size:18px}.d .g{font-size:11px}.dow,.grid{gap:3px}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none}
+.todaybtn{align-self:center;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 16px;cursor:pointer;font-weight:500}
+.todaybtn:hover{background:var(--accent-soft)}
+
+.hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.hlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
+.hlist li:first-child{border-top:0;padding-top:2px}
+.hlist .hn{font-weight:600}
+.hlist .hd{grid-column:1;font-size:14px;color:var(--muted)}
+.hlist .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.hlist li.past{opacity:.55}
+.hlist li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
+.empty-note{font-size:14.5px;color:var(--muted)}
+
+.conv{display:flex;flex-direction:column;gap:10px}
+.conv input{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);max-width:100%;width:100%}
+.conv .res{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2}
+.linkbtn{align-self:flex-start;border:0;background:none;color:var(--accent);padding:0;cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+.yhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.ynav{display:flex;gap:8px;align-items:center}
+.ynav .nav{width:38px;height:38px;font-size:19px}
+.ytbl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+@media (max-width:700px){.ytbl{grid-template-columns:1fr}}
+.ytbl li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
+.ytbl li.past{opacity:.55}
+.ytbl .hn{font-weight:600}
+.ytbl li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
+.ytbl .hd{grid-column:1;font-size:14px;color:var(--muted)}
+.ytbl .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:13.5px}
+
+footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:75ch}
+@media (prefers-reduced-motion:no-preference){.d,.nav,.todaybtn{transition:background-color .15s}}
+</style>
+
+<div class="wrap" id="app">
+  <header>
+    <div class="t">
+      <h1 id="h1">Hijri Calendar for Morocco</h1>
+      <p class="sub" id="sub"></p>
+    </div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-en" data-l="en" lang="en">English</button>
+      <button type="button" id="lang-fr" data-l="fr" lang="fr">Français</button>
+      <button type="button" id="lang-ar" data-l="ar" lang="ar">العربية</button>
+    </div>
+  </header>
+
+  <section class="top">
+    <div class="card todaycard" id="today"></div>
+    <div class="card" id="next"></div>
+  </section>
+
+  <section class="main">
+    <div class="card" id="cal" aria-live="polite"></div>
+    <div class="side">
+      <div class="card" id="mhol"></div>
+      <div class="card conv">
+        <h3 id="convT"></h3>
+        <label class="note" for="convIn" id="convH"></label>
+        <input type="date" id="convIn">
+        <div id="convOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="year"></section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const D = {"built":"2026-11-06","months":[[1445,1,"2023-07-19",30,0,null],[1445,2,"2023-08-18",30,0,null],[1445,3,"2023-09-17",30,0,null],[1445,4,"2023-10-17",29,0,null],[1445,5,"2023-11-15",30,0,null],[1445,6,"2023-12-15",29,0,null],[1445,7,"2024-01-13",29,0,null],[1445,8,"2024-02-11",30,0,null],[1445,9,"2024-03-12",29,0,null],[1445,10,"2024-04-10",30,0,null],[1445,11,"2024-05-10",29,0,null],[1445,12,"2024-06-08",29,0,null],[1446,1,"2024-07-07",30,0,null],[1446,2,"2024-08-06",30,0,null],[1446,3,"2024-09-05",30,0,null],[1446,4,"2024-10-05",30,0,null],[1446,5,"2024-11-04",29,0,null],[1446,6,"2024-12-03",30,0,null],[1446,7,"2025-01-02",29,0,null],[1446,8,"2025-01-31",30,0,null],[1446,9,"2025-03-02",29,0,null],[1446,10,"2025-03-31",29,0,null],[1446,11,"2025-04-29",30,0,null],[1446,12,"2025-05-29",29,0,null],[1447,1,"2025-06-27",29,0,null],[1447,2,"2025-07-26",30,0,null],[1447,3,"2025-08-25",30,0,null],[1447,4,"2025-09-24",30,0,null],[1447,5,"2025-10-24",29,0,null],[1447,6,"2025-11-22",30,0,null],[1447,7,"2025-12-22",30,0,null],[1447,8,"2026-01-21",29,0,null],[1447,9,"2026-02-19",29,0,null],[1447,10,"2026-03-20",30,0,null],[1447,11,"2026-04-19",29,0,null],[1447,12,"2026-05-18",30,0,null],[1448,1,"2026-06-17",29,0,null],[1448,2,"2026-07-16",29,0,null],[1448,3,"2026-08-14",30,0,null],[1448,4,"2026-09-13",30,0,null],[1448,5,"2026-10-13",30,0,null],[1448,6,"2026-11-12",29,1,{"2026-11-11":0.4326,"2026-11-12":0.5674}],[1448,7,"2026-12-11",30,1,{"2026-12-10":0.0096,"2026-12-11":0.9795,"2026-12-12":0.0109}],[1448,8,"2027-01-10",29,1,{"2027-01-09":0.2002,"2027-01-10":0.7993}],[1448,9,"2027-02-08",30,1,{"2027-02-08":0.9802,"2027-02-09":0.0154}],[1448,10,"2027-03-10",29,1,{"2027-03-09":0.0261,"2027-03-10":0.9735}],[1448,11,"2027-04-08",30,1,{"2027-04-08":0.5736,"2027-04-09":0.4258}],[1448,12,"2027-05-08",29,1,{"2027-05-07":0.0128,"2027-05-08":0.9791,"2027-05-09":0.0082}],[1449,1,"2027-06-06",30,1,{"2027-06-06":0.9727,"2027-06-07":0.0269}],[1449,2,"2027-07-06",29,1,{"2027-07-05":0.3085,"2027-07-06":0.6909}],[1449,3,"2027-08-04",30,1,{"2027-08-03":0.0069,"2027-08-04":0.9798,"2027-08-05":0.0133}],[1449,4,"2027-09-03",29,1,{"2027-09-02":0.1976,"2027-09-03":0.802}],[1449,5,"2027-10-02",30,1,{"2027-10-02":0.9802,"2027-10-03":0.0154}],[1449,6,"2027-11-01",29,1,{"2027-10-31":0.2097,"2027-11-01":0.7899}],[1449,7,"2027-11-30",30,1,{"2027-11-30":0.9801,"2027-12-01":0.0152}],[1449,8,"2027-12-30",29,1,{"2027-12-29":0.1997,"2027-12-30":0.7999}],[1449,9,"2028-01-28",30,1,{"2028-01-28":0.9802,"2028-01-29":0.0154}],[1449,10,"2028-02-27",30,1,{"2028-02-26":0.0261,"2028-02-27":0.9735}],[1449,11,"2028-03-28",29,1,{"2028-03-27":0.0472,"2028-03-28":0.9522}],[1449,12,"2028-04-26",30,1,{"2028-04-26":0.9806,"2028-04-27":0.0183}],[1450,1,"2028-05-26",29,1,{"2028-05-25":0.0218,"2028-05-26":0.9778}],[1450,2,"2028-06-24",30,1,{"2028-06-24":0.9807,"2028-06-25":0.0188}],[1450,3,"2028-07-24",29,1,{"2028-07-23":0.0218,"2028-07-24":0.9778}],[1450,4,"2028-08-22",30,1,{"2028-08-22":0.9807,"2028-08-23":0.0188}],[1450,5,"2028-09-21",29,1,{"2028-09-20":0.1251,"2028-09-21":0.8746}],[1450,6,"2028-10-20",29,1,{"2028-10-20":0.9804,"2028-10-21":0.0168}],[1450,7,"2028-11-18",30,1,{"2028-11-18":0.9643,"2028-11-19":0.0354}],[1450,8,"2028-12-18",29,1,{"2028-12-17":0.0214,"2028-12-18":0.9779}],[1450,9,"2029-01-16",30,1,{"2029-01-16":0.9807,"2029-01-17":0.0188}],[1450,10,"2029-02-15",30,1,{"2029-02-14":0.0218,"2029-02-15":0.9778}],[1450,11,"2029-03-17",29,1,{"2029-03-16":0.0431,"2029-03-17":0.9565}],[1450,12,"2029-04-15",30,1,{"2029-04-15":0.5806,"2029-04-16":0.4184}],[1451,1,"2029-05-15",30,1,{"2029-05-14":0.0129,"2029-05-15":0.979,"2029-05-16":0.0081}],[1451,2,"2029-06-14",30,1,{"2029-06-13":0.0344,"2029-06-14":0.9652}],[1451,3,"2029-07-14",29,1,{"2029-07-13":0.4692,"2029-07-14":0.5301}],[1451,4,"2029-08-12",29,1,{"2029-08-11":0.0104,"2029-08-12":0.9794,"2029-08-13":0.0102}],[1451,5,"2029-09-10",30,1,{"2029-09-10":0.9707,"2029-09-11":0.0288}],[1451,6,"2029-10-10",29,1,{"2029-10-09":0.1211,"2029-10-10":0.8784}],[1451,7,"2029-11-08",29,1,{"2029-11-08":0.9804,"2029-11-09":0.0169}],[1451,8,"2029-12-07",30,1,{"2029-12-07":0.9642,"2029-12-08":0.0354}],[1451,9,"2030-01-06",29,1,{"2030-01-05":0.2196,"2030-01-06":0.7798}],[1451,10,"2030-02-04",30,1,{"2030-02-04":0.9801,"2030-02-05":0.015}],[1451,11,"2030-03-06",29,1,{"2030-03-05":0.0266,"2030-03-06":0.973}],[1451,12,"2030-04-04",30,1,{"2030-04-04":0.5729,"2030-04-05":0.4265}],[1452,1,"2030-05-04",30,1,{"2030-05-03":0.0127,"2030-05-04":0.9791,"2030-05-05":0.0082}],[1452,2,"2030-06-03",30,1,{"2030-06-02":0.0342,"2030-06-03":0.9653}],[1452,3,"2030-07-03",30,1,{"2030-07-02":0.0549,"2030-07-03":0.9443}],[1452,4,"2030-08-02",29,1,{"2030-08-01":0.4021,"2030-08-02":0.5967}],[1452,5,"2030-08-31",29,1,{"2030-08-30":0.0089,"2030-08-31":0.9796,"2030-09-01":0.0115}],[1452,6,"2030-09-29",30,1,{"2030-09-29":0.9695,"2030-09-30":0.0301}],[1452,7,"2030-10-29",29,1,{"2030-10-28":0.1633,"2030-10-29":0.8362}],[1452,8,"2030-11-27",29,1,{"2030-11-27":0.9803,"2030-11-28":0.0161}],[1452,9,"2030-12-26",30,1,{"2030-12-26":0.965,"2030-12-27":0.0346}],[1452,10,"2031-01-25",29,1,{"2031-01-24":0.3249,"2031-01-25":0.6744}],[1452,11,"2031-02-23",30,1,{"2031-02-22":0.0072,"2031-02-23":0.9798,"2031-02-24":0.013}],[1452,12,"2031-03-25",29,1,{"2031-03-24":0.0288,"2031-03-25":0.9708}],[1453,1,"2031-04-23",30,1,{"2031-04-23":0.9807,"2031-04-24":0.0187}],[1453,2,"2031-05-23",30,1,{"2031-05-22":0.0218,"2031-05-23":0.9778}],[1453,3,"2031-06-22",30,1,{"2031-06-21":0.0431,"2031-06-22":0.9564}],[1453,4,"2031-07-22",29,1,{"2031-07-21":0.1975,"2031-07-22":0.8015}],[1453,5,"2031-08-20",30,1,{"2031-08-20":0.9802,"2031-08-21":0.0154}],[1453,6,"2031-09-19",29,1,{"2031-09-18":0.0261,"2031-09-19":0.9735}],[1453,7,"2031-10-18",30,1,{"2031-10-18":0.9807,"2031-10-19":0.0187}],[1453,8,"2031-11-17",29,1,{"2031-11-16":0.3997,"2031-11-17":0.6}],[1453,9,"2031-12-16",29,1,{"2031-12-15":0.0089,"2031-12-16":0.9796,"2031-12-17":0.0115}],[1453,10,"2032-01-14",30,1,{"2032-01-14":0.9694,"2032-01-15":0.0302}],[1453,11,"2032-02-13",29,1,{"2032-02-12":0.0216,"2032-02-13":0.9779}],[1453,12,"2032-03-13",30,1,{"2032-03-13":0.9807,"2032-03-14":0.0188}],[1454,1,"2032-04-12",29,1,{"2032-04-11":0.3302,"2032-04-12":0.6694}],[1454,2,"2032-05-11",30,1,{"2032-05-10":0.0073,"2032-05-11":0.9798,"2032-05-12":0.0129}],[1454,3,"2032-06-10",30,1,{"2032-06-09":0.029,"2032-06-10":0.9706}],[1454,4,"2032-07-10",30,1,{"2032-07-09":0.2188,"2032-07-10":0.7805}],[1454,5,"2032-08-09",29,1,{"2032-08-08":0.5666,"2032-08-09":0.4286}],[1454,6,"2032-09-07",30,1,{"2032-09-06":0.0173,"2032-09-07":0.9743,"2032-09-08":0.0082}],[1454,7,"2032-10-07",29,1,{"2032-10-06":0.2962,"2032-10-07":0.7033}],[1454,8,"2032-11-05",29,1,{"2032-11-04":0.0066,"2032-11-05":0.9799,"2032-11-06":0.0135}],[1454,9,"2032-12-04",30,1,{"2032-12-04":0.5579,"2032-12-05":0.4417}],[1454,10,"2033-01-03",29,1,{"2033-01-02":0.0124,"2033-01-03":0.9791,"2033-01-04":0.0085}],[1454,11,"2033-02-01",30,1,{"2033-02-01":0.9724,"2033-02-02":0.0272}],[1454,12,"2033-03-03",29,1,{"2033-03-02":0.0216,"2033-03-03":0.9779}],[1455,1,"2033-04-01",30,1,{"2033-04-01":0.9807,"2033-04-02":0.0188}],[1455,2,"2033-05-01",29,1,{"2033-04-30":0.2894,"2033-05-01":0.7103}],[1455,3,"2033-05-30",30,1,{"2033-05-29":0.0064,"2033-05-30":0.9799,"2033-05-31":0.0137}],[1455,4,"2033-06-29",29,1,{"2033-06-28":0.1437,"2033-06-29":0.8559}],[1455,5,"2033-07-28",30,1,{"2033-07-28":0.9803,"2033-07-29":0.0165}],[1455,6,"2033-08-27",30,1,{"2033-08-26":0.0249,"2033-08-27":0.9747}],[1455,7,"2033-09-26",29,1,{"2033-09-25":0.2832,"2033-09-26":0.7162}],[1455,8,"2033-10-25",30,1,{"2033-10-24":0.0063,"2033-10-25":0.9799,"2033-10-26":0.0138}],[1455,9,"2033-11-24",29,1,{"2033-11-23":0.1853,"2033-11-24":0.8143}],[1455,10,"2033-12-23",30,1,{"2033-12-23":0.9802,"2033-12-24":0.0157}],[1455,11,"2034-01-22",29,1,{"2034-01-21":0.0258,"2034-01-22":0.9738}],[1455,12,"2034-02-20",30,1,{"2034-02-20":0.5735,"2034-02-21":0.4259}],[1456,1,"2034-03-22",29,1,{"2034-03-21":0.0128,"2034-03-22":0.9791,"2034-03-23":0.0082}],[1456,2,"2034-04-20",30,1,{"2034-04-20":0.9727,"2034-04-21":0.0269}],[1456,3,"2034-05-20",29,1,{"2034-05-19":0.158,"2034-05-20":0.8414}],[1456,4,"2034-06-18",30,1,{"2034-06-18":0.9803,"2034-06-19":0.0162}],[1456,5,"2034-07-18",29,1,{"2034-07-17":0.2753,"2034-07-18":0.7243}],[1456,6,"2034-08-16",30,1,{"2034-08-15":0.0061,"2034-08-16":0.9799,"2034-08-17":0.0139}],[1456,7,"2034-09-15",29,1,{"2034-09-14":0.3707,"2034-09-15":0.6289}],[1456,8,"2034-10-14",30,1,{"2034-10-13":0.0082,"2034-10-14":0.9797,"2034-10-15":0.0121}],[1456,9,"2034-11-13",29,1,{"2034-11-12":0.1882,"2034-11-13":0.8114}],[1456,10,"2034-12-12",30,1,{"2034-12-12":0.6409,"2034-12-13":0.3549}],[1456,11,"2035-01-11",30,1,{"2035-01-10":0.0183,"2035-01-11":0.9747,"2035-01-12":0.0068}],[1456,12,"2035-02-10",30,1,{"2035-02-09":0.0396,"2035-02-10":0.9599}],[1457,1,"2035-03-12",29,1,{"2035-03-11":0.5066,"2035-03-12":0.4925}],[1457,2,"2035-04-10",29,1,{"2035-04-09":0.0113,"2035-04-10":0.9793,"2035-04-11":0.0095}],[1457,3,"2035-05-09",30,1,{"2035-05-09":0.9714,"2035-05-10":0.0281}],[1457,4,"2035-06-08",29,1,{"2035-06-07":0.0216,"2035-06-08":0.9779}],[1457,5,"2035-07-07",29,1,{"2035-07-07":0.9807,"2035-07-08":0.0188}],[1457,6,"2035-08-05",30,1,{"2035-08-05":0.5175,"2035-08-06":0.4821}],[1457,7,"2035-09-04",29,1,{"2035-09-03":0.0115,"2035-09-04":0.9792,"2035-09-05":0.0093}],[1457,8,"2035-10-03",30,1,{"2035-10-03":0.9716,"2035-10-04":0.0279}],[1457,9,"2035-11-02",29,1,{"2035-11-01":0.1662,"2035-11-02":0.8333}],[1457,10,"2035-12-01",30,1,{"2035-12-01":0.6318,"2035-12-02":0.3645}],[1457,11,"2035-12-31",30,1,{"2035-12-30":0.0177,"2035-12-31":0.9753,"2036-01-01":0.007}],[1457,12,"2036-01-30",30,1,{"2036-01-29":0.0389,"2036-01-30":0.9605}],[1458,1,"2036-02-29",29,1,{"2036-02-28":0.0594,"2036-02-29":0.9397}],[1458,2,"2036-03-29",30,1,{"2036-03-29":0.587,"2036-03-30":0.4117}],[1458,3,"2036-04-28",29,1,{"2036-04-27":0.0131,"2036-04-28":0.979,"2036-04-29":0.0079}],[1458,4,"2036-05-27",30,1,{"2036-05-27":0.973,"2036-05-28":0.0266}],[1458,5,"2036-06-26",29,1,{"2036-06-25":0.0216,"2036-06-26":0.9779}],[1458,6,"2036-07-25",29,1,{"2036-07-25":0.9807,"2036-07-26":0.0188}],[1458,7,"2036-08-23",30,1,{"2036-08-23":0.9623,"2036-08-24":0.0373}],[1458,8,"2036-09-22",29,1,{"2036-09-21":0.3302,"2036-09-22":0.6691}],[1458,9,"2036-10-21",30,1,{"2036-10-20":0.0073,"2036-10-21":0.9798,"2036-10-22":0.0129}],[1458,10,"2036-11-20",29,1,{"2036-11-19":0.3883,"2036-11-20":0.6113}],[1458,11,"2036-12-19",30,1,{"2036-12-18":0.0086,"2036-12-19":0.9796,"2036-12-20":0.0118}],[1458,12,"2037-01-18",30,1,{"2037-01-17":0.0302,"2037-01-18":0.9694}],[1459,1,"2037-02-17",30,1,{"2037-02-16":0.0511,"2037-02-17":0.9482}],[1459,2,"2037-03-19",29,1,{"2037-03-18":0.2361,"2037-03-19":0.7627}],[1459,3,"2037-04-17",30,1,{"2037-04-16":0.0053,"2037-04-17":0.9801,"2037-04-18":0.0147}],[1459,4,"2037-05-17",29,1,{"2037-05-16":0.0269,"2037-05-17":0.9727}],[1459,5,"2037-06-15",30,1,{"2037-06-15":0.9807,"2037-06-16":0.0187}],[1459,6,"2037-07-15",29,1,{"2037-07-14":0.0218,"2037-07-15":0.9778}],[1459,7,"2037-08-13",29,1,{"2037-08-13":0.9807,"2037-08-14":0.0188}],[1459,8,"2037-09-11",30,1,{"2037-09-11":0.9623,"2037-09-12":0.0373}],[1459,9,"2037-10-11",29,1,{"2037-10-10":0.0214,"2037-10-11":0.9779}],[1459,10,"2037-11-09",30,1,{"2037-11-09":0.9807,"2037-11-10":0.0188}],[1459,11,"2037-12-09",29,1,{"2037-12-08":0.3366,"2037-12-09":0.6631}],[1459,12,"2038-01-07",30,1,{"2038-01-06":0.0075,"2038-01-07":0.9798,"2038-01-08":0.0128}],[1460,1,"2038-02-06",30,1,{"2038-02-05":0.0291,"2038-02-06":0.9705}],[1460,2,"2038-03-08",30,1,{"2038-03-07":0.2301,"2038-03-08":0.7693}],[1460,3,"2038-04-07",29,1,{"2038-04-05":0.0051,"2038-04-06":0.2422,"2038-04-07":0.7526}],[1460,4,"2038-05-06",30,1,{"2038-05-05":0.0104,"2038-05-06":0.975,"2038-05-07":0.0145}],[1460,5,"2038-06-05",29,1,{"2038-06-04":0.0318,"2038-06-05":0.9677}],[1460,6,"2038-07-04",30,1,{"2038-07-04":0.9807,"2038-07-05":0.0186}],[1460,7,"2038-08-03",29,1,{"2038-08-02":0.3474,"2038-08-03":0.6522}],[1460,8,"2038-09-01",29,1,{"2038-08-31":0.0077,"2038-09-01":0.9797,"2038-09-02":0.0125}],[1460,9,"2038-09-30",30,1,{"2038-09-30":0.9684,"2038-10-01":0.0311}],[1460,10,"2038-10-30",29,1,{"2038-10-29":0.1929,"2038-10-30":0.8065}],[1460,11,"2038-11-28",30,1,{"2038-11-28":0.9802,"2038-11-29":0.0155}],[1460,12,"2038-12-28",29,1,{"2038-12-27":0.1634,"2038-12-28":0.8362}]]};
+const DETAIL = "index.html";
+const DAY = 864e5;
+const dn = s => Date.UTC(+s.slice(0,4), +s.slice(5,7)-1, +s.slice(8,10)) / DAY;
+const iso = n => new Date(n*DAY).toISOString().slice(0,10);
+const now = new Date();
+const TODAY = dn(now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0'));
+
+const M = D.months.map(([hy,hm,s,len,fc,dist]) => ({hy,hm,s,len,fc:!!fc,dist:dist||null,t0:dn(s)}));
+M.forEach((m,i) => { m.t1 = m.t0 + m.len; m.i = i; });
+const pStart = m => m.fc ? (m.dist[m.s] ?? 0) : 1;
+const lenSure = m => { const n = M[m.i+1]; return pStart(m) >= 0.9 && (!n || pStart(n) >= 0.9); };
+const altStart = m => { if (!m.fc) return null; const o = Object.entries(m.dist).filter(([d]) => d !== m.s).sort((a,b) => b[1]-a[1]); return o.length && o[0][1] >= 0.1 ? dn(o[0][0]) : null; };
+const monthAt = t => M.find(m => t >= m.t0 && t < m.t1);
+const FIRST = M[0].t0, LAST = M[M.length-1].t1 - 1;
+
+const HOL = [ // [Hijri month, day, key, public holiday in Morocco]
+  [1,1,'newyear',1],[1,10,'ashura',0],[3,12,'mawlid',1],[3,13,'mawlid2',1],[7,27,'isra',0],
+  [9,1,'ramadan',0],[10,1,'fitr',1],[10,2,'fitr2',1],[12,9,'arafah',0],[12,10,'adha',1],[12,11,'adha2',1]];
+const holOf = (hm,d) => HOL.find(h => h[0]===hm && h[1]===d);
+
+const L = {
+  en: {
+    dir:'ltr', h1:'Hijri Calendar for Morocco',
+    sub:'Islamic dates as used in Morocco, with the Gregorian date beside each day.',
+    hm:['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Ula','Jumada al-Thani','Rajab','Shaban','Ramadan','Shawwal','Dhul-Qadah','Dhul-Hijjah'],
+    gm:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    gs:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    wd:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    ws:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ah:'AH', today:'Today', sunset:'The Islamic day begins at sunset.',
+    dayOf:(d,n)=>`Day ${d} of ${n}`, or2930:'29 or 30',
+    next:'Next holiday', inDays:n=>n===0?'Today':n===1?'Tomorrow':`In ${n} days`, ago:n=>n===1?'Yesterday':`${n} days ago`,
+    confirmed:'Confirmed', expected:'Expected', pub:'Public holiday',
+    couldBe:a=>`Depends on the moon sighting. It could be ${a}.`,
+    monthExp:(b,a)=>`<b>Not announced yet.</b> This month will most likely start on ${b}${a?`, or possibly ${a}`:''}. Dates depend on the moon sighting.`,
+    days:n=>`${n} days`, days2930:'29 or 30 days',
+    prev:'Previous month', nextM:'Next month', toToday:'Back to today',
+    lgToday:'Today', lgHol:'Public holiday', lgObs:'Religious occasion', lgRmd:'Ramadan', lgFri:'Friday',
+    inMonth:'Holidays this month', none:'No holidays or occasions this month.',
+    convT:'Convert a date', convH:'Pick a Gregorian date to see its Hijri date.', show:'Show in calendar',
+    range:(a,b)=>`Pick a date between ${a} and ${b}.`,
+    yearT:y=>`Holidays in ${y} AH`, prevY:'Previous year', nextY:'Next year',
+    foot:m=>`Month starts follow the official announcements of Morocco's Ministry of Habous and Islamic Affairs up to ${m}. Later months are forecasts based on crescent visibility maps, so an expected date can move by one day. Always check the Ministry's announcement before a holiday.`,
+    detail:'Detailed forecast and evidence', updated:d=>`Data updated ${d}.`,
+    H:{newyear:'Islamic New Year',ashura:'Ashura',mawlid:'Eid al-Mawlid (Prophet’s Birthday)',mawlid2:'Eid al-Mawlid, day 2',isra:'Isra and Mi’raj',
+       ramadan:'First day of Ramadan',fitr:'Eid al-Fitr',fitr2:'Eid al-Fitr, day 2',arafah:'Day of Arafah',adha:'Eid al-Adha',adha2:'Eid al-Adha, day 2'}
+  },
+  fr: {
+    dir:'ltr', h1:'Calendrier hégirien du Maroc',
+    sub:'Les dates islamiques en usage au Maroc, avec la date grégorienne à côté de chaque jour.',
+    hm:['Moharram','Safar','Rabia al-Awal','Rabia ath-Thani','Joumada al-Oula','Joumada ath-Thania','Rajab','Chaabane','Ramadan','Chaoual','Dou al-Qiada','Dou al-Hijja'],
+    gm:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    gs:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
+    wd:['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'],
+    ws:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+    ah:'H', today:'Aujourd’hui', sunset:'Le jour hégirien commence au coucher du soleil.',
+    dayOf:(d,n)=>`Jour ${d} sur ${n}`, or2930:'29 ou 30',
+    next:'Prochaine fête', inDays:n=>n===0?'Aujourd’hui':n===1?'Demain':`Dans ${n} jours`, ago:n=>n===1?'Hier':`Il y a ${n} jours`,
+    confirmed:'Confirmé', expected:'Prévu', pub:'Jour férié',
+    couldBe:a=>`Dépend de l’observation du croissant : cela pourrait être le ${a}.`,
+    monthExp:(b,a)=>`<b>Pas encore annoncé.</b> Ce mois commencera très probablement le ${b}${a?`, ou peut-être le ${a}`:''}. Les dates dépendent de l’observation du croissant.`,
+    days:n=>`${n} jours`, days2930:'29 ou 30 jours',
+    prev:'Mois précédent', nextM:'Mois suivant', toToday:'Revenir à aujourd’hui',
+    lgToday:'Aujourd’hui', lgHol:'Jour férié', lgObs:'Occasion religieuse', lgRmd:'Ramadan', lgFri:'Vendredi',
+    inMonth:'Fêtes de ce mois', none:'Aucune fête ni occasion ce mois-ci.',
+    convT:'Convertir une date', convH:'Choisissez une date grégorienne pour voir la date hégirienne.', show:'Voir dans le calendrier',
+    range:(a,b)=>`Choisissez une date entre le ${a} et le ${b}.`,
+    yearT:y=>`Fêtes de l’an ${y} H`, prevY:'Année précédente', nextY:'Année suivante',
+    foot:m=>`Les débuts de mois suivent les annonces officielles du ministère des Habous et des Affaires islamiques jusqu’à ${m}. Les mois suivants sont des prévisions fondées sur les cartes de visibilité du croissant : une date prévue peut se décaler d’un jour. Vérifiez toujours l’annonce du ministère avant une fête.`,
+    detail:'Prévisions détaillées et justificatifs', updated:d=>`Données mises à jour le ${d}.`,
+    H:{newyear:'Nouvel An de l’Hégire',ashura:'Achoura',mawlid:'Aïd al-Mawlid (naissance du Prophète)',mawlid2:'Aïd al-Mawlid, 2e jour',isra:'Al-Isra wal-Miraj',
+       ramadan:'Premier jour du Ramadan',fitr:'Aïd al-Fitr',fitr2:'Aïd al-Fitr, 2e jour',arafah:'Jour d’Arafat',adha:'Aïd al-Adha',adha2:'Aïd al-Adha, 2e jour'}
+  },
+  ar: {
+    dir:'rtl', h1:'التقويم الهجري للمغرب',
+    sub:'التواريخ الهجرية المعتمدة في المغرب، مع التاريخ الميلادي بجانب كل يوم.',
+    hm:['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'],
+    gm:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
+    gs:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
+    wd:['الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت','الأحد'],
+    ws:['إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت','أحد'],
+    ah:'هـ', today:'اليوم', sunset:'يبدأ اليوم الهجري عند غروب الشمس.',
+    dayOf:(d,n)=>`اليوم ${d} من ${n}`, or2930:'29 أو 30',
+    next:'المناسبة القادمة', inDays:n=>n===0?'اليوم':n===1?'غدًا':n===2?'بعد يومين':n<=10?`بعد ${n} أيام`:`بعد ${n} يومًا`,
+    ago:n=>n===1?'أمس':n===2?'قبل يومين':n<=10?`قبل ${n} أيام`:`قبل ${n} يومًا`,
+    confirmed:'مؤكد', expected:'متوقع', pub:'عطلة رسمية',
+    couldBe:a=>`حسب رؤية الهلال، قد يكون ${a}.`,
+    monthExp:(b,a)=>`<b>لم يُعلن بعد.</b> من المرجح أن يبدأ هذا الشهر يوم ${b}${a?`، أو ربما ${a}`:''}. تتوقف التواريخ على رؤية الهلال.`,
+    days:n=>`${n} يومًا`, days2930:'29 أو 30 يومًا',
+    prev:'الشهر السابق', nextM:'الشهر التالي', toToday:'العودة إلى اليوم',
+    lgToday:'اليوم', lgHol:'عطلة رسمية', lgObs:'مناسبة دينية', lgRmd:'رمضان', lgFri:'الجمعة',
+    inMonth:'مناسبات هذا الشهر', none:'لا توجد مناسبات في هذا الشهر.',
+    convT:'تحويل تاريخ', convH:'اختر تاريخًا ميلاديًا لمعرفة التاريخ الهجري الموافق له.', show:'عرض في التقويم',
+    range:(a,b)=>`اختر تاريخًا بين ${a} و${b}.`,
+    yearT:y=>`مناسبات سنة ${y} هـ`, prevY:'السنة السابقة', nextY:'السنة التالية',
+    foot:m=>`تتبع بدايات الشهور الإعلانات الرسمية لوزارة الأوقاف والشؤون الإسلامية حتى ${m}. الشهور اللاحقة توقعات مبنية على خرائط رؤية الهلال، وقد يتغير التاريخ المتوقع بيوم واحد. تحقق دائمًا من إعلان الوزارة قبل أي مناسبة.`,
+    detail:'التوقعات المفصلة والأدلة', updated:d=>`آخر تحديث للبيانات: ${d}.`,
+    H:{newyear:'رأس السنة الهجرية',ashura:'عاشوراء',mawlid:'عيد المولد النبوي',mawlid2:'عيد المولد النبوي (اليوم الثاني)',isra:'الإسراء والمعراج',
+       ramadan:'أول أيام رمضان',fitr:'عيد الفطر',fitr2:'عيد الفطر (اليوم الثاني)',arafah:'يوم عرفة',adha:'عيد الأضحى',adha2:'عيد الأضحى (اليوم الثاني)'}
+  }
+};
+let lang = 'en';
+try { const v = localStorage.getItem('hijri-simple-lang'); if (L[v]) lang = v; else if ((navigator.language||'').startsWith('ar')) lang='ar'; else if ((navigator.language||'').startsWith('fr')) lang='fr'; } catch(e) {}
+const T = () => L[lang];
+
+const wdi = t => (new Date(t*DAY).getUTCDay() + 6) % 7; // 0 = Monday
+const gparts = t => { const d = new Date(t*DAY); return [d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()]; };
+function gdate(t, o={}) { const [d,mo,y] = gparts(t); const x = T();
+  return (o.wd===false ? '' : x.wd[wdi(t)] + ' ') + d + ' ' + x.gm[mo] + (o.y===false ? '' : ' ' + y); }
+function hdate(t) { const m = monthAt(t); if (!m) return ''; const x = T(); return `${t-m.t0+1} ${x.hm[m.hm-1]} ${m.hy} ${x.ah}`; }
+function hname(m) { return `${T().hm[m.hm-1]} ${m.hy}`; }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// every holiday occurrence across the data
+const ALLH = [];
+M.forEach(m => HOL.forEach(([hm,d,key,pub]) => { if (m.hm===hm && d<=m.len) {
+  const a = altStart(m); ALLH.push({m, d, key, pub, t:m.t0+d-1, alt: a===null ? null : a+d-1, fc:m.fc, p:pStart(m)}); } }));
+
+function status(h) {
+  return h.fc ? `<span class="chip exp" title="${esc(h.alt!==null?T().couldBe(gdate(h.alt)):'')}">${T().expected}</span>` : `<span class="chip ok">${T().confirmed}</span>`;
+}
+function rel(t) { const n = t - TODAY; return n >= 0 ? T().inDays(n) : T().ago(-n); }
+
+function renderToday() {
+  const x = T(), m = monthAt(TODAY), el = document.getElementById('today');
+  if (!m) { el.innerHTML = `<span class="label">${x.today}</span><div class="greg">${gdate(TODAY)}</div>`; return; }
+  const d = TODAY - m.t0 + 1;
+  el.innerHTML = `<span class="label">${x.today}</span>
+    <div class="bigdate">${d} ${x.hm[m.hm-1]} ${m.hy}</div>
+    <div class="greg">${gdate(TODAY)}</div>
+    <div class="muted" style="font-size:14px">${x.dayOf(d, lenSure(m) ? m.len : x.or2930)} · ${x.sunset}</div>`;
+}
+function renderNext() {
+  const x = T(), el = document.getElementById('next');
+  const h = ALLH.find(h => h.t >= TODAY && h.pub && !/2$/.test(h.key)) || ALLH.find(h => h.t >= TODAY);
+  const r = ALLH.find(h => h.key==='ramadan' && h.t >= TODAY);
+  if (!h) { el.innerHTML = ''; el.hidden = true; return; }
+  const row = (h, big) => `<div class="${big?'nextname':''}" style="${big?'':'font-weight:600'}">${x.H[h.key]}</div>
+    <div class="when"><span>${gdate(h.t)}</span>${status(h)}</div>
+    <div class="when"><span class="count">${rel(h.t)}</span><span class="muted" style="font-size:14px">${h.d} ${x.hm[h.m.hm-1]} ${h.m.hy}</span></div>
+    ${h.fc && h.alt!==null ? `<p class="note">${x.couldBe(gdate(h.alt))}</p>` : ''}`;
+  el.innerHTML = `<span class="label">${x.next}</span>${row(h,true)}`;
+  if (r && r !== h) el.innerHTML += `<div style="border-top:1px solid var(--line);padding-top:10px;margin-top:4px;display:flex;flex-direction:column;gap:4px">${row(r,false)}</div>`;
+}
+
+let VIEW = (monthAt(TODAY) || (TODAY < FIRST ? M[0] : M[M.length-1])).i;
+let PICK = null;
+function renderCal() {
+  const x = T(), m = M[VIEW], el = document.getElementById('cal');
+  const end = m.t1 - 1, [, m0, y0] = gparts(m.t0), [, m1, y1] = gparts(end);
+  const span = `${gdate(m.t0,{wd:false,y:y0!==y1})} – ${gdate(end,{wd:false})}`;
+  const a = altStart(m);
+  let h = `<div class="mhead">
+      <button type="button" class="nav" id="prevM" aria-label="${x.prev}" ${VIEW===0?'disabled':''}><span>‹</span></button>
+      <div class="mt"><h2>${hname(m)} ${x.ah}</h2><span class="span">${span}</span></div>
+      <button type="button" class="nav" id="nextM" aria-label="${x.nextM}" ${VIEW===M.length-1?'disabled':''}><span>›</span></button>
+    </div>
+    <div class="mmeta">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span></div>
+    ${m.fc ? `<div class="banner">${x.monthExp(gdate(m.t0), a!==null ? gdate(a) : '')}</div>` : ''}
+    <div class="dow">${x.ws.map(w=>`<span>${w}</span>`).join('')}</div><div class="grid">`;
+  for (let i = 0; i < wdi(m.t0); i++) h += `<div class="d empty" aria-hidden="true"></div>`;
+  for (let d = 1; d <= m.len; d++) {
+    const t = m.t0 + d - 1, [gd, gmo] = gparts(t), hh = holOf(m.hm, d);
+    const cls = ['d']; if (wdi(t)===4) cls.push('fri'); if (m.hm===9) cls.push('rmd');
+    if (hh) cls.push(hh[3] ? 'hol' : 'obs'); if (t===TODAY) cls.push('today'); if (t===PICK) cls.push('pick');
+    const showM = gd===1 || d===1;
+    h += `<div class="${cls.join(' ')}" title="${esc(`${d} ${x.hm[m.hm-1]} ${m.hy} = ${gdate(t)}${hh?' · '+x.H[hh[2]]:''}`)}">
+      <span class="h">${d}</span><span class="g${gd===1?' gm':''}">${showM ? gd+' '+x.gs[gmo] : gd}</span></div>`;
+  }
+  h += `</div><div class="legend">
+      <span><i style="border:2px solid var(--red)"></i>${x.lgToday}</span>
+      <span><i style="background:var(--brass-soft);box-shadow:inset 0 0 0 1px var(--brass)"></i>${x.lgHol}</span>
+      <span><i style="background:var(--bg);position:relative"><b style="position:absolute;top:3px;inset-inline-end:3px;width:6px;height:6px;border-radius:50%;background:var(--brass)"></b></i>${x.lgObs}</span>
+      ${m.hm===9?`<span><i style="background:var(--rmd-soft);box-shadow:inset 0 0 0 1px var(--rmd)"></i>${x.lgRmd}</span>`:''}
+    </div>`;
+  const cur = monthAt(TODAY);
+  if (cur && cur.i !== VIEW) h += `<button type="button" class="todaybtn" id="toToday">${x.toToday}</button>`;
+  el.innerHTML = h;
+  document.getElementById('prevM').onclick = () => go(VIEW-1);
+  document.getElementById('nextM').onclick = () => go(VIEW+1);
+  const tb = document.getElementById('toToday'); if (tb) tb.onclick = () => { PICK = null; go(cur.i); };
+  renderMonthHol();
+}
+function go(i) { VIEW = Math.max(0, Math.min(M.length-1, i)); renderCal(); if (YEAR !== M[VIEW].hy) { YEAR = M[VIEW].hy; renderYear(); } }
+document.addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input,select,textarea')) return;
+  const rtl = T().dir==='rtl';
+  if (e.key==='ArrowLeft') go(VIEW + (rtl?1:-1)); else if (e.key==='ArrowRight') go(VIEW + (rtl?-1:1));
+});
+
+function holItem(h, showYear) {
+  const x = T();
+  return `<li class="${h.t<TODAY?'past':''} ${h.pub?'pub':''}">
+    <span class="hn">${x.H[h.key]}</span>
+    <span class="hd">${gdate(h.t)} · ${h.d} ${x.hm[h.m.hm-1]}${showYear?' '+h.m.hy:''}</span>
+    <span class="hs">${status(h)}<span class="muted">${rel(h.t)}</span></span></li>`;
+}
+function renderMonthHol() {
+  const x = T(), m = M[VIEW], hs = ALLH.filter(h => h.m === m);
+  document.getElementById('mhol').innerHTML = `<h3>${x.inMonth}</h3>` +
+    (hs.length ? `<ul class="hlist">${hs.map(h=>holItem(h,false)).join('')}</ul>` : `<p class="empty-note">${x.none}</p>`);
+}
+
+let YEAR = M[VIEW].hy;
+const YMIN = M[0].hy, YMAX = M[M.length-1].hy;
+function renderYear() {
+  const x = T(), hs = ALLH.filter(h => h.m.hy === YEAR && !/2$/.test(h.key));
+  const el = document.getElementById('year');
+  const [, , ga] = gparts(M.find(m=>m.hy===YEAR).t0), [, , gb] = gparts([...M].reverse().find(m=>m.hy===YEAR).t1-1);
+  el.innerHTML = `<div class="yhead"><div style="display:flex;flex-direction:column;gap:2px"><h2>${x.yearT(YEAR)}</h2><span class="muted" style="font-size:14px">${ga===gb?ga:ga+'–'+gb}</span></div>
+    <div class="ynav"><button type="button" class="nav" id="prevY" aria-label="${x.prevY}" ${YEAR<=YMIN?'disabled':''}><span>‹</span></button>
+    <button type="button" class="nav" id="nextY" aria-label="${x.nextY}" ${YEAR>=YMAX?'disabled':''}><span>›</span></button></div></div>
+    <ul class="ytbl">${hs.map(h=>holItem(h,false)).join('')}</ul>`;
+  document.getElementById('prevY').onclick = () => { YEAR--; renderYear(); };
+  document.getElementById('nextY').onclick = () => { YEAR++; renderYear(); };
+}
+
+const convIn = document.getElementById('convIn');
+convIn.min = iso(FIRST); convIn.max = iso(LAST);
+function renderConv() {
+  const x = T(), out = document.getElementById('convOut');
+  document.getElementById('convT').textContent = x.convT; document.getElementById('convH').textContent = x.convH;
+  if (!convIn.value) { out.innerHTML = ''; return; }
+  const t = dn(convIn.value), m = monthAt(t);
+  if (!m) { out.innerHTML = `<p class="note">${x.range(gdate(FIRST,{wd:false}), gdate(LAST,{wd:false}))}</p>`; return; }
+  const a = altStart(m);
+  out.innerHTML = `<div class="muted" style="font-size:14px">${gdate(t)}</div><div class="res">${hdate(t)}</div>
+    <div class="when">${m.fc ? `<span class="chip exp">${x.expected}</span>` : `<span class="chip ok">${x.confirmed}</span>`}</div>
+    ${m.fc && a!==null ? `<p class="note">${x.couldBe(`${t-a+1} ${x.hm[m.hm-1]}`)}</p>` : ''}
+    <button type="button" class="linkbtn" id="showIn">${x.show}</button>`;
+  document.getElementById('showIn').onclick = () => { PICK = t; go(m.i); document.getElementById('cal').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); };
+}
+convIn.addEventListener('input', renderConv);
+convIn.value = iso(Math.min(Math.max(TODAY, FIRST), LAST));
+
+function renderFoot() {
+  const x = T(), lastOff = [...M].reverse().find(m => !m.fc);
+  document.getElementById('foot').innerHTML = `<p>${x.foot(hname(lastOff))}</p>
+    <p>${x.updated(gdate(dn(D.built),{wd:false}))}${DETAIL ? ` <a href="${DETAIL}">${x.detail}</a>` : ''}</p>`;
+}
+function setLang(l) {
+  lang = l; const x = T(), app = document.getElementById('app');
+  document.documentElement.lang = l; app.dir = x.dir;
+  document.getElementById('h1').textContent = x.h1; document.getElementById('sub').textContent = x.sub;
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.l===l));
+  try { localStorage.setItem('hijri-simple-lang', l); } catch(e) {}
+  renderToday(); renderNext(); renderCal(); renderYear(); renderConv(); renderFoot();
+}
+document.querySelectorAll('.lang button').forEach(b => b.onclick = () => setLang(b.dataset.l));
+setLang(lang);
+</script>

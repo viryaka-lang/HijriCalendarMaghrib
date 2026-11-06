@@ -4,7 +4,9 @@ A Hijri calendar for Morocco that uses the official start dates where they are k
 
 Morocco's Ministry of Habous and Islamic Affairs starts each month the day after the new crescent is sighted in Morocco on the evening of the 29th. If it isn't sighted, the month runs to 30 days. This project learns how Morocco's decisions relate to the crescent visibility maps published by moonsighting.com. It then uses that to forecast future months, with a probability for each date.
 
-**Open `index.html` in a browser.** It is one self-contained page with no build step needed to view it. To host it, enable GitHub Pages for this repository (Settings → Pages → deploy from `main`, root folder).
+**Just want the dates? Open `calendar.html`.** It is a small, easy-to-read page (about 40 KB) in English, French and Arabic: today's Hijri date, the next holiday, one month at a time with the Gregorian date beside each day, the holidays for each year, and a date converter. Confirmed and expected dates are clearly marked.
+
+**For the full forecast and evidence, open `index.html` in a browser.** It is one self-contained page with no build step needed to view it. To host it, enable GitHub Pages for this repository (Settings → Pages → deploy from `main`, root folder).
 
 ## What the page shows
 
@@ -45,8 +47,11 @@ Requires Python 3.10+ (`pip install -r requirements.txt`) and curl.
 export MOON_MAPS="/path/to/Moon Visibility Maps (moonsighting.com)"
 python scripts/fetch_maps.py
 
-# 2. Rebuild data/calendar.json and index.html
+# 2. Rebuild data/calendar.json, index.html and calendar.html
 python scripts/build_calendar.py            # TODAY=YYYY-MM-DD to pin the date
+
+# Only rebuild the easy-to-read calendar.html from data/calendar.json (no maps needed)
+python scripts/build_simple.py
 
 # Optional: re-run model selection
 python scripts/tune_model.py
