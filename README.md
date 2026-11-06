@@ -4,11 +4,13 @@ A Hijri calendar for Morocco that uses the official start dates where they are k
 
 Morocco's Ministry of Habous and Islamic Affairs starts each month the day after the new crescent is sighted in Morocco on the evening of the 29th. If it isn't sighted, the month runs to 30 days. This project learns how Morocco's decisions relate to the crescent visibility maps published by moonsighting.com. It then uses that to forecast future months, with a probability for each date.
 
-**Just want the dates? Open `calendar.html`.** It is a small, easy-to-read page (about 40 KB) in English, French and Arabic: today's Hijri date, the next holiday, one month at a time with the Gregorian date beside each day, the holidays for each year, and a date converter. Confirmed and expected dates are clearly marked.
+**Open `index.html`.** It is the main page: a small (about 60 KB), easy-to-read calendar that opens in Arabic, with French and English one tap away. It shows today's Hijri date with the moon phase, a countdown to Ramadan and the Eids, one month at a time (tap any day for details, swipe or use the arrows to change month, or jump with the year picker and month strip), each year's holidays, a date converter, and a button to add a year's holidays to Google, Apple or Outlook Calendar. Every month links to itself (`index.html#m1448-9` is Ramadan 1448). Official dates are marked confirmed; every forecast date shows how certain it is as a percentage.
 
-**For the full forecast and evidence, open `index.html` in a browser.** It is one self-contained page with no build step needed to view it. To host it, enable GitHub Pages for this repository (Settings → Pages → deploy from `main`, root folder).
+**For the full forecast and evidence, open `details.html`.** It is one self-contained page with the crescent maps, the model's predictions against Morocco's announcements, and its accuracy.
 
-## What the page shows
+Both pages need no build step to view. To host them, enable GitHub Pages for this repository (Settings → Pages → deploy from `main`, root folder); `index.html` is then the home page.
+
+## What the detailed page (`details.html`) shows
 
 - **Calendar:** each Hijri month as a grid, with the Hijri day large and the Gregorian date beside it. Ramadan, the two Eids, the Islamic New Year and Mawlid are highlighted. Weeks start on Monday.
 - **Key dates, 1445–1460:** Islamic New Year, Eid al-Mawlid, the start of Ramadan, Eid al-Fitr and Eid al-Adha for every year, with the forecast probability for future years.
@@ -47,10 +49,10 @@ Requires Python 3.10+ (`pip install -r requirements.txt`) and curl.
 export MOON_MAPS="/path/to/Moon Visibility Maps (moonsighting.com)"
 python scripts/fetch_maps.py
 
-# 2. Rebuild data/calendar.json, index.html and calendar.html
+# 2. Rebuild data/calendar.json, details.html and index.html
 python scripts/build_calendar.py            # TODAY=YYYY-MM-DD to pin the date
 
-# Only rebuild the easy-to-read calendar.html from data/calendar.json (no maps needed)
+# Only rebuild the main calendar page index.html from data/calendar.json (no maps needed)
 python scripts/build_simple.py
 
 # Optional: re-run model selection
@@ -68,7 +70,7 @@ To add a new month once Morocco announces it, add the evening to `data/dataset.j
 | `data/official_months_2024_2026.json` | Official Moroccan month starts Jumada al-Thani 1446 to Jumada al-Ula 1448, with source links |
 | `data/reports_parsed.json` | Morocco results parsed from moonsighting.org.uk monthly reports |
 | `data/maps_1437.csv` | URLs of the 1437 AH maps |
-| `data/calendar.json` | Everything the page displays (months, evidence, forecasts, stats) |
+| `data/calendar.json` | Everything both pages display (months, evidence, forecasts, stats) |
 
 ## Credits and caveats
 

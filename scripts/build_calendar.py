@@ -1,4 +1,4 @@
-"""Builds data/calendar.json and index.html: walk-forward predictions for every past month,
+"""Builds data/calendar.json, details.html (the detailed forecast page) and index.html (the easy calendar): walk-forward predictions for every past month,
 forecasts to 1460 AH, and the page itself (scripts/template.html with the data inlined).
 Usage: MOON_MAPS=/path/to/maps python scripts/build_calendar.py   (TODAY=YYYY-MM-DD optional)"""
 import json,csv,datetime as dt,base64,io,sys,os,numpy as np
@@ -135,7 +135,7 @@ out=dict(months=months,evidence=evidence,future=fut,hist=histout,stats=ST,coef=c
 js=json.dumps(out,separators=(',',':'))
 open(DATA/'calendar.json','w').write(js)
 tpl=open(ROOT/'scripts'/'template.html',encoding='utf-8').read()
-open(ROOT/'index.html','w',encoding='utf-8').write(tpl.replace('__DATA__',js))
-print('wrote index.html and data/calendar.json')
-import build_simple; open(ROOT/'calendar.html','w',encoding='utf-8').write(build_simple.render()); print('wrote calendar.html')
+open(ROOT/'details.html','w',encoding='utf-8').write(tpl.replace('__DATA__',js))
+print('wrote details.html and data/calendar.json')
+import build_simple; open(ROOT/'index.html','w',encoding='utf-8').write(build_simple.render()); print('wrote index.html')
 for e in evidence: print(e['hy'],e['hm'],e['ev'],e['evening'],'p=%.2f'%e['p'],'seen' if e['seen'] else 'not', 'OK' if (e['p']>.5)==e['seen'] else 'MISS')

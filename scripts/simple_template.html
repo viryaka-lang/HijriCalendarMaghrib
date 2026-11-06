@@ -1,155 +1,239 @@
 <title>Hijri Calendar Morocco</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Easy-to-read Hijri calendar for Morocco: today's Islamic date, every month with the Gregorian date beside each day, and the dates of Ramadan and the Eids.">
+<meta name="description" content="التقويم الهجري للمغرب: تاريخ اليوم، كل شهر مع التاريخ الميلادي، ومواعيد رمضان والأعياد مع نسبة اليقين. Hijri calendar for Morocco.">
+<meta name="theme-color" content="#136F55">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Noto+Kufi+Arabic:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
-/* Layout: a green "today" card and a "next holiday" card side by side; then one big month grid with arrows, beside the month's holidays and a date converter; then the year's holidays as a list. Stacks to one column on phones. */
+/* Layout: header; a green "today" card (moon phase, Hijri date, what tonight brings) beside a countdown to the next occasions;
+   the calendar card (year picker + 12-month strip, month header with arrows, day grid of tappable days, selected-day panel)
+   beside this month's occasions and a date converter; the year's occasions; footer. One column on phones. */
 :root{
-  --bg:#F2F5F2; --surface:#FFFFFF; --ink:#14211C; --muted:#5A6A62; --line:#DAE2DD;
-  --accent:#136F55; --accent-ink:#FFFFFF; --accent-soft:#E0EFE8;
-  --brass:#8F6410; --brass-soft:#F6E8C6;
-  --rmd:#2D4A8A; --rmd-soft:#E8EDF8;
+  --bg:#F1F4F2; --surface:#FFFFFF; --ink:#13201B; --muted:#56665E; --line:#D9E1DC; --wash:#E9EEEB;
+  --accent:#136F55; --accent-ink:#FFFFFF; --accent-soft:#DDEEE6;
+  --brass:#8C620E; --brass-soft:#F5E6C2;
+  --rmd:#2D4A8A; --rmd-soft:#E6ECF8;
   --red:#C1272D;
-  --display:"Reem Kufi","IBM Plex Sans Arabic","Segoe UI",system-ui,sans-serif;
+  --shadow:0 1px 2px rgba(19,32,27,.05),0 6px 24px -12px rgba(19,32,27,.18);
+  --display:"Reem Kufi","Noto Kufi Arabic","Segoe UI",system-ui,sans-serif;
   --body:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:16px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
-  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
-  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}}
+  --bg:#0D1512; --surface:#141F1B; --ink:#E5EDE9; --muted:#97A9A0; --line:#25342E; --wash:#1B2924;
+  --accent:#4FC39C; --accent-ink:#08170F; --accent-soft:#16332A;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E1613; --surface:#15201C; --ink:#E6EDE9; --muted:#9AABA3; --line:#27362F;
-  --accent:#4FC39C; --accent-ink:#0A1A13; --accent-soft:#173229;
-  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60; color-scheme:dark}
+  --bg:#0D1512; --surface:#141F1B; --ink:#E5EDE9; --muted:#97A9A0; --line:#25342E; --wash:#1B2924;
+  --accent:#4FC39C; --accent-ink:#08170F; --accent-soft:#16332A;
+  --brass:#E2B550; --brass-soft:#3A2F14; --rmd:#A3B8F0; --rmd-soft:#1B2541; --red:#F06A60;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -14px rgba(0,0,0,.6); color-scheme:dark}
+#app[lang="ar"]{--display:"Noto Kufi Arabic","IBM Plex Sans Arabic","Segoe UI",system-ui,sans-serif;--body:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
-.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
-h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.15}
-h1{font-size:clamp(26px,4.4vw,38px)}
-h2{font-size:22px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:20px;font-family:var(--body)}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(22px,3.4vw,30px)}
+h2{font-size:clamp(19px,2.6vw,23px)}
+h3{font-size:18px}
 p{margin:0}
-a{color:var(--accent)}
+a{color:var(--accent);text-underline-offset:3px}
 button,select,input{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
 .num{font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow)}
+.label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+#app[lang="ar"] .label{letter-spacing:0;text-transform:none;font-size:13.5px}
 
-header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}
-header .t{display:flex;flex-direction:column;gap:6px;min-width:0}
-header .sub{color:var(--muted);max-width:60ch}
-.lang{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
-.lang button{border:0;background:transparent;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500}
+/* header */
+.head{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand svg{flex:none}
+.brand .t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand .sub{color:var(--muted);font-size:14.5px}
+.lang{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.lang button{border:0;background:transparent;padding:7px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500;font-size:14.5px;min-height:38px}
+.lang button:hover{color:var(--ink)}
 .lang button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
 
-.top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px}
-@media (max-width:760px){.top{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.label{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--muted)}
-[dir="rtl"] .label{letter-spacing:0;text-transform:none;font-size:14px}
-.todaycard{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.todaycard .label,.todaycard .muted{color:inherit;opacity:.82}
-.bigdate{font-family:var(--display);font-size:clamp(30px,5.6vw,46px);line-height:1.1;font-weight:600}
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+@media (max-width:780px){.hero{grid-template-columns:1fr}}
+.todaycard{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 18px;align-items:center;align-content:start}
+.todaycard .label,.todaycard .muted{color:inherit;opacity:.8}
+.todaycard .moon{grid-row:1/5;grid-column:2;width:clamp(76px,13vw,112px);height:auto}
+.todaycard .moon .dark{fill:color-mix(in srgb,var(--accent-ink) 14%,transparent)}
+.todaycard .moon .lit{fill:var(--accent-ink)}
+.bigdate{font-family:var(--display);font-size:clamp(30px,5.2vw,46px);line-height:1.12;font-weight:700}
 .greg{font-size:18px;font-weight:500}
-.nextname{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.2}
+.tonight{grid-column:1/-1;border-top:1px solid color-mix(in srgb,var(--accent-ink) 22%,transparent);padding-top:10px;margin-top:4px;font-size:14.5px}
+.tonight b{font-weight:600}
+.count{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.count .n{font-family:var(--display);font-size:clamp(40px,6vw,56px);font-weight:700;line-height:1;color:var(--accent)}
+.count .u{font-size:17px;font-weight:500}
+.ev1{display:flex;flex-direction:column;gap:6px}
+.ev1 .name{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3}
 .when{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
-.count{font-weight:600;color:var(--accent)}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.evs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.evs li{border-top:1px solid var(--line)}
+.evs button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 4px;border-radius:8px;align-items:center}
+.evs button:hover{background:var(--wash)}
+.evs button:focus-visible{outline:2px solid var(--accent);outline-offset:0}
+.evs .nm{font-weight:600}
+.evs .dt{font-size:14px;color:var(--muted);grid-column:1}
+.evs .sd{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-size:13.5px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap;line-height:1.6}
 .chip.ok{background:var(--accent-soft);color:var(--accent)}
 .chip.exp{background:var(--brass-soft);color:var(--brass)}
-.chip.pub{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:500}
+.chip.hol{background:var(--brass);color:var(--surface)}
+.chip.out{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:500}
+.chip.rmd{background:var(--rmd-soft);color:var(--rmd)}
 .note{font-size:14px;color:var(--muted)}
 
-.main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:860px){.main{grid-template-columns:1fr}}
+/* main */
+.main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.main{grid-template-columns:1fr}}
 .side{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+.ybar{display:flex;align-items:center;gap:10px;min-width:0}
+.ysel{position:relative;flex:none}
+.ysel select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:var(--wash);border-radius:10px;padding:7px 30px 7px 12px;font-weight:600;cursor:pointer;min-height:44px}
+#app[dir="rtl"] .ysel select{padding:7px 12px 7px 30px}
+.ysel::after{content:"";position:absolute;top:50%;inset-inline-end:12px;width:7px;height:7px;border:solid var(--muted);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.strip{display:flex;gap:6px;overflow-x:auto;scroll-snap-type:x proximity;padding:2px 2px 6px;min-width:0;flex:1;scrollbar-width:thin}
+.strip button{flex:none;scroll-snap-align:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:5px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;min-width:92px;text-align:start;position:relative;min-height:44px}
+.strip button b{font-weight:600;font-size:13.5px;white-space:nowrap}
+.strip button small{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.strip button small .p{color:var(--brass);font-weight:600}
+.strip button:hover{background:var(--wash)}
+.strip button[aria-current="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.strip button[aria-current="true"] small,.strip button[aria-current="true"] small .p{color:inherit;opacity:.85}
+.strip button.now::after{content:"";position:absolute;top:6px;inset-inline-end:7px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+.strip button.r9:not([aria-current="true"]){background:var(--rmd-soft)}
 
 .mhead{display:flex;align-items:center;gap:10px}
 .mhead .mt{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;gap:2px}
-.mhead h2{font-size:clamp(22px,3.6vw,28px)}
+.mhead h2{font-size:clamp(23px,3.6vw,30px);font-weight:700}
 .mhead .span{color:var(--muted);font-size:14.5px}
-.nav{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;font-size:22px;line-height:1}
-.nav:hover{background:var(--accent-soft)}
-.nav:disabled{opacity:.35;cursor:default;background:var(--surface)}
-[dir="rtl"] .nav span{display:inline-block;transform:scaleX(-1)}
+.nav{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink);padding:0}
+.nav svg{width:18px;height:18px}
+.nav:hover{background:var(--accent-soft);border-color:var(--accent)}
+.nav:disabled{opacity:.35;cursor:default;background:var(--surface);border-color:var(--line)}
+#app[dir="rtl"] .nav svg{transform:scaleX(-1)}
 .mmeta{display:flex;flex-wrap:wrap;gap:6px 10px;justify-content:center;align-items:center;font-size:14px;color:var(--muted)}
-.banner{font-size:14.5px;padding:10px 12px;border-radius:10px;background:var(--brass-soft);color:var(--ink)}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 12px;cursor:pointer;font-weight:500;font-size:13.5px;color:var(--ink)}
+.pill:hover{background:var(--accent-soft);border-color:var(--accent)}
+.banner{font-size:14.5px;padding:10px 14px;border-radius:12px;background:var(--brass-soft);color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+.banner svg{flex:none;margin-top:4px;color:var(--brass)}
 .banner b{color:var(--brass)}
+
 .dow,.grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
-.dow span{text-align:center;font-size:12.5px;font-weight:600;color:var(--muted);padding-bottom:2px}
-.d{position:relative;min-height:62px;border-radius:10px;background:var(--bg);padding:6px 7px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border:2px solid transparent}
-.d.empty{background:transparent}
+.dow span{text-align:center;font-size:12.5px;font-weight:600;color:var(--muted)}
+.dow span.fr{color:var(--accent)}
+.grid{touch-action:pan-y}
+.d{all:unset;box-sizing:border-box;position:relative;min-height:64px;border-radius:12px;background:var(--wash);padding:7px 8px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;border:2px solid transparent;cursor:pointer;color:var(--ink)}
+.d.empty{background:transparent;cursor:default}
 .d .h{font-family:var(--display);font-size:22px;font-weight:600;line-height:1}
 .d .g{font-size:12px;color:var(--muted);text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .d .g.gm{color:var(--ink);font-weight:600}
-.d.fri{background:color-mix(in srgb,var(--accent-soft) 55%,var(--bg))}
+.d:not(.empty):hover{border-color:var(--line)}
+.d.fc{border-style:dashed;border-color:color-mix(in srgb,var(--muted) 35%,transparent)}
 .d.rmd{background:var(--rmd-soft)}
 .d.rmd .h{color:var(--rmd)}
 .d.hol{background:var(--brass-soft)}
 .d.hol .h{color:var(--brass)}
 .d.obs::after{content:"";position:absolute;top:8px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:var(--brass)}
-.d.today{border-color:var(--red)}
-.d.pick{box-shadow:0 0 0 2px var(--accent) inset}
-@media (max-width:460px){.d{min-height:52px;padding:4px 5px;border-radius:8px}.d .h{font-size:18px}.d .g{font-size:11px}.dow,.grid{gap:3px}}
-.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.d.today{border:2px solid var(--red)}
+.d.sel{background:var(--ink);border-color:var(--ink)}
+.d.sel .h,.d.sel .g,.d.sel .g.gm{color:var(--surface)}
+.d.sel.today{border-color:var(--red)}
+.d:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:12px}
+@media (max-width:480px){.d{min-height:56px;padding:5px 6px;border-radius:9px}.d .h{font-size:18px}.d .g{font-size:10.5px;white-space:normal;line-height:1.15}.dow,.grid{gap:3px}.card{padding:16px}.dow span{font-size:11px}
+  .ybar{flex-wrap:wrap}.ysel{flex:1 1 100%}.ysel select{width:100%}.strip{flex-basis:100%}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none}
-.todaybtn{align-self:center;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 16px;cursor:pointer;font-weight:500}
-.todaybtn:hover{background:var(--accent-soft)}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block;flex:none;position:relative}
+.dayinfo{border-top:1px solid var(--line);padding-top:12px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:center}
+.dayinfo .hh{font-family:var(--display);font-size:20px;font-weight:600;line-height:1.3}
+.dayinfo .gg{color:var(--muted);font-size:14.5px}
+.dayinfo .tags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.dayinfo .rel{grid-row:1/3;grid-column:2;font-weight:600;color:var(--accent);font-size:14.5px;text-align:end}
 
 .hlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.hlist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:baseline}
-.hlist li:first-child{border-top:0;padding-top:2px}
-.hlist .hn{font-weight:600}
-.hlist .hd{grid-column:1;font-size:14px;color:var(--muted)}
-.hlist .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end}
-.hlist li.past{opacity:.55}
-.hlist li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
+.hlist li{border-top:1px solid var(--line)}
+.hlist>li:first-child{border-top:0}
+.hbtn{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 4px;border-radius:8px;align-items:center}
+.hbtn:hover{background:var(--wash)}
+.hbtn:focus-visible{outline:2px solid var(--accent);outline-offset:0}
+.hbtn .hn{font-weight:600}
+.hbtn .hd{grid-column:1;font-size:14px;color:var(--muted)}
+.hbtn .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:13.5px}
+.past .hbtn{opacity:.55}
+.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
 .empty-note{font-size:14.5px;color:var(--muted)}
 
 .conv{display:flex;flex-direction:column;gap:10px}
-.conv input{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);max-width:100%;width:100%}
-.conv .res{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2}
+.conv input{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--wash);width:100%;min-height:44px}
+.conv .res{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.3}
 .linkbtn{align-self:flex-start;border:0;background:none;color:var(--accent);padding:0;cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 
 .yhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
 .ynav{display:flex;gap:8px;align-items:center}
-.ynav .nav{width:38px;height:38px;font-size:19px}
-.ytbl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
-@media (max-width:700px){.ytbl{grid-template-columns:1fr}}
-.ytbl li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:11px 0;border-top:1px solid var(--line);align-items:baseline}
-.ytbl li.past{opacity:.55}
-.ytbl .hn{font-weight:600}
-.ytbl li.pub .hn::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--brass);margin-inline-end:8px;vertical-align:middle}
-.ytbl .hd{grid-column:1;font-size:14px;color:var(--muted)}
-.ytbl .hs{grid-row:1/3;grid-column:2;display:flex;flex-direction:column;gap:4px;align-items:flex-end;font-size:13.5px}
+.ytbl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+.ytbl>li:nth-child(2){border-top:0}
+@media (max-width:700px){.ytbl{grid-template-columns:1fr}.ytbl>li:nth-child(2){border-top:1px solid var(--line)}}
+.ics{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:9px 16px;font-weight:600;cursor:pointer;min-height:44px}
+.btn:hover{filter:brightness(1.07)}
 
-footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:75ch}
-@media (prefers-reduced-motion:no-preference){.d,.nav,.todaybtn{transition:background-color .15s}}
+footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:78ch}
+@media (prefers-reduced-motion:no-preference){.d,.nav,.pill,.strip button,.hbtn,.lang button,.evs button{transition:background-color .15s,border-color .15s,color .15s}
+  .grid.in{animation:fade .22s ease-out}@keyframes fade{from{opacity:.35}to{opacity:1}}}
 </style>
 
-<div class="wrap" id="app" dir="rtl">
-  <header>
-    <div class="t">
-      <h1 id="h1">التقويم الهجري للمغرب</h1>
-      <p class="sub" id="sub"></p>
+<div class="wrap" id="app" dir="rtl" lang="ar">
+  <header class="head">
+    <div class="brand">
+      <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="var(--accent)"/><path d="M23 9.2a11 11 0 1 0 0 21.6a9 9 0 1 1 0-21.6z" fill="var(--accent-ink)"/><path d="M28.6 15.2l.9 2.6 2.7.1-2.2 1.6.8 2.6-2.2-1.6-2.2 1.6.8-2.6-2.2-1.6 2.7-.1z" fill="var(--accent-ink)"/></svg>
+      <div class="t"><h1 id="h1">التقويم الهجري للمغرب</h1><p class="sub" id="sub"></p></div>
     </div>
-    <div class="lang" role="group" aria-label="Language">
+    <div class="lang" role="group" aria-label="Language / اللغة">
       <button type="button" id="lang-ar" data-l="ar" lang="ar">العربية</button>
       <button type="button" id="lang-fr" data-l="fr" lang="fr">Français</button>
       <button type="button" id="lang-en" data-l="en" lang="en">English</button>
     </div>
   </header>
 
-  <section class="top">
+  <section class="hero">
     <div class="card todaycard" id="today"></div>
     <div class="card" id="next"></div>
   </section>
 
   <section class="main">
-    <div class="card" id="cal" aria-live="polite"></div>
+    <div class="card" id="cal">
+      <div class="ybar">
+        <div class="ysel"><label class="sr" for="ySel" id="ySelL"></label><select id="ySel"></select></div>
+        <div class="strip" id="strip"></div>
+      </div>
+      <div class="mhead">
+        <button type="button" class="nav" id="prevM"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4 6.5 10l6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="mt"><h2 id="mTitle"></h2><span class="span" id="mSpan"></span></div>
+        <button type="button" class="nav" id="nextM"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="mmeta" id="mmeta"></div>
+      <div id="banner"></div>
+      <div class="dow" id="dow" aria-hidden="true"></div>
+      <div class="grid" id="grid" role="group"></div>
+      <div class="dayinfo" id="dayinfo" aria-live="polite"></div>
+      <div class="legend" id="legend"></div>
+    </div>
     <div class="side">
       <div class="card" id="mhol"></div>
       <div class="card conv">
@@ -169,6 +253,7 @@ footer{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:
 <script>
 const D = __SIMPLE_DATA__;
 const DETAIL = "__DETAIL_LINK__";
+const CAN_DOWNLOAD = __CAN_DOWNLOAD__;
 const DAY = 864e5;
 const dn = s => Date.UTC(+s.slice(0,4), +s.slice(5,7)-1, +s.slice(8,10)) / DAY;
 const iso = n => new Date(n*DAY).toISOString().slice(0,10);
@@ -178,252 +263,354 @@ const TODAY = dn(now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+
 const M = D.months.map(([hy,hm,s,len,fc,dist]) => ({hy,hm,s,len,fc:!!fc,dist:dist||null,t0:dn(s)}));
 M.forEach((m,i) => { m.t1 = m.t0 + m.len; m.i = i; });
 const pStart = m => m.fc ? (m.dist[m.s] ?? 0) : 1;
+const pAt = (m, t) => m.fc ? (m.dist[iso(t)] ?? 0) : 1;
 const lenSure = m => { const n = M[m.i+1]; return pStart(m) >= 0.9 && (!n || pStart(n) >= 0.9); };
 const altStart = m => { if (!m.fc) return null; const o = Object.entries(m.dist).filter(([d]) => d !== m.s).sort((a,b) => b[1]-a[1]); return o.length && o[0][1] >= 0.1 ? dn(o[0][0]) : null; };
-const pct = p => { const v = p*100; return v >= 99.5 ? '>99%' : v < 0.5 ? '<1%' : Math.round(v) + '%'; };
-const bp = p => `<bdi dir="ltr" class="num">${pct(p)}</bdi>`;
-const pAt = (m, t) => m.fc ? (m.dist[iso(t)] ?? 0) : 1;
-const expChip = p => `<span class="chip exp">${T().expected} <b class="num" dir="ltr">${pct(p)}</b></span>`;
-const okChip = () => `<span class="chip ok">${T().confirmed}</span>`;
-const mChip = m => m.fc ? expChip(pStart(m)) : okChip();
 const monthAt = t => M.find(m => t >= m.t0 && t < m.t1);
 const FIRST = M[0].t0, LAST = M[M.length-1].t1 - 1;
+const YEARS = [...new Set(M.map(m => m.hy))];
+const pct = p => { const v = p*100; return v >= 99.5 ? '>99%' : v < 0.5 ? '<1%' : Math.round(v) + '%'; };
+const bp = p => `<bdi dir="ltr" class="num">${pct(p)}</bdi>`;
 
 const HOL = [ // [Hijri month, day, key, public holiday in Morocco]
   [1,1,'newyear',1],[1,10,'ashura',0],[3,12,'mawlid',1],[3,13,'mawlid2',1],[7,27,'isra',0],
   [9,1,'ramadan',0],[10,1,'fitr',1],[10,2,'fitr2',1],[12,9,'arafah',0],[12,10,'adha',1],[12,11,'adha2',1]];
+const MAJOR = ['newyear','mawlid','ramadan','fitr','adha'];
 const holOf = (hm,d) => HOL.find(h => h[0]===hm && h[1]===d);
 
 const L = {
-  en: {
-    dir:'ltr', h1:'Hijri Calendar for Morocco',
-    sub:'Islamic dates as used in Morocco, with the Gregorian date beside each day.',
-    hm:['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Ula','Jumada al-Thani','Rajab','Shaban','Ramadan','Shawwal','Dhul-Qadah','Dhul-Hijjah'],
-    gm:['January','February','March','April','May','June','July','August','September','October','November','December'],
-    gs:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-    wd:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    ws:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-    ah:'AH', today:'Today', sunset:'The Islamic day begins at sunset.',
-    dayOf:(d,n)=>`Day ${d} of ${n}`, or2930:'29 or 30',
-    next:'Next holiday', inDays:n=>n===0?'Today':n===1?'Tomorrow':`In ${n} days`, ago:n=>n===1?'Yesterday':`${n} days ago`,
-    confirmed:'Confirmed', expected:'Expected', pub:'Public holiday',
-    couldBe:a=>`Depends on the moon sighting. It could be ${a}.`,
-    monthExp:(b,a)=>`<b>Not announced yet.</b> This month will most likely start on ${b}${a?`, or possibly ${a}`:''}. Dates depend on the moon sighting.`,
-    days:n=>`${n} days`, days2930:'29 or 30 days',
-    prev:'Previous month', nextM:'Next month', toToday:'Back to today',
-    lgToday:'Today', lgHol:'Public holiday', lgObs:'Religious occasion', lgRmd:'Ramadan', lgFri:'Friday',
-    inMonth:'Holidays this month', none:'No holidays or occasions this month.',
-    convT:'Convert a date', convH:'Pick a Gregorian date to see its Hijri date.', show:'Show in calendar',
-    range:(a,b)=>`Pick a date between ${a} and ${b}.`,
-    yearT:y=>`Holidays in ${y} AH`, prevY:'Previous year', nextY:'Next year',
-    foot:m=>`Month starts follow the official announcements of Morocco's Ministry of Habous and Islamic Affairs up to ${m}. Later months are forecasts based on crescent visibility maps, so an expected date can move by one day. Always check the Ministry's announcement before a holiday.`,
-    pctNote:'The percentage next to an expected date is how certain that date is.',
-    detail:'Detailed forecast and evidence', updated:d=>`Data updated ${d}.`,
-    H:{newyear:'Islamic New Year',ashura:'Ashura',mawlid:'Eid al-Mawlid (Prophet’s Birthday)',mawlid2:'Eid al-Mawlid, day 2',isra:'Isra and Mi’raj',
-       ramadan:'First day of Ramadan',fitr:'Eid al-Fitr',fitr2:'Eid al-Fitr, day 2',arafah:'Day of Arafah',adha:'Eid al-Adha',adha2:'Eid al-Adha, day 2'}
-  },
-  fr: {
-    dir:'ltr', h1:'Calendrier hégirien du Maroc',
-    sub:'Les dates islamiques en usage au Maroc, avec la date grégorienne à côté de chaque jour.',
-    hm:['Moharram','Safar','Rabia al-Awal','Rabia ath-Thani','Joumada al-Oula','Joumada ath-Thania','Rajab','Chaabane','Ramadan','Chaoual','Dou al-Qiada','Dou al-Hijja'],
-    gm:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
-    gs:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
-    wd:['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'],
-    ws:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
-    ah:'H', today:'Aujourd’hui', sunset:'Le jour hégirien commence au coucher du soleil.',
-    dayOf:(d,n)=>`Jour ${d} sur ${n}`, or2930:'29 ou 30',
-    next:'Prochaine fête', inDays:n=>n===0?'Aujourd’hui':n===1?'Demain':`Dans ${n} jours`, ago:n=>n===1?'Hier':`Il y a ${n} jours`,
-    confirmed:'Confirmé', expected:'Prévu', pub:'Jour férié',
-    couldBe:a=>`Dépend de l’observation du croissant : cela pourrait être le ${a}.`,
-    monthExp:(b,a)=>`<b>Pas encore annoncé.</b> Ce mois commencera très probablement le ${b}${a?`, ou peut-être le ${a}`:''}. Les dates dépendent de l’observation du croissant.`,
-    days:n=>`${n} jours`, days2930:'29 ou 30 jours',
-    prev:'Mois précédent', nextM:'Mois suivant', toToday:'Revenir à aujourd’hui',
-    lgToday:'Aujourd’hui', lgHol:'Jour férié', lgObs:'Occasion religieuse', lgRmd:'Ramadan', lgFri:'Vendredi',
-    inMonth:'Fêtes de ce mois', none:'Aucune fête ni occasion ce mois-ci.',
-    convT:'Convertir une date', convH:'Choisissez une date grégorienne pour voir la date hégirienne.', show:'Voir dans le calendrier',
-    range:(a,b)=>`Choisissez une date entre le ${a} et le ${b}.`,
-    yearT:y=>`Fêtes de l’an ${y} H`, prevY:'Année précédente', nextY:'Année suivante',
-    foot:m=>`Les débuts de mois suivent les annonces officielles du ministère des Habous et des Affaires islamiques jusqu’à ${m}. Les mois suivants sont des prévisions fondées sur les cartes de visibilité du croissant : une date prévue peut se décaler d’un jour. Vérifiez toujours l’annonce du ministère avant une fête.`,
-    pctNote:'Le pourcentage à côté d\u2019une date prévue indique son degré de certitude.',
-    detail:'Prévisions détaillées et justificatifs', updated:d=>`Données mises à jour le ${d}.`,
-    H:{newyear:'Nouvel An de l’Hégire',ashura:'Achoura',mawlid:'Aïd al-Mawlid (naissance du Prophète)',mawlid2:'Aïd al-Mawlid, 2e jour',isra:'Al-Isra wal-Miraj',
-       ramadan:'Premier jour du Ramadan',fitr:'Aïd al-Fitr',fitr2:'Aïd al-Fitr, 2e jour',arafah:'Jour d’Arafat',adha:'Aïd al-Adha',adha2:'Aïd al-Adha, 2e jour'}
-  },
   ar: {
     dir:'rtl', h1:'التقويم الهجري للمغرب',
-    sub:'التواريخ الهجرية المعتمدة في المغرب، مع التاريخ الميلادي بجانب كل يوم.',
+    sub:'التواريخ الهجرية المعتمدة في المغرب، مع التاريخ الميلادي لكل يوم.',
     hm:['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'],
     gm:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
     gs:['يناير','فبراير','مارس','أبريل','ماي','يونيو','يوليوز','غشت','شتنبر','أكتوبر','نونبر','دجنبر'],
     wd:['الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت','الأحد'],
     ws:['إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت','أحد'],
-    ah:'هـ', today:'اليوم', sunset:'يبدأ اليوم الهجري عند غروب الشمس.',
-    dayOf:(d,n)=>`اليوم ${d} من ${n}`, or2930:'29 أو 30',
-    next:'المناسبة القادمة', inDays:n=>n===0?'اليوم':n===1?'غدًا':n===2?'بعد يومين':n<=10?`بعد ${n} أيام`:`بعد ${n} يومًا`,
+    ah:'هـ', today:'اليوم', moon:'شكل القمر اليوم (تقريبي)',
+    tonight:'بعد غروب الشمس الليلة يبدأ يوم', dayOf:(d,n)=>`اليوم ${d} من ${n}`, or2930:'29 أو 30',
+    next:'المناسبات القادمة', until:'حتى', isToday:'اليوم',
+    unit:n=>n===1?'يوم':n===2?'يومان':n<=10?'أيام':'يومًا',
+    inDays:n=>n===0?'اليوم':n===1?'غدًا':n===2?'بعد يومين':n<=10?`بعد ${n} أيام`:`بعد ${n} يومًا`,
     ago:n=>n===1?'أمس':n===2?'قبل يومين':n<=10?`قبل ${n} أيام`:`قبل ${n} يومًا`,
     confirmed:'مؤكد', expected:'متوقع', pub:'عطلة رسمية',
     couldBe:a=>`حسب رؤية الهلال، قد يكون ${a}.`,
-    monthExp:(b,a)=>`<b>لم يُعلن بعد.</b> من المرجح أن يبدأ هذا الشهر يوم ${b}${a?`، أو ربما ${a}`:''}. تتوقف التواريخ على رؤية الهلال.`,
+    monthExp:(b,a)=>`<b>لم يُعلن بعد.</b> من المرجح أن يبدأ هذا الشهر يوم ${b}${a?`، أو ربما ${a}`:''}.`,
     days:n=>`${n} يومًا`, days2930:'29 أو 30 يومًا',
-    prev:'الشهر السابق', nextM:'الشهر التالي', toToday:'العودة إلى اليوم',
-    lgToday:'اليوم', lgHol:'عطلة رسمية', lgObs:'مناسبة دينية', lgRmd:'رمضان', lgFri:'الجمعة',
+    prev:'الشهر السابق', nextM:'الشهر التالي', toToday:'العودة إلى اليوم', year:'السنة الهجرية',
+    lgToday:'اليوم', lgHol:'عطلة رسمية', lgObs:'مناسبة دينية', lgRmd:'رمضان', lgFc:'تاريخ متوقع',
     inMonth:'مناسبات هذا الشهر', none:'لا توجد مناسبات في هذا الشهر.',
     convT:'تحويل تاريخ', convH:'اختر تاريخًا ميلاديًا لمعرفة التاريخ الهجري الموافق له.', show:'عرض في التقويم',
     range:(a,b)=>`اختر تاريخًا بين ${a} و${b}.`,
     yearT:y=>`مناسبات سنة ${y} هـ`, prevY:'السنة السابقة', nextY:'السنة التالية',
+    ics:y=>`أضف مناسبات ${y} هـ إلى تقويمك`, icsNote:'ملف يعمل مع تقويم Google وApple وOutlook.',
     foot:m=>`تتبع بدايات الشهور الإعلانات الرسمية لوزارة الأوقاف والشؤون الإسلامية حتى ${m}. الشهور اللاحقة توقعات مبنية على خرائط رؤية الهلال، وقد يتغير التاريخ المتوقع بيوم واحد. تحقق دائمًا من إعلان الوزارة قبل أي مناسبة.`,
     pctNote:'النسبة المئوية بجانب كل تاريخ متوقع تبيّن درجة اليقين في ذلك التاريخ.',
     detail:'التوقعات المفصلة والأدلة', updated:d=>`آخر تحديث للبيانات: ${d}.`,
     H:{newyear:'رأس السنة الهجرية',ashura:'عاشوراء',mawlid:'عيد المولد النبوي',mawlid2:'عيد المولد النبوي (اليوم الثاني)',isra:'الإسراء والمعراج',
        ramadan:'أول أيام رمضان',fitr:'عيد الفطر',fitr2:'عيد الفطر (اليوم الثاني)',arafah:'يوم عرفة',adha:'عيد الأضحى',adha2:'عيد الأضحى (اليوم الثاني)'}
+  },
+  fr: {
+    dir:'ltr', h1:'Calendrier hégirien du Maroc',
+    sub:'Les dates islamiques en usage au Maroc, avec la date grégorienne de chaque jour.',
+    hm:['Moharram','Safar','Rabia al-Awal','Rabia ath-Thani','Joumada al-Oula','Joumada ath-Thania','Rajab','Chaabane','Ramadan','Chaoual','Dou al-Qiada','Dou al-Hijja'],
+    gm:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    gs:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
+    wd:['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'],
+    ws:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+    ah:'H', today:'Aujourd’hui', moon:'Phase de la lune aujourd’hui (approximative)',
+    tonight:'Ce soir, au coucher du soleil, commence le', dayOf:(d,n)=>`Jour ${d} sur ${n}`, or2930:'29 ou 30',
+    next:'Prochaines fêtes', until:'avant', isToday:'Aujourd’hui',
+    unit:n=>n===1?'jour':'jours',
+    inDays:n=>n===0?'Aujourd’hui':n===1?'Demain':`Dans ${n} jours`, ago:n=>n===1?'Hier':`Il y a ${n} jours`,
+    confirmed:'Confirmé', expected:'Prévu', pub:'Jour férié',
+    couldBe:a=>`Selon l’observation du croissant, cela pourrait être le ${a}.`,
+    monthExp:(b,a)=>`<b>Pas encore annoncé.</b> Ce mois commencera très probablement le ${b}${a?`, ou peut-être le ${a}`:''}.`,
+    days:n=>`${n} jours`, days2930:'29 ou 30 jours',
+    prev:'Mois précédent', nextM:'Mois suivant', toToday:'Revenir à aujourd’hui', year:'Année hégirienne',
+    lgToday:'Aujourd’hui', lgHol:'Jour férié', lgObs:'Occasion religieuse', lgRmd:'Ramadan', lgFc:'Date prévue',
+    inMonth:'Fêtes de ce mois', none:'Aucune fête ni occasion ce mois-ci.',
+    convT:'Convertir une date', convH:'Choisissez une date grégorienne pour voir la date hégirienne.', show:'Voir dans le calendrier',
+    range:(a,b)=>`Choisissez une date entre le ${a} et le ${b}.`,
+    yearT:y=>`Fêtes de l’an ${y} H`, prevY:'Année précédente', nextY:'Année suivante',
+    ics:y=>`Ajouter les fêtes de ${y} H à mon agenda`, icsNote:'Fichier .ics pour Google Agenda, Apple Calendrier ou Outlook.',
+    foot:m=>`Les débuts de mois suivent les annonces officielles du ministère des Habous et des Affaires islamiques jusqu’à ${m}. Les mois suivants sont des prévisions fondées sur les cartes de visibilité du croissant : une date prévue peut se décaler d’un jour. Vérifiez toujours l’annonce du ministère avant une fête.`,
+    pctNote:'Le pourcentage à côté d’une date prévue indique son degré de certitude.',
+    detail:'Prévisions détaillées et justificatifs', updated:d=>`Données mises à jour le ${d}.`,
+    H:{newyear:'Nouvel An de l’Hégire',ashura:'Achoura',mawlid:'Aïd al-Mawlid (naissance du Prophète)',mawlid2:'Aïd al-Mawlid, 2e jour',isra:'Al-Isra wal-Miraj',
+       ramadan:'Premier jour du Ramadan',fitr:'Aïd al-Fitr',fitr2:'Aïd al-Fitr, 2e jour',arafah:'Jour d’Arafat',adha:'Aïd al-Adha',adha2:'Aïd al-Adha, 2e jour'}
+  },
+  en: {
+    dir:'ltr', h1:'Hijri Calendar for Morocco',
+    sub:'Islamic dates as used in Morocco, with the Gregorian date for every day.',
+    hm:['Muharram','Safar','Rabi al-Awwal','Rabi al-Thani','Jumada al-Ula','Jumada al-Thani','Rajab','Shaban','Ramadan','Shawwal','Dhul-Qadah','Dhul-Hijjah'],
+    gm:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    gs:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    wd:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+    ws:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    ah:'AH', today:'Today', moon:'Today’s moon (approximate)',
+    tonight:'After sunset tonight it becomes', dayOf:(d,n)=>`Day ${d} of ${n}`, or2930:'29 or 30',
+    next:'Coming up', until:'until', isToday:'Today',
+    unit:n=>n===1?'day':'days',
+    inDays:n=>n===0?'Today':n===1?'Tomorrow':`In ${n} days`, ago:n=>n===1?'Yesterday':`${n} days ago`,
+    confirmed:'Confirmed', expected:'Expected', pub:'Public holiday',
+    couldBe:a=>`Depending on the moon sighting, it could be ${a}.`,
+    monthExp:(b,a)=>`<b>Not announced yet.</b> This month will most likely start on ${b}${a?`, or possibly ${a}`:''}.`,
+    days:n=>`${n} days`, days2930:'29 or 30 days',
+    prev:'Previous month', nextM:'Next month', toToday:'Back to today', year:'Hijri year',
+    lgToday:'Today', lgHol:'Public holiday', lgObs:'Religious occasion', lgRmd:'Ramadan', lgFc:'Expected date',
+    inMonth:'This month', none:'No holidays or occasions this month.',
+    convT:'Convert a date', convH:'Pick a Gregorian date to see its Hijri date.', show:'Show in calendar',
+    range:(a,b)=>`Pick a date between ${a} and ${b}.`,
+    yearT:y=>`Holidays in ${y} AH`, prevY:'Previous year', nextY:'Next year',
+    ics:y=>`Add ${y} AH holidays to your calendar`, icsNote:'An .ics file for Google, Apple or Outlook Calendar.',
+    foot:m=>`Month starts follow the official announcements of Morocco's Ministry of Habous and Islamic Affairs up to ${m}. Later months are forecasts based on crescent visibility maps, so an expected date can move by one day. Always check the Ministry's announcement before a holiday.`,
+    pctNote:'The percentage next to an expected date is how certain that date is.',
+    detail:'Detailed forecast and evidence', updated:d=>`Data updated ${d}.`,
+    H:{newyear:'Islamic New Year',ashura:'Ashura',mawlid:'Eid al-Mawlid (Prophet’s Birthday)',mawlid2:'Eid al-Mawlid, day 2',isra:'Isra and Mi’raj',
+       ramadan:'First day of Ramadan',fitr:'Eid al-Fitr',fitr2:'Eid al-Fitr, day 2',arafah:'Day of Arafah',adha:'Eid al-Adha',adha2:'Eid al-Adha, day 2'}
   }
 };
 let lang = 'ar';
 try { const v = localStorage.getItem('hijri-simple-lang'); if (L[v]) lang = v; } catch(e) {}
 const T = () => L[lang];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const wdi = t => (new Date(t*DAY).getUTCDay() + 6) % 7; // 0 = Monday
 const gparts = t => { const d = new Date(t*DAY); return [d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()]; };
 function gdate(t, o={}) { const [d,mo,y] = gparts(t); const x = T();
   return (o.wd===false ? '' : x.wd[wdi(t)] + ' ') + d + ' ' + x.gm[mo] + (o.y===false ? '' : ' ' + y); }
-function hdate(t) { const m = monthAt(t); if (!m) return ''; const x = T(); return `${t-m.t0+1} ${x.hm[m.hm-1]} ${m.hy} ${x.ah}`; }
-function hname(m) { return `${T().hm[m.hm-1]} ${m.hy}`; }
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hdate(t, o={}) { const m = monthAt(t); if (!m) return ''; const x = T(); return `${t-m.t0+1} ${x.hm[m.hm-1]}${o.y===false?'':' '+m.hy}`; }
+const hname = m => `${T().hm[m.hm-1]} ${m.hy}`;
+const expChip = p => `<span class="chip exp">${T().expected} ${bp(p)}</span>`;
+const okChip = () => `<span class="chip ok">${T().confirmed}</span>`;
+const mChip = m => m.fc ? expChip(pStart(m)) : okChip();
+const rel = t => { const n = t - TODAY; return n >= 0 ? T().inDays(n) : T().ago(-n); };
 
-// every holiday occurrence across the data
+// every holiday occurrence
 const ALLH = [];
 M.forEach(m => HOL.forEach(([hm,d,key,pub]) => { if (m.hm===hm && d<=m.len) {
   const a = altStart(m); ALLH.push({m, d, key, pub, t:m.t0+d-1, alt: a===null ? null : a+d-1, pa: a===null ? 0 : pAt(m, a), fc:m.fc, p:pStart(m)}); } }));
+const hChip = h => h.fc ? expChip(h.p) : okChip();
 
-function status(h) {
-  return h.fc ? expChip(h.p) : okChip();
+// moon phase drawing (as seen from Morocco: waxing moon lit on the right)
+function moonSVG(age, cls) {
+  const f = (((age % 29.53) + 29.53) % 29.53) / 29.53, r = 40, c = Math.cos(2*Math.PI*f), rx = Math.abs(c*r).toFixed(2);
+  const wax = f < 0.5, so = wax ? 1 : 0, si = wax ? (c > 0 ? 0 : 1) : (c > 0 ? 1 : 0);
+  return `<svg class="${cls}" viewBox="0 0 100 100" role="img" aria-label="${esc(T().moon)}"><circle class="dark" cx="50" cy="50" r="${r}"/>
+    <path class="lit" d="M50 10 A${r} ${r} 0 0 ${so} 50 90 A${rx} ${r} 0 0 ${si} 50 10Z"/></svg>`;
 }
-function rel(t) { const n = t - TODAY; return n >= 0 ? T().inDays(n) : T().ago(-n); }
 
+/* ---------- today + coming up ---------- */
 function renderToday() {
-  const x = T(), m = monthAt(TODAY), el = document.getElementById('today');
+  const x = T(), m = monthAt(TODAY), el = $('today');
   if (!m) { el.innerHTML = `<span class="label">${x.today}</span><div class="greg">${gdate(TODAY)}</div>`; return; }
-  const d = TODAY - m.t0 + 1;
+  const d = TODAY - m.t0 + 1, tm = monthAt(TODAY+1);
   el.innerHTML = `<span class="label">${x.today}</span>
+    ${moonSVG(d + 0.4, 'moon')}
     <div class="bigdate">${d} ${x.hm[m.hm-1]} ${m.hy}</div>
-    <div class="greg">${gdate(TODAY)}${m.fc ? ' · ' + x.expected + ' <b class="num" dir="ltr">' + pct(pStart(m)) + '</b>' : ''}</div>
-    <div class="muted" style="font-size:14px">${x.dayOf(d, lenSure(m) ? m.len : x.or2930)} · ${x.sunset}</div>`;
+    <div class="greg">${gdate(TODAY)}${m.fc ? ` · ${x.expected} ${bp(pStart(m))}` : ''}</div>
+    <div class="muted" style="font-size:14px">${x.dayOf(d, lenSure(m) ? m.len : x.or2930)}</div>
+    ${tm ? `<div class="tonight">${x.tonight} <b>${hdate(TODAY+1)}</b>${tm.fc && tm !== m ? ` (${bp(pStart(tm))})` : ''}</div>` : ''}`;
 }
+let EVS = [];
 function renderNext() {
-  const x = T(), el = document.getElementById('next');
-  const h = ALLH.find(h => h.t >= TODAY && h.pub && !/2$/.test(h.key)) || ALLH.find(h => h.t >= TODAY);
-  const r = ALLH.find(h => h.key==='ramadan' && h.t >= TODAY);
-  if (!h) { el.innerHTML = ''; el.hidden = true; return; }
-  const row = (h, big) => `<div class="${big?'nextname':''}" style="${big?'':'font-weight:600'}">${x.H[h.key]}</div>
-    <div class="when"><span>${gdate(h.t)}</span>${status(h)}</div>
-    <div class="when"><span class="count">${rel(h.t)}</span><span class="muted" style="font-size:14px">${h.d} ${x.hm[h.m.hm-1]} ${h.m.hy}</span></div>
-    ${h.fc && h.alt!==null ? `<p class="note">${x.couldBe(`${gdate(h.alt)} (${bp(h.pa)})`)}</p>` : ''}`;
-  el.innerHTML = `<span class="label">${x.next}</span>${row(h,true)}`;
-  if (r && r !== h) el.innerHTML += `<div style="border-top:1px solid var(--line);padding-top:10px;margin-top:4px;display:flex;flex-direction:column;gap:4px">${row(r,false)}</div>`;
+  const x = T(), el = $('next');
+  EVS = ALLH.filter(h => h.t >= TODAY && MAJOR.includes(h.key)).slice(0, 4);
+  if (!EVS.length) { el.hidden = true; return; }
+  const [h, ...rest] = EVS, n = h.t - TODAY;
+  el.innerHTML = `<span class="label">${x.next}</span>
+    <div class="ev1">
+      <div class="count">${n === 0 ? `<span class="n">${x.isToday}</span>` : `<span class="n num">${n}</span><span class="u">${x.unit(n)} ${x.until}</span>`}</div>
+      <div class="name">${x.H[h.key]}</div>
+      <div class="when"><span>${gdate(h.t)}</span>${hChip(h)}${h.pub ? `<span class="chip hol">${x.pub}</span>` : ''}</div>
+      ${h.fc && h.alt !== null ? `<p class="note">${x.couldBe(`${gdate(h.alt)} (${bp(h.pa)})`)}</p>` : ''}
+    </div>
+    <ul class="evs">${rest.map((h,i) => `<li><button type="button" data-ev="${i+1}">
+      <span class="nm">${x.H[h.key]}</span><span class="dt">${gdate(h.t)}</span>
+      <span class="sd">${hChip(h)}<span class="muted">${rel(h.t)}</span></span></button></li>`).join('')}</ul>`;
+  el.querySelectorAll('[data-ev]').forEach(b => b.onclick = () => showDay(EVS[+b.dataset.ev].t, true));
 }
 
+/* ---------- calendar ---------- */
 let VIEW = (monthAt(TODAY) || (TODAY < FIRST ? M[0] : M[M.length-1])).i;
-let PICK = null;
-function renderCal() {
-  const x = T(), m = M[VIEW], el = document.getElementById('cal');
-  const end = m.t1 - 1, [, m0, y0] = gparts(m.t0), [, m1, y1] = gparts(end);
-  const span = `${gdate(m.t0,{wd:false,y:y0!==y1})} – ${gdate(end,{wd:false})}`;
-  const a = altStart(m);
-  let h = `<div class="mhead">
-      <button type="button" class="nav" id="prevM" aria-label="${x.prev}" ${VIEW===0?'disabled':''}><span>‹</span></button>
-      <div class="mt"><h2>${hname(m)} ${x.ah}</h2><span class="span">${span}</span></div>
-      <button type="button" class="nav" id="nextM" aria-label="${x.nextM}" ${VIEW===M.length-1?'disabled':''}><span>›</span></button>
-    </div>
-    <div class="mmeta">${mChip(m)}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span></div>
-    ${m.fc ? `<div class="banner">${x.monthExp(`${gdate(m.t0)} (${bp(pStart(m))})`, a!==null ? `${gdate(a)} (${bp(pAt(m,a))})` : '')}</div>` : ''}
-    <div class="dow">${x.ws.map(w=>`<span>${w}</span>`).join('')}</div><div class="grid">`;
-  for (let i = 0; i < wdi(m.t0); i++) h += `<div class="d empty" aria-hidden="true"></div>`;
+let SEL = monthAt(TODAY) ? TODAY : M[VIEW].t0;
+let YEAR = M[VIEW].hy;
+const hashMonth = () => { const mt = /^#m(\d{4})-(\d{1,2})$/.exec(location.hash); return mt ? M.find(m => m.hy === +mt[1] && m.hm === +mt[2]) : null; };
+{ const m = hashMonth(); if (m) { VIEW = m.i; SEL = (TODAY >= m.t0 && TODAY < m.t1) ? TODAY : m.t0; YEAR = m.hy; } }
+
+function go(i, sel, focus) {
+  i = Math.max(0, Math.min(M.length-1, i)); const m = M[i], changed = i !== VIEW;
+  VIEW = i; SEL = sel ?? ((TODAY >= m.t0 && TODAY < m.t1) ? TODAY : m.t0);
+  try { history.replaceState(null, '', '#m' + m.hy + '-' + m.hm); } catch(e) {}
+  renderCal(changed);
+  if (YEAR !== m.hy) { YEAR = m.hy; renderYear(); }
+  if (focus) { const b = $('grid').querySelector('.d.sel'); if (b) b.focus({preventScroll:true}); }
+}
+function showDay(t, scroll) {
+  const m = monthAt(t); if (!m) return; go(m.i, t);
+  if (scroll) $('cal').scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block:'start'});
+}
+window.addEventListener('hashchange', () => { const m = hashMonth(); if (m && m.i !== VIEW) go(m.i); });
+
+function renderStrip(smooth) {
+  const x = T(), s = $('strip'), cur = monthAt(TODAY);
+  s.innerHTML = M.filter(m => m.hy === M[VIEW].hy).map(m => { const [gd, gmo] = gparts(m.t0);
+    return `<button type="button" data-i="${m.i}" aria-current="${m.i===VIEW}" class="${cur===m?'now':''} ${m.hm===9?'r9':''}">
+      <b>${x.hm[m.hm-1]}</b><small>${gd} ${x.gs[gmo]}${m.fc ? ` · <span class="p">${bp(pStart(m))}</span>` : ''}</small></button>`; }).join('');
+  s.querySelectorAll('button').forEach(b => b.onclick = () => go(+b.dataset.i));
+  const a = s.querySelector('[aria-current="true"]');
+  if (a) { const sr = s.getBoundingClientRect(), ar = a.getBoundingClientRect();
+    s.scrollBy({left: (ar.left + ar.width/2) - (sr.left + sr.width/2), behavior: smooth && !reduced() ? 'smooth' : 'auto'}); }
+  $('ySel').value = M[VIEW].hy;
+}
+function renderCal(animate) {
+  const x = T(), m = M[VIEW], end = m.t1 - 1, y0 = gparts(m.t0)[2], y1 = gparts(end)[2], a = altStart(m);
+  renderStrip(animate);
+  $('mTitle').textContent = `${hname(m)} ${x.ah}`;
+  $('mSpan').textContent = `${gdate(m.t0,{wd:false,y:y0!==y1})} – ${gdate(end,{wd:false})}`;
+  $('prevM').disabled = VIEW === 0; $('nextM').disabled = VIEW === M.length-1;
+  $('prevM').setAttribute('aria-label', x.prev); $('nextM').setAttribute('aria-label', x.nextM);
+  const cur = monthAt(TODAY);
+  $('mmeta').innerHTML = `${mChip(m)}<span>${lenSure(m) ? x.days(m.len) : x.days2930}</span>${cur && cur.i !== VIEW ? `<button type="button" class="pill" id="toToday">${x.toToday}</button>` : ''}`;
+  if ($('toToday')) $('toToday').onclick = () => go(cur.i, TODAY, true);
+  $('banner').innerHTML = m.fc ? `<div class="banner"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5v4.2M8 11.2v.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>${x.monthExp(`${gdate(m.t0)} (${bp(pStart(m))})`, a!==null ? `${gdate(a)} (${bp(pAt(m,a))})` : '')}</span></div>` : '';
+  $('dow').innerHTML = x.ws.map((w,i) => `<span class="${i===4?'fr':''}">${w}</span>`).join('');
+  const sep = lang === 'ar' ? '، ' : ', ';
+  let h = '';
+  for (let i = 0; i < wdi(m.t0); i++) h += `<span class="d empty" aria-hidden="true"></span>`;
   for (let d = 1; d <= m.len; d++) {
     const t = m.t0 + d - 1, [gd, gmo] = gparts(t), hh = holOf(m.hm, d);
-    const cls = ['d']; if (wdi(t)===4) cls.push('fri'); if (m.hm===9) cls.push('rmd');
-    if (hh) cls.push(hh[3] ? 'hol' : 'obs'); if (t===TODAY) cls.push('today'); if (t===PICK) cls.push('pick');
-    const showM = gd===1 || d===1;
-    h += `<div class="${cls.join(' ')}" title="${esc(`${d} ${x.hm[m.hm-1]} ${m.hy} = ${gdate(t)}${m.fc?' · '+x.expected+' '+pct(pStart(m)):''}${hh?' · '+x.H[hh[2]]:''}`)}">
-      <span class="h">${d}</span><span class="g${gd===1?' gm':''}">${showM ? gd+' '+x.gs[gmo] : gd}</span></div>`;
+    const cls = ['d']; if (m.fc) cls.push('fc'); if (m.hm===9) cls.push('rmd');
+    if (hh) cls.push(hh[3] ? 'hol' : 'obs'); if (t===TODAY) cls.push('today'); if (t===SEL) cls.push('sel');
+    const lbl = [`${d} ${x.hm[m.hm-1]} ${m.hy}`, gdate(t), m.fc ? x.expected + ' ' + pct(pStart(m)) : '', hh ? x.H[hh[2]] : '', t===TODAY ? x.today : ''].filter(Boolean).join(sep);
+    h += `<button type="button" class="${cls.join(' ')}" tabindex="${t===SEL?0:-1}" aria-pressed="${t===SEL}" aria-label="${esc(lbl)}" data-t="${t}">
+      <span class="h">${d}</span><span class="g${gd===1?' gm':''}">${gd===1 || d===1 ? gd+' '+x.gs[gmo] : gd}</span></button>`;
   }
-  h += `</div><div class="legend">
-      <span><i style="border:2px solid var(--red)"></i>${x.lgToday}</span>
-      <span><i style="background:var(--brass-soft);box-shadow:inset 0 0 0 1px var(--brass)"></i>${x.lgHol}</span>
-      <span><i style="background:var(--bg);position:relative"><b style="position:absolute;top:3px;inset-inline-end:3px;width:6px;height:6px;border-radius:50%;background:var(--brass)"></b></i>${x.lgObs}</span>
-      ${m.hm===9?`<span><i style="background:var(--rmd-soft);box-shadow:inset 0 0 0 1px var(--rmd)"></i>${x.lgRmd}</span>`:''}
-    </div>`;
-  const cur = monthAt(TODAY);
-  if (cur && cur.i !== VIEW) h += `<button type="button" class="todaybtn" id="toToday">${x.toToday}</button>`;
-  el.innerHTML = h;
-  document.getElementById('prevM').onclick = () => go(VIEW-1);
-  document.getElementById('nextM').onclick = () => go(VIEW+1);
-  const tb = document.getElementById('toToday'); if (tb) tb.onclick = () => { PICK = null; go(cur.i); };
-  renderMonthHol();
+  const g = $('grid'); g.innerHTML = h; g.setAttribute('aria-label', `${hname(m)} ${x.ah}`);
+  if (animate) { g.classList.remove('in'); void g.offsetWidth; g.classList.add('in'); }
+  g.querySelectorAll('button.d').forEach(b => b.onclick = () => go(VIEW, +b.dataset.t, true));
+  renderDayInfo(); renderLegend(); renderMonthHol();
 }
-function go(i) { VIEW = Math.max(0, Math.min(M.length-1, i)); renderCal(); if (YEAR !== M[VIEW].hy) { YEAR = M[VIEW].hy; renderYear(); } }
-document.addEventListener('keydown', e => {
-  if (e.target.closest && e.target.closest('input,select,textarea')) return;
-  const rtl = T().dir==='rtl';
-  if (e.key==='ArrowLeft') go(VIEW + (rtl?1:-1)); else if (e.key==='ArrowRight') go(VIEW + (rtl?-1:1));
+function renderDayInfo() {
+  const x = T(), m = M[VIEW], t = SEL, d = t - m.t0 + 1, hh = holOf(m.hm, d);
+  $('dayinfo').innerHTML = `<div class="hh">${d} ${x.hm[m.hm-1]} ${m.hy} ${x.ah}</div>
+    <div class="rel">${rel(t)}</div>
+    <div class="gg">${gdate(t)}</div>
+    <div class="tags">${mChip(m)}${hh ? `<span class="chip ${hh[3]?'hol':'ok'}">${x.H[hh[2]]}</span>` : ''}${hh && hh[3] ? `<span class="chip out">${x.pub}</span>` : ''}${m.hm===9 && !hh ? `<span class="chip rmd">${x.lgRmd}</span>` : ''}</div>`;
+}
+function renderLegend() {
+  const x = T(), m = M[VIEW];
+  $('legend').innerHTML = `<span><i style="border:2px solid var(--red)"></i>${x.lgToday}</span>
+    <span><i style="background:var(--brass-soft);box-shadow:inset 0 0 0 1px var(--brass)"></i>${x.lgHol}</span>
+    <span><i style="background:var(--wash)"><b style="position:absolute;top:3px;inset-inline-end:3px;width:6px;height:6px;border-radius:50%;background:var(--brass)"></b></i>${x.lgObs}</span>
+    ${m.hm===9 ? `<span><i style="background:var(--rmd-soft);box-shadow:inset 0 0 0 1px var(--rmd)"></i>${x.lgRmd}</span>` : ''}
+    ${m.fc ? `<span><i style="border:2px dashed color-mix(in srgb,var(--muted) 50%,transparent)"></i>${x.lgFc}</span>` : ''}`;
+}
+$('prevM').onclick = () => go(VIEW-1);
+$('nextM').onclick = () => go(VIEW+1);
+$('ySel').onchange = e => { const y = +e.target.value, cm = M[VIEW].hm; const m = M.find(m => m.hy===y && m.hm===cm) || M.find(m => m.hy===y); go(m.i); };
+
+// keyboard: arrows move the selected day inside the grid; elsewhere, left/right change month
+$('grid').addEventListener('keydown', e => {
+  const rtl = T().dir === 'rtl', k = e.key, m = M[VIEW];
+  const step = {ArrowLeft: rtl?1:-1, ArrowRight: rtl?-1:1, ArrowUp:-7, ArrowDown:7}[k];
+  let t = null;
+  if (step) t = SEL + step; else if (k === 'Home') t = m.t0; else if (k === 'End') t = m.t1 - 1;
+  else if (k === 'PageUp' || k === 'PageDown') { e.preventDefault(); go(VIEW + (k === 'PageUp' ? -1 : 1), undefined, true); return; }
+  if (t === null) return;
+  e.preventDefault();
+  const nm = monthAt(t); if (nm) go(nm.i, t, true);
 });
+document.addEventListener('keydown', e => {
+  if (e.target !== document.body) return;
+  const rtl = T().dir === 'rtl';
+  if (e.key === 'ArrowLeft') go(VIEW + (rtl?1:-1)); else if (e.key === 'ArrowRight') go(VIEW + (rtl?-1:1));
+});
+// swipe between months on touch screens
+{ let x0 = null, y0 = 0; const g = $('grid');
+  g.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, {passive:true});
+  g.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5*Math.abs(dy)) { const fwd = T().dir === 'rtl' ? dx > 0 : dx < 0; go(VIEW + (fwd ? 1 : -1)); } }, {passive:true}); }
 
-function holItem(h, showYear) {
+/* ---------- lists ---------- */
+function holItem(h, i) {
   const x = T();
-  return `<li class="${h.t<TODAY?'past':''} ${h.pub?'pub':''}">
+  return `<li class="${h.t<TODAY?'past':''} ${h.pub?'pub':''}"><button type="button" class="hbtn" data-h="${i}">
     <span class="hn">${x.H[h.key]}</span>
-    <span class="hd">${gdate(h.t)} · ${h.d} ${x.hm[h.m.hm-1]}${showYear?' '+h.m.hy:''}</span>
-    <span class="hs">${status(h)}<span class="muted">${rel(h.t)}</span></span></li>`;
+    <span class="hd">${gdate(h.t)} · ${h.d} ${x.hm[h.m.hm-1]}</span>
+    <span class="hs">${hChip(h)}<span class="muted">${rel(h.t)}</span></span></button></li>`;
 }
+function bindHol(el, list, scroll) { el.querySelectorAll('[data-h]').forEach(b => b.onclick = () => showDay(list[+b.dataset.h].t, scroll)); }
 function renderMonthHol() {
-  const x = T(), m = M[VIEW], hs = ALLH.filter(h => h.m === m);
-  document.getElementById('mhol').innerHTML = `<h3>${x.inMonth}</h3>` +
-    (hs.length ? `<ul class="hlist">${hs.map(h=>holItem(h,false)).join('')}</ul>` : `<p class="empty-note">${x.none}</p>`);
+  const x = T(), m = M[VIEW], hs = ALLH.filter(h => h.m === m), el = $('mhol');
+  el.innerHTML = `<h3>${x.inMonth}</h3>` + (hs.length ? `<ul class="hlist">${hs.map(holItem).join('')}</ul>` : `<p class="empty-note">${x.none}</p>`);
+  bindHol(el, hs, false);
 }
-
-let YEAR = M[VIEW].hy;
-const YMIN = M[0].hy, YMAX = M[M.length-1].hy;
 function renderYear() {
-  const x = T(), hs = ALLH.filter(h => h.m.hy === YEAR && !/2$/.test(h.key));
-  const el = document.getElementById('year');
-  const [, , ga] = gparts(M.find(m=>m.hy===YEAR).t0), [, , gb] = gparts([...M].reverse().find(m=>m.hy===YEAR).t1-1);
-  el.innerHTML = `<div class="yhead"><div style="display:flex;flex-direction:column;gap:2px"><h2>${x.yearT(YEAR)}</h2><span class="muted" style="font-size:14px">${ga===gb?ga:ga+'–'+gb}</span></div>
-    <div class="ynav"><button type="button" class="nav" id="prevY" aria-label="${x.prevY}" ${YEAR<=YMIN?'disabled':''}><span>‹</span></button>
-    <button type="button" class="nav" id="nextY" aria-label="${x.nextY}" ${YEAR>=YMAX?'disabled':''}><span>›</span></button></div></div>
-    <ul class="ytbl">${hs.map(h=>holItem(h,false)).join('')}</ul>`;
-  document.getElementById('prevY').onclick = () => { YEAR--; renderYear(); };
-  document.getElementById('nextY').onclick = () => { YEAR++; renderYear(); };
+  const x = T(), hs = ALLH.filter(h => h.m.hy === YEAR && !/2$/.test(h.key)), el = $('year');
+  const ms = M.filter(m => m.hy === YEAR), ga = gparts(ms[0].t0)[2], gb = gparts(ms[ms.length-1].t1-1)[2];
+  el.innerHTML = `<div class="yhead"><div style="display:flex;flex-direction:column;gap:2px"><h2>${x.yearT(YEAR)}</h2><span class="muted num" style="font-size:14px">${ga===gb?ga:ga+'–'+gb}</span></div>
+    <div class="ynav"><button type="button" class="nav" id="prevY" aria-label="${x.prevY}" ${YEAR<=YEARS[0]?'disabled':''}>${$('prevM').innerHTML}</button>
+    <button type="button" class="nav" id="nextY" aria-label="${x.nextY}" ${YEAR>=YEARS[YEARS.length-1]?'disabled':''}>${$('nextM').innerHTML}</button></div></div>
+    <ul class="ytbl hlist">${hs.map(holItem).join('')}</ul>
+    ${CAN_DOWNLOAD ? `<div class="ics"><button type="button" class="btn" id="icsBtn"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4M10 10.5v4M8 12.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>${x.ics(YEAR)}</button><span class="note">${x.icsNote}</span></div>` : ''}`;
+  $('prevY').onclick = () => { YEAR--; renderYear(); };
+  $('nextY').onclick = () => { YEAR++; renderYear(); };
+  bindHol(el, hs, true);
+  if ($('icsBtn')) $('icsBtn').onclick = () => downloadICS(YEAR);
+}
+function downloadICS(y) {
+  const x = T(), ymd = t => iso(t).replace(/-/g, '');
+  const fold = s => { const out = []; while (s.length > 30) { out.push(s.slice(0, 30)); s = ' ' + s.slice(30); } out.push(s); return out.join('\r\n'); };
+  const txt = v => String(v).replace(/[\\;,]/g, c => '\\' + c);
+  const ev = ALLH.filter(h => h.m.hy === y).map(h => [
+    'BEGIN:VEVENT', `UID:${h.m.hy}-${h.m.hm}-${h.d}-${h.key}@hijri-morocco`, `DTSTAMP:${ymd(TODAY)}T000000Z`,
+    `DTSTART;VALUE=DATE:${ymd(h.t)}`, `DTEND;VALUE=DATE:${ymd(h.t+1)}`,
+    fold('SUMMARY:' + txt(x.H[h.key] + (h.fc ? ` (${x.expected} ${pct(h.p)})` : ''))),
+    fold('DESCRIPTION:' + txt(`${h.d} ${x.hm[h.m.hm-1]} ${h.m.hy} ${x.ah}. ` + (h.fc ? (h.alt !== null ? x.couldBe(`${gdate(h.alt)} (${pct(h.pa)})`) : '') : x.confirmed))),
+    'TRANSP:TRANSPARENT', 'END:VEVENT'].join('\r\n'));
+  const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Hijri Calendar Morocco//EN', 'CALSCALE:GREGORIAN', fold('X-WR-CALNAME:' + txt(x.yearT(y))), ...ev, 'END:VCALENDAR'].join('\r\n') + '\r\n';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type:'text/calendar;charset=utf-8'}));
+  a.download = `hijri-morocco-${y}.ics`; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 
-const convIn = document.getElementById('convIn');
+/* ---------- converter ---------- */
+const convIn = $('convIn');
 convIn.min = iso(FIRST); convIn.max = iso(LAST);
 function renderConv() {
-  const x = T(), out = document.getElementById('convOut');
-  document.getElementById('convT').textContent = x.convT; document.getElementById('convH').textContent = x.convH;
+  const x = T(), out = $('convOut');
+  $('convT').textContent = x.convT; $('convH').textContent = x.convH;
   if (!convIn.value) { out.innerHTML = ''; return; }
   const t = dn(convIn.value), m = monthAt(t);
   if (!m) { out.innerHTML = `<p class="note">${x.range(gdate(FIRST,{wd:false}), gdate(LAST,{wd:false}))}</p>`; return; }
   const a = altStart(m);
-  out.innerHTML = `<div class="muted" style="font-size:14px">${gdate(t)}</div><div class="res">${hdate(t)}</div>
+  out.innerHTML = `<div class="muted" style="font-size:14px">${gdate(t)}</div><div class="res">${hdate(t)} ${x.ah}</div>
     <div class="when">${mChip(m)}</div>
     ${m.fc && a!==null ? `<p class="note">${x.couldBe(`${t-a+1} ${x.hm[m.hm-1]} (${bp(pAt(m,a))})`)}</p>` : ''}
     <button type="button" class="linkbtn" id="showIn">${x.show}</button>`;
-  document.getElementById('showIn').onclick = () => { PICK = t; go(m.i); document.getElementById('cal').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); };
+  $('showIn').onclick = () => showDay(t, true);
 }
 convIn.addEventListener('input', renderConv);
 convIn.value = iso(Math.min(Math.max(TODAY, FIRST), LAST));
 
+/* ---------- language ---------- */
+YEARS.forEach(y => { const o = document.createElement('option'); o.value = y; $('ySel').appendChild(o); });
 function renderFoot() {
   const x = T(), lastOff = [...M].reverse().find(m => !m.fc);
-  document.getElementById('foot').innerHTML = `<p>${x.foot(hname(lastOff))} ${x.pctNote}</p>
-    <p>${x.updated(gdate(dn(D.built),{wd:false}))}${DETAIL ? ` <a href="${DETAIL}">${x.detail}</a>` : ''}</p>`;
+  $('foot').innerHTML = `<p>${x.foot(hname(lastOff))} ${x.pctNote}</p>
+    <p>${x.updated(gdate(dn(D.built),{wd:false}))}${DETAIL ? ` · <a href="${DETAIL}">${x.detail}</a>` : ''}</p>`;
 }
 function setLang(l) {
-  lang = l; const x = T(), app = document.getElementById('app');
-  document.documentElement.lang = l; app.dir = x.dir;
-  document.getElementById('h1').textContent = x.h1; document.getElementById('sub').textContent = x.sub;
+  lang = l; const x = T(), app = $('app');
+  document.documentElement.lang = l; app.lang = l; app.dir = x.dir;
+  $('h1').textContent = x.h1; $('sub').textContent = x.sub; $('ySelL').textContent = x.year;
+  [...$('ySel').options].forEach(o => { const ms = M.filter(m => m.hy === +o.value); o.textContent = `${o.value} ${x.ah} · ${gparts(ms[0].t0)[2]}`; });
   document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.l===l));
   try { localStorage.setItem('hijri-simple-lang', l); } catch(e) {}
-  renderToday(); renderNext(); renderCal(); renderYear(); renderConv(); renderFoot();
+  renderToday(); renderNext(); renderCal(false); renderYear(); renderConv(); renderFoot();
 }
 document.querySelectorAll('.lang button').forEach(b => b.onclick = () => setLang(b.dataset.l));
 setLang(lang);
