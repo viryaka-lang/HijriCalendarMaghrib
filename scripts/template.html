@@ -1,0 +1,451 @@
+<title>Morocco Hijri Calendar 2025–2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: header with today in both calendars and the next sighting forecast; Hijri-year switch; twelve Hijri month grids (Hijri day large, Gregorian date small); then predicted-vs-actual evidence for each month of that year, with its three crescent maps; then what the model learned from 114 past evenings. */
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --ink:#131C33; --muted:#5A6379; --line:#DCE1EA;
+  --accent:#3246C8; --accent-soft:#E6E9FA;
+  --tint-b:#F4F6FB;
+  --brass:#9C6F12; --brass-soft:#F6E9C8;
+  --ramadan:#1C6E4E; --ramadan-soft:#DDF0E6;
+  --today:#C2410C; --today-soft:#FBE4D6;
+  --good:#1D7A46; --good-soft:#DCF1E4; --bad:#B42318; --bad-soft:#FBE2DF;
+  --zA:#0F8A2E; --zB:#0BB3B0; --zC:#8A8F99; --zD:#D32020; --zN:#232838;
+  --display:"Reem Kufi","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1220; --surface:#131B2E; --ink:#E7EAF3; --muted:#9AA3B9; --line:#253049;
+  --accent:#93A2FF; --accent-soft:#1E2850; --tint-b:#18213A;
+  --brass:#E5B652; --brass-soft:#3A2F15; --ramadan:#5CCB98; --ramadan-soft:#143326;
+  --today:#FB8A4C; --today-soft:#3A2216;
+  --good:#5CCB98; --good-soft:#143326; --bad:#F2877C; --bad-soft:#3A1A18;
+  --zA:#22B24A; --zB:#1CC9C6; --zC:#9AA0AB; --zD:#F04848; --zN:#3A4258; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1220; --surface:#131B2E; --ink:#E7EAF3; --muted:#9AA3B9; --line:#253049;
+  --accent:#93A2FF; --accent-soft:#1E2850; --tint-b:#18213A;
+  --brass:#E5B652; --brass-soft:#3A2F15; --ramadan:#5CCB98; --ramadan-soft:#143326;
+  --today:#FB8A4C; --today-soft:#3A2216;
+  --good:#5CCB98; --good-soft:#143326; --bad:#F2877C; --bad-soft:#3A1A18;
+  --zA:#22B24A; --zB:#1CC9C6; --zC:#9AA0AB; --zD:#F04848; --zN:#3A4258; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4.6vw,44px);line-height:1.1}
+h2{font-size:25px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
+p{margin:0;max-width:70ch}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+.top{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:end}
+@media (max-width:860px){.top{grid-template-columns:1fr}}
+.lede{color:var(--muted);margin-top:10px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.today-h{font-family:var(--display);font-size:24px;line-height:1.15}
+.today-ar{font-family:var(--display);font-size:19px;color:var(--muted);text-align:left;unicode-bidi:isolate}
+.next{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.next b{font-weight:600}
+.odds{display:flex;flex-direction:column;gap:6px}
+.odd{display:grid;grid-template-columns:minmax(0,1fr) 52px;gap:10px;align-items:center;font-size:13.5px}
+.odd .bar{grid-column:1/-1;height:6px;border-radius:3px;background:var(--tint-b);overflow:hidden}
+.odd .bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.odd .pct{text-align:end;font-family:var(--mono);font-weight:500}
+
+.controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{font:600 15px var(--body);border:0;background:transparent;color:var(--muted);padding:7px 18px;border-radius:999px;cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button small{font-weight:400;font-size:11.5px;margin-inline-start:6px;opacity:.85}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+.years{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;min-width:0;max-width:100%}
+.ygrp{display:flex;align-items:center;gap:8px;min-width:0;max-width:100%}
+.ygrp .seg{flex-wrap:wrap;border-radius:18px}
+.yl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+#segFut button{padding:6px 11px;font-size:14px}
+#segFut button small{display:none}
+.kd-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.kd{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+.kd th,.kd td{padding:8px 12px;border-top:1px solid var(--line);text-align:left;vertical-align:top;font-variant-numeric:tabular-nums}
+.kd thead th{border-top:0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--tint-b)}
+.kd td small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.kd td small.lo{color:var(--today)}
+.kd tr.cur td{background:var(--accent-soft)}
+.kd button{font:inherit;font-weight:600;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;font-family:var(--display);font-size:15px}
+@media (max-width:560px){.seg button small{display:none}.seg button{padding:7px 13px}}
+.legend{display:flex;flex-wrap:wrap;gap:12px 16px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:3px;border:1px solid var(--line);display:inline-block;flex:none}
+
+.strip{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.strip a{display:flex;flex-direction:column;gap:2px;padding:8px 8px 7px;border-inline-end:1px solid var(--line);text-decoration:none;color:var(--ink);min-width:0}
+.strip a:last-child{border-inline-end:0}
+.strip a:hover{background:var(--tint-b)}
+.strip a.rmd{background:var(--ramadan-soft)}
+.strip a.fc{background-image:repeating-linear-gradient(135deg,transparent 0 5px,color-mix(in srgb,var(--muted) 14%,transparent) 5px 6px)}
+.strip a.na{color:var(--muted);pointer-events:none}
+.strip b{font-family:var(--display);font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip small{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+.len{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:0 5px;border-radius:4px;background:var(--tint-b);color:var(--muted);width:max-content}
+@media (max-width:760px){.strip{grid-template-columns:repeat(4,minmax(0,1fr))}.strip a{border-bottom:1px solid var(--line)}}
+
+.months{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:18px}
+.month{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 12px 12px;display:flex;flex-direction:column;gap:8px;min-width:0;scroll-margin-top:16px}
+.mh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.mh h3{font-size:20px;line-height:1.15}
+.mh .ar{font-family:var(--display);font-size:15px;color:var(--muted);display:block;text-align:left;unicode-bidi:isolate}
+.mh .rng{font-size:12px;color:var(--muted);text-align:end;line-height:1.35}
+.fcban{font-size:12.5px;background:var(--today-soft);color:var(--ink);border-radius:6px;padding:6px 8px;line-height:1.4}
+.fcban b{color:var(--today)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.dow span{font-size:11px;color:var(--muted);text-align:center;letter-spacing:.06em;text-transform:uppercase}
+.d{position:relative;aspect-ratio:1/1.02;max-width:100%;border-radius:5px;background:var(--tint-b);display:flex;flex-direction:column;justify-content:space-between;padding:3px 3px;min-width:0;font-variant-numeric:tabular-nums}
+.d.empty{background:transparent}
+.d.rmd{background:var(--ramadan-soft)}
+.d .h{font-family:var(--display);font-size:16px;font-weight:600;line-height:1}
+.d .g{font-family:var(--body);font-size:10px;color:var(--muted);text-align:end;line-height:1;white-space:nowrap;overflow:hidden;letter-spacing:-.01em}
+.d .g.gm{color:var(--accent);font-weight:500}
+.d.hol{background:var(--brass-soft)}
+.d.hol .h{color:var(--brass)}
+.d.hol::after{content:"";position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--brass)}
+.d.today{outline:2px solid var(--today);outline-offset:-2px}
+.d.fc{background-image:repeating-linear-gradient(135deg,transparent 0 4px,color-mix(in srgb,var(--muted) 16%,transparent) 4px 5px)}
+.mnotes{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted)}
+.mnotes .k{color:var(--brass);font-weight:600}
+.mnotes .s{color:var(--accent);font-weight:600}
+
+/* evidence */
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+.sec-head p{color:var(--muted)}
+.score{font-size:14px;color:var(--muted)}
+.score b{color:var(--ink);font-family:var(--display);font-size:20px;font-weight:600}
+.ev-list{display:flex;flex-direction:column;gap:14px}
+.ev{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;min-width:0}
+@media (max-width:900px){.ev{grid-template-columns:1fr}}
+.ev-t{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;grid-column:1/-1}
+.ev-t h3{font-size:19px}
+.ev-t .sub{font-size:13px;color:var(--muted)}
+.maps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.map{display:flex;flex-direction:column;gap:5px;min-width:0}
+.map img{width:100%;height:auto;border-radius:6px;border:1px solid var(--line);image-rendering:pixelated;display:block}
+.map.on img{outline:3px solid var(--accent);outline-offset:1px}
+.map .cap{font-size:12px;color:var(--muted);line-height:1.3}
+.map.on .cap{color:var(--ink)}
+.map.on .cap b{color:var(--accent)}
+.share{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--tint-b)}
+.share i{display:block;height:100%}
+.sharelbl{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11.5px;color:var(--muted)}
+.sharelbl span{display:inline-flex;align-items:center;gap:4px}
+.sharelbl i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.pred{display:flex;flex-direction:column;gap:10px}
+.pred h4{margin:0;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.opt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:14px}
+.opt .bar{grid-column:1/-1;height:7px;border-radius:4px;background:var(--tint-b);overflow:hidden}
+.opt .bar i{display:block;height:100%;border-radius:4px;background:color-mix(in srgb,var(--muted) 55%,transparent)}
+.opt.act .bar i{background:var(--good)}
+.opt.act.miss .bar i{background:var(--bad)}
+.opt .pct{font-family:var(--mono);font-weight:500}
+.opt .tag{font-size:11px;font-weight:600;padding:0 6px;border-radius:999px;margin-inline-start:6px;background:var(--good-soft);color:var(--good)}
+.opt.miss .tag{background:var(--bad-soft);color:var(--bad)}
+.verdict{font-size:13px;padding:8px 10px;border-radius:8px;line-height:1.45}
+.verdict.ok{background:var(--good-soft)}
+.verdict.no{background:var(--bad-soft)}
+.verdict.fc{background:var(--today-soft)}
+.verdict b{font-weight:600}
+.srcl{font-size:12px;color:var(--muted)}
+
+/* learning */
+.learn{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.tile .k{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tile .v{font-family:var(--display);font-size:30px;line-height:1.05}
+.tile .v small{font-size:15px;color:var(--muted);font-family:var(--body);margin-inline-start:6px}
+.tile p{font-size:13px;color:var(--muted)}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.chart .scroll{overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:560px;height:auto}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.two section{display:flex;flex-direction:column;gap:8px}
+.two h3{font-size:18px}
+.two p,.two li{color:var(--muted);font-size:14px}
+.two ul{margin:0;padding-inline-start:18px;display:flex;flex-direction:column;gap:5px}
+.wtable{width:100%;border-collapse:collapse;font-size:13.5px}
+.wtable td{padding:6px 4px;border-top:1px solid var(--line)}
+.wtable td:last-child{text-align:end;font-family:var(--mono)}
+.chip{display:inline-flex;align-items:center;gap:6px}
+.chip i{width:10px;height:10px;border-radius:2px;display:inline-block}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">Kingdom of Morocco · local crescent sighting</div>
+      <h1>Hijri Calendar</h1>
+      <p class="lede">Each month begins the day after the crescent is reported in Morocco on the evening of the 29th. If it isn't reported, the month runs to 30 days. Past dates are the official announcements. Upcoming dates, through 1460 AH (2039), are forecasts from a model that learned from 137 past sighting evenings (October 2015 to October 2026) and the crescent maps in your moon folder.</p>
+    </div>
+    <div class="panel" id="today"></div>
+  </div>
+
+  <div class="controls">
+    <div class="years" role="group" aria-label="Hijri year">
+      <div class="ygrp"><span class="yl">Official</span><div class="seg" id="segPast"></div></div>
+      <div class="ygrp"><span class="yl">Forecast</span><div class="seg" id="segFut"></div></div>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--ramadan-soft)"></i>Ramadan</span>
+      <span><i class="sw" style="background:var(--brass-soft)"></i>Religious holiday</span>
+      <span><i class="sw" style="background-image:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--muted) 30%,transparent) 3px 4px)"></i>Forecast</span>
+      <span><i class="sw" style="outline:2px solid var(--today);outline-offset:-2px"></i>Today</span>
+    </div>
+  </div>
+
+  <nav class="strip" id="strip" aria-label="Months of the Hijri year"></nav>
+  <div class="months" id="months"></div>
+
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <div>
+      <div class="eyebrow">At a glance</div>
+      <h2>Key dates, 1445 to 1460</h2>
+      <p style="margin-top:6px;color:var(--muted)">Official dates up to Jumada al-Ula 1448. After that, the most likely date, with its chance of being right underneath. Grey or orange percentages mean the date could easily move by a day. Pick a year to open its calendar.</p>
+    </div>
+    <div class="kd-wrap"><table class="kd" id="kd"></table></div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Evidence</div>
+        <h2><span id="evTitle">Predicted vs actual</span>, <span id="evYear"></span></h2>
+        <p style="margin-top:6px">Each card shows the three crescent maps for that month (the new-moon evening and the two after it), cropped to Morocco. The outlined map is the 29th evening, when Morocco looks for the crescent. Percentages come from the model trained only on evenings before that night, so past cards show what it would have predicted at the time.</p>
+      </div>
+      <div class="score" id="evScore"></div>
+    </div>
+    <div class="ev-list" id="evList"></div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div>
+      <div class="eyebrow">Learning from past results</div>
+      <h2>How the forecast is made and how good it is</h2>
+    </div>
+    <div class="panel" style="flex-direction:row;flex-wrap:wrap;gap:8px 18px;align-items:baseline">
+      <b style="font-family:var(--display);font-size:16px">Latest data added</b>
+      <span style="color:var(--muted);font-size:14px;max-width:none">All of 1437 AH (Oct 2015 to Sep 2016) plus 11 months that were missing from 1438, 1439 and 1445, for 23 new evenings. The record is now complete from Muharram 1437 to Jumada al-Ula 1448. The 1445 tab now shows that year's calendar and its predicted-vs-actual cards: the walk-forward model called all 12 of its month starts. On the same 94 test evenings as before, accuracy rose from 93.6% to 94.7% and the Brier score fell from 0.052 to 0.044. On the borderline ones, accuracy rose from 77% to 81%.</span>
+    </div>
+    <div class="learn" id="tiles"></div>
+    <div class="chart">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline">
+        <h3 style="font-size:17px">Every forecast since 2017, against what Morocco announced</h3>
+        <div class="legend" style="font-size:12px">
+          <span><i class="sw" style="background:var(--accent);border-radius:50%"></i>Borderline evening</span>
+          <span><i class="sw" style="background:var(--muted);border-radius:50%"></i>Clear-cut evening</span>
+          <span><i class="sw" style="border:2px solid var(--today);border-radius:50%;background:transparent"></i>2025–26</span>
+        </div>
+      </div>
+      <div class="scroll"><svg id="chart" viewBox="0 0 760 210" role="img" aria-label="Forecast probability for each past evening, split by whether Morocco reported the crescent"></svg></div>
+      <p style="font-size:13px;color:var(--muted)">Each dot is one 29th evening, placed at the probability the model gave that morning. A good forecast puts the top row near 100% and the bottom row near 0%. Dots in the middle are the borderline nights.</p>
+    </div>
+    <div class="two">
+      <section>
+        <h3>What the model weighs</h3>
+        <p>It reads each 29th-evening map over Moroccan land, from Tangier to Lagouira, and measures how much of the country falls in each visibility zone.</p>
+        <table class="wtable" id="wtable"></table>
+      </section>
+      <section>
+        <h3>What changed recently</h3>
+        <ul id="changed"></ul>
+      </section>
+    </div>
+  </section>
+
+  <footer>
+    <span>Maps: moonsighting.com crescent visibility curves (OmegaHilalSighting by Fawzi Kayali, Shaukat criterion), from your folder <span class="mono">Desktop\moon</span>. Moroccan outcomes: Ministry of Habous and Islamic Affairs announcements (Hespress, SNRT News, Médias24, TelQuel, Le360) for 2025–26, and the Awqaf sighting reports logged by moonsighting.org.uk (ICOUK) for 2015–2024. The 1437 AH (2015–16) maps come from moonsighting.com, which still hosts them though its index starts at 1438.</span>
+    <span>Model: green-zone and no-visibility nights use the observed rates (50 of 50 and 0 of 43). Borderline nights use a logistic model on cyan and grey shares, weighting recent years more (half-life 2 years). Weeks start on Monday.</span>
+  </footer>
+</div>
+
+<script>
+const DATA = __DATA__;
+const AR = ['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+const HOL = [[1,1,'Islamic New Year',true],[1,10,'Ashura',false],[3,12,'Eid al-Mawlid',true],[3,13,'Eid al-Mawlid, day 2',true],
+  [7,27,"Isra and Mi'raj",false],[8,15,'Mid-Shaban',false],[9,1,'First day of Ramadan',false],[10,1,'Eid al-Fitr',true],[10,2,'Eid al-Fitr, day 2',true],
+  [12,9,'Day of Arafah',false],[12,10,'Eid al-Adha',true],[12,11,'Eid al-Adha, day 2',true]];
+const GM=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DAY=864e5, ms=s=>Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10)), iso=t=>new Date(t).toISOString().slice(0,10);
+const dd=s=>new Date(ms(s));
+const fmt=(s,o={})=>{const d=dd(s);return (o.wd===false?'':WD[d.getUTCDay()].slice(0,3)+' ')+d.getUTCDate()+' '+GM[d.getUTCMonth()].slice(0,3)+(o.y===false?'':' '+d.getUTCFullYear());};
+const pct=p=>{const v=p*100; return v>=99.5?'>99%':v<0.5?'<1%':Math.round(v)+'%';};
+const ZC={A:'--zA',B:'--zB',C:'--zC',D:'--zD',N:'--zN'}, ZN={A:'Naked eye',B:'Perfect conditions',C:'Optical aid to find',D:'Optical aid only',N:'Not visible'};
+const TODAY=DATA.today;
+const M=DATA.months; M.forEach(m=>{m.t0=ms(m.start);m.t1=m.t0+m.len*DAY;});
+const EV={}; DATA.evidence.forEach(e=>EV[e.hy+'-'+e.hm]=e); DATA.future.forEach(e=>EV[e.hy+'-'+e.hm]=e);
+function lenSure(m){const i=M.indexOf(m),n=M[i+1]; if(m.status!=='forecast'&&(!n||n.status!=='forecast'))return true; const p=m.dist?m.dist[m.start]??1:1, q=n&&n.dist?n.dist[n.start]??1:1; return p>=0.9&&q>=0.9;}
+function prevOf(m){return M[M.indexOf(m)-1];}
+function hijri(s){const t=ms(s);const m=M.find(m=>t>=m.t0&&t<m.t1);return m?{m,day:Math.round((t-m.t0)/DAY)+1}:null;}
+const hol=(hm,d)=>HOL.find(x=>x[0]===hm&&x[1]===d);
+
+function renderToday(){
+  const h=hijri(TODAY), f=DATA.future[0], b=f.branches[0];
+  const opts=Object.entries(f.dist).sort();
+  document.getElementById('today').innerHTML=`
+    <div class="eyebrow">Today · ${fmt(TODAY)}</div>
+    <div class="today-h">${h.day} ${h.m.name} ${h.m.hy}</div>
+    <div class="today-ar" dir="rtl" lang="ar">${h.day} ${AR[h.m.hm-1]} ${h.m.hy} هـ</div>
+    <div class="next">
+      <span>Next sighting: <b>evening of ${fmt(b.ev)}</b> (29 ${h.m.name}). The map is borderline over Morocco: ${Math.round(b.f.B*100)}% cyan, ${Math.round(b.f.C*100)}% grey.</span>
+      <div class="odds">${opts.map(([d,p])=>`<div class="odd"><span>Jumada al-Thani starts <b>${fmt(d)}</b></span><span class="pct">${pct(p)}</span><div class="bar"><i style="width:${p*100}%"></i></div></div>`).join('')}</div>
+    </div>`;
+}
+
+let YEAR=1448;
+function renderStrip(){
+  const el=document.getElementById('strip'); el.innerHTML='';
+  for(let hm=1;hm<=12;hm++){
+    const m=M.find(m=>m.hy===YEAR&&m.hm===hm);
+    const a=document.createElement('a');
+    if(!m){ a.className='na'; a.innerHTML=''; el.appendChild(a); continue; a.innerHTML=`<b>${['Muharram','Safar','Rabi I','Rabi II','Jumada I','Jumada II','Rajab','Shaban','Ramadan','Shawwal','Dhul-Qadah','Dhul-Hijjah'][hm-1]}</b><small>2027</small>`; el.appendChild(a); continue; }
+    a.href='#m-'+m.hy+'-'+m.hm; if(hm===9)a.classList.add('rmd'); if(m.status==='forecast')a.classList.add('fc');
+    const sub = m.status==='forecast' ? `${fmt(m.start,{y:false,wd:false})} · ${pct(m.dist[m.start])}` : fmt(m.start,{y:false,wd:false});
+    a.innerHTML=`<b>${m.name}</b><small>${sub}</small><span class="len">${lenSure(m)?m.len+'d':'29/30'}</span>`;
+    a.title=`${m.name} ${m.hy}: starts ${fmt(m.start)}`;
+    el.appendChild(a);
+  }
+}
+function renderMonths(){
+  const wrap=document.getElementById('months'); wrap.innerHTML='';
+  M.filter(m=>m.hy===YEAR).forEach(m=>{
+    const card=document.createElement('article'); card.className='month'; card.id='m-'+m.hy+'-'+m.hm;
+    const end=iso(m.t1-DAY);
+    let ban='';
+    if(m.status==='forecast'){
+      const o=Object.entries(m.dist).sort((a,b)=>b[1]-a[1]);
+      ban=`<div class="fcban">Forecast: starts <b>${fmt(o[0][0])}</b> (${pct(o[0][1])})${o[1]?`, or ${fmt(o[1][0])} (${pct(o[1][1])})`:''}.</div>`;
+    }
+    card.innerHTML=`<div class="mh"><div><h3>${m.name}</h3><span class="ar" dir="rtl" lang="ar">${AR[m.hm-1]} ${m.hy}</span></div>
+      <div class="rng">${fmt(m.start,{wd:false})}<br>to ${fmt(end,{wd:false})}<br><span class="len">${lenSure(m)?m.len+' days':'29 or 30 days'}</span></div></div>${ban}
+      <div class="dow">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(x=>`<span>${x}</span>`).join('')}</div>`;
+    const g=document.createElement('div'); g.className='days';
+    const lead=(dd(m.start).getUTCDay()+6)%7;
+    for(let i=0;i<lead;i++){const e=document.createElement('div');e.className='d empty';g.appendChild(e);}
+    const notes=[];
+    for(let d=1; d<=m.len; d++){
+      const t=m.t0+(d-1)*DAY, s=iso(t), gd=new Date(t), c=document.createElement('div');
+      c.className='d'; if(m.hm===9)c.classList.add('rmd');
+      const hh=hol(m.hm,d); if(hh&&hh[3])c.classList.add('hol');
+      if(s===TODAY)c.classList.add('today'); if(m.status==='forecast')c.classList.add('fc');
+      const gm = gd.getUTCDate()===1;
+      c.innerHTML=`<span class="h">${d}</span><span class="g${gm?' gm':''}">${gm?gd.getUTCDate()+' '+GM[gd.getUTCMonth()].slice(0,3):gd.getUTCDate()}</span>`;
+      c.title=`${d} ${m.name} ${m.hy} = ${fmt(s)}${m.status==='forecast'?' (forecast)':''}${hh?' · '+hh[2]:''}`;
+      g.appendChild(c);
+      if(hh) notes.push(`<span><span class="${hh[3]?'k':'s'}">${d} ${m.name}</span> · ${fmt(s)} · ${hh[2]}</span>`);
+    }
+    card.appendChild(g);
+    const n=document.createElement('div'); n.className='mnotes'; n.innerHTML=notes.join(''); card.appendChild(n);
+    wrap.appendChild(card);
+  });
+}
+
+function shareBar(f){
+  const ks=['A','B','C','D','N'];
+  return `<div class="share" title="${ks.map(k=>ZN[k]+' '+Math.round(f[k]*100)+'%').join(' · ')}">${ks.map(k=>f[k]>0?`<i style="width:${f[k]*100}%;background:var(${ZC[k]})"></i>`:'').join('')}</div>
+  <div class="sharelbl">${ks.filter(k=>f[k]>=0.01).map(k=>`<span><i style="background:var(${ZC[k]})"></i>${ZN[k]} ${Math.round(f[k]*100)}%</span>`).join('')}</div>`;
+}
+function mapsRow(maps,onDates){
+  return `<div class="maps">${maps.map(x=>{const on=onDates.includes(x.date);
+    return `<figure class="map${on?' on':''}" style="margin:0"><img src="${x.img}" alt="Crescent visibility over Morocco, evening of ${fmt(x.date)}" width="165" height="162"><figcaption class="cap">${on?'<b>29th evening</b> · ':''}${fmt(x.date,{y:false})}<br>${x.ev===1?'New-moon evening':x.ev===2?'1 day after new moon':'2 days after new moon'}</figcaption></figure>`;}).join('')}</div>`;
+}
+function renderEvidence(){
+  document.getElementById('evYear').textContent=YEAR+' AH'; document.getElementById('evTitle').textContent=M.some(m=>m.hy===YEAR&&m.status!=='forecast')?'Predicted vs actual':'Forecast evidence';
+  const list=document.getElementById('evList'); list.innerHTML='';
+  let ok=0,n=0;
+  for(let hm=1;hm<=12;hm++){
+    const e=EV[YEAR+'-'+hm]; if(!e) continue;
+    const cm=M.find(m=>m.hy===YEAR&&m.hm===hm); const prevName = (cm&&prevOf(cm)?.name) || (hm===1?'Dhul-Hijjah':'');
+    const card=document.createElement('article'); card.className='ev';
+    if(e.status==='official'){
+      const correct=(e.p>0.5)===e.seen; n++; if(correct)ok++;
+      const pAct = e.seen?e.p:1-e.p;
+      const opts=[[e.alt[0],e.p,'crescent reported on the 29th'],[e.alt[1],1-e.p,'not reported, 30-day month']];
+      card.innerHTML=`<div class="ev-t"><h3>1 ${e.name} ${e.hy}</h3><span class="sub">Sighting evening: 29 ${prevName}, ${fmt(e.ev)}</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">${mapsRow(e.maps,[e.ev])}${shareBar(e.f)}</div>
+        <div class="pred"><h4>Predicted</h4>
+          ${opts.map(([d,p,why])=>{const act=d===e.actual;return `<div class="opt${act?' act':''}${act&&!correct?' miss':''}"><span>${fmt(d)} <span style="color:var(--muted);font-size:12.5px">· ${why}</span>${act?'<span class="tag">Actual</span>':''}</span><span class="pct">${pct(p)}</span><div class="bar"><i style="width:${p*100}%"></i></div></div>`;}).join('')}
+          <div class="verdict ${correct?'ok':'no'}">${correct?`<b>Called it.</b> Morocco began ${e.name} on ${fmt(e.actual)}. The model gave that date ${pct(pAct)}.`:`<b>Missed.</b> Morocco began ${e.name} on ${fmt(e.actual)}, a date the model gave only ${pct(pAct)}. ${e.seen?'The crescent was reported on a night the maps rate as hard.':'The crescent was not reported on a night the maps rate as favourable.'}`}</div>
+          <span class="srcl">${e.src?`<a href="${e.src}" target="_blank" rel="noopener">Official announcement</a>`:''}</span>
+        </div>`;
+    } else {
+      const opts=Object.entries(e.dist).sort();
+      const BR=e.branches.filter(b=>b.pprev>=0.05);
+      const br=BR.map(b=>`<li>If ${prevName||'the previous month'} starts ${fmt(b.prev_start)} (${pct(b.pprev)}): its 29th is ${fmt(b.ev)}, with a ${pct(b.p)} chance the crescent is reported.</li>`).join('');
+      const onDates=BR.map(b=>b.ev);
+      card.innerHTML=`<div class="ev-t"><h3>1 ${e.name} ${e.hy}</h3><span class="sub">Forecast · sighting evening${BR.length>1?'s':''} ${BR.map(b=>fmt(b.ev)).join(' or ')}</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px;min-width:0">${mapsRow(e.maps,onDates)}${BR.map(b=>`<div style="font-size:12px;color:var(--muted)">${fmt(b.ev,{y:false})}:</div>${shareBar(b.f)}`).join('')}</div>
+        <div class="pred"><h4>Forecast</h4>
+          ${opts.map(([d,p])=>`<div class="opt"><span>${fmt(d)}</span><span class="pct">${pct(p)}</span><div class="bar"><i style="width:${p*100}%;background:var(--today)"></i></div></div>`).join('')}
+          <div class="verdict fc"><ul style="margin:0;padding-inline-start:16px;display:flex;flex-direction:column;gap:4px">${br}</ul>${BR.length<e.branches.length?'<div style="margin-top:4px;font-size:12px;color:var(--muted)">Branches under 5% are left out.</div>':''}</div>
+        </div>`;
+    }
+    list.appendChild(card);
+  }
+  const fm=M.filter(m=>m.hy===YEAR&&m.status==='forecast'); const avg=fm.length?fm.reduce((a,m)=>a+(m.dist[m.start]||0),0)/fm.length:0;
+  document.getElementById('evScore').innerHTML = n?`<b>${ok} of ${n}</b> month starts called right in ${YEAR}`+(fm.length?` · ${fm.length} still forecast`:''):(fm.length?`Forecast year · average confidence <b>${Math.round(avg*100)}%</b>`:'');
+}
+
+function renderLearning(){
+  const S=DATA.stats, c=DATA.coef;
+  const t=(k,v,sub,p)=>`<div class="tile"><span class="k">${k}</span><span class="v">${v}<small>${sub}</small></span><p>${p}</p></div>`;
+  document.getElementById('tiles').innerHTML=
+    t('All evenings, 2017–26',Math.round(S.all.acc*1000)/10+'%','right',`Out of ${S.all.n} walk-forward forecasts, each made using only the results before it. The simple rule "seen only if the map shows green over Morocco" scores ${Math.round(S.all.nacc*1000)/10}%.`)+
+    t('Borderline evenings',Math.round(S.border.acc*100)+'%','right',`${S.border.n} nights where Morocco was cyan or grey. The simple rule gets ${Math.round(S.border.nacc*100)}% of these right. Brier score ${S.border.brier} against ${S.border.nbrier} (lower is better).`)+
+    t('Since July 2024',Math.round(S.recent.acc*100)+'%','right',`${S.recent.n} evenings. On the ${S.recent_border.n} borderline ones it got ${Math.round(S.recent_border.acc*S.recent_border.n)} right, because Morocco's decisions on cyan and grey nights changed (see right).`)+
+    t('Green or blank nights',`${c.rateA[1]}/${c.rateA[2]} · ${c.rateN[1]}/${c.rateN[2]}`,'',`Every night with naked-eye green over Morocco was reported. No night with only red or no visibility ever was. These get ${pct(c.rateA[0])} and ${pct(c.rateN[0])}.`);
+  // chart
+  const H=DATA.hist.filter(h=>h.p!==null), W=760, x0=50, x1=740, X=p=>x0+p*(x1-x0);
+  let s=`<g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--muted)">`;
+  [0,.25,.5,.75,1].forEach(v=>{s+=`<line x1="${X(v)}" x2="${X(v)}" y1="20" y2="178" stroke="var(--line)" stroke-width="1"${v===.5?' stroke-dasharray="3 3"':''}/><text x="${X(v)}" y="196" text-anchor="middle">${v*100}%</text>`;});
+  s+=`</g><g font-family="IBM Plex Sans, sans-serif" font-size="12" fill="var(--ink)"><text x="${x0}" y="14">Reported seen</text><text x="${x0}" y="112">Not reported</text></g>`;
+  let seed=7; const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+  H.forEach(h=>{const y=(h.seen?56:152)+(rnd()-.5)*44; const rec=h.ev>='2025-01-01';
+    s+=`<circle cx="${X(h.p).toFixed(1)}" cy="${y.toFixed(1)}" r="${rec?5.5:4.5}" fill="${h.border?'var(--accent)':'var(--muted)'}" fill-opacity="${h.border?0.85:0.45}" ${rec?'stroke="var(--today)" stroke-width="2"':''}><title>${h.ev} · ${pct(h.p)} · ${h.seen?'reported':'not reported'}</title></circle>`;});
+  document.getElementById('chart').innerHTML=s;
+  const L=p=>1/(1+Math.exp(-p));
+  const ex=(B,C)=>pct(L(c.b+c.B*B+c.C*C));
+  document.getElementById('wtable').innerHTML=`
+    <tr><td><span class="chip"><i style="background:var(--zA)"></i>Any naked-eye green over Morocco</span></td><td>${pct(c.rateA[0])}</td></tr>
+    <tr><td><span class="chip"><i style="background:var(--zB)"></i>Whole country cyan (perfect conditions)</span></td><td>${ex(1,0)}</td></tr>
+    <tr><td><span class="chip"><i style="background:linear-gradient(90deg,var(--zB) 50%,var(--zC) 50%)"></i>Half cyan, half grey</span></td><td>${ex(.5,.5)}</td></tr>
+    <tr><td><span class="chip"><i style="background:var(--zC)"></i>Whole country grey (optical aid to find)</span></td><td>${ex(0,1)}</td></tr>
+    <tr><td><span class="chip"><i style="background:var(--zD)"></i>Only red, or no visibility</span></td><td>${pct(c.rateN[0])}</td></tr>`;
+  document.getElementById('changed').innerHTML=`
+    <li>From 2015 to 2024, Morocco reported the crescent on all 8 nights when the whole country was cyan, and on none of the 19 nights when roughly half or more of it was grey. The added 1437 year fits this pattern.</li>
+    <li>In 2025–26 that reversed. Only 1 of 3 all-cyan nights was reported: 27 May 2025 and 15 Jun 2026 were not. Then 3 of 4 grey-heavy nights were reported: 21 Nov 2025, 19 Mar 2026 (the Eid al-Fitr crescent, on the evening of the new moon itself) and 13 Aug 2026.</li>
+    <li>Weighting recent years more lets the model follow this. Grey now counts for something (weight ${c.C}, against ${c.B} for cyan). Borderline nights are still close to a coin toss, and the forecast percentages reflect that.</li>
+    <li>Each new announcement is another data point. After 10 November the model can be refit with that night's result.</li>`;
+}
+
+const YEARS=[...new Set(M.map(m=>m.hy))].filter(y=>y>=1445&&y<=1460);
+const isFutY=y=>M.filter(m=>m.hy===y).every(m=>m.status==='forecast');
+function gy(y){const ms=M.filter(m=>m.hy===y);return dd(ms[0].start).getUTCFullYear()+'–'+String(dd(ms[ms.length-1].start).getUTCFullYear()).slice(2);}
+YEARS.forEach(y=>{const b=document.createElement('button');b.type='button';b.id='y'+y;b.innerHTML=`${y}<small>${gy(y)}</small>`;b.title=`${y} AH · ${gy(y)}`;b.onclick=()=>{setYear(y);document.getElementById('strip').scrollIntoView({behavior:'smooth',block:'start'});};document.getElementById(isFutY(y)?'segFut':'segPast').appendChild(b);});
+function setYear(y){YEAR=y;YEARS.forEach(v=>document.getElementById('y'+v).setAttribute('aria-pressed',v===y));
+  renderStrip();renderMonths();renderEvidence();renderKD(); try{localStorage.setItem('hijri-y',y);}catch(e){}}
+function renderKD(){
+  const cell=(hm,off,label)=>y=>{const m=M.find(x=>x.hy===y&&x.hm===hm); if(!m) return '<td>–</td>';
+    const d=iso(m.t0+off*DAY); const p=m.status==='forecast'?(m.dist[m.start]||0):null;
+    return `<td>${fmt(d)}${p===null?'<small>official</small>':`<small class="${p<0.75?'lo':''}">${pct(p)}</small>`}</td>`;};
+  const cols=[['Islamic New Year',cell(1,0)],['Eid al-Mawlid',cell(3,11)],['Ramadan begins',cell(9,0)],['Eid al-Fitr',cell(10,0)],['Eid al-Adha',cell(12,9)]];
+  document.getElementById('kd').innerHTML=`<thead><tr><th>Year</th>${cols.map(c=>`<th>${c[0]}</th>`).join('')}</tr></thead><tbody>${YEARS.map(y=>`<tr class="${y===YEAR?'cur':''}"><td><button type="button" data-y="${y}">${y}</button><small>${gy(y)}</small></td>${cols.map(c=>c[1](y)).join('')}</tr>`).join('')}</tbody>`;
+  document.querySelectorAll('#kd button[data-y]').forEach(b=>b.onclick=()=>{setYear(+b.dataset.y);document.getElementById('strip').scrollIntoView({behavior:'smooth',block:'start'});});
+}
+renderToday(); renderLearning();
+let y0=1448; try{const v=+localStorage.getItem('hijri-y'); if(YEARS.includes(v)) y0=v;}catch(e){}
+setYear(y0);
+</script>

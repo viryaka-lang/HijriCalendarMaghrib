@@ -1,0 +1,550 @@
+{
+ "1436-10": {},
+ "1437-01": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 13th October 2015"
+ },
+ "1437-02": {
+  "awqaf": "positive",
+  "ev29": "Thursday 12th November 2015"
+ },
+ "1437-03": {
+  "awqaf": "negative",
+  "ev29": "Friday 11th December 2015"
+ },
+ "1437-04": {
+  "awqaf": "negative",
+  "ev29": "Sunday 10th January 2016"
+ },
+ "1437-05": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 9th February 2016"
+ },
+ "1437-06": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 9th March 2016"
+ },
+ "1437-07": {},
+ "1437-08": {
+  "awqaf": "positive",
+  "ev29": "Saturday 7th May 2016"
+ },
+ "1437-09": {
+  "awqaf": "negative",
+  "ev29": "Monday 6 June 2016"
+ },
+ "1437-10": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 5 July 2016"
+ },
+ "1437-11": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 3rd August 2016"
+ },
+ "1437-12": {
+  "awqaf": "positive",
+  "ev29": "Friday 2nd September 2016"
+ },
+ "1438-01": {
+  "awqaf": "negative",
+  "ev29": "Saturday 1st October 2016"
+ },
+ "1438-02": {
+  "awqaf": "positive",
+  "ev29": "Monday 31st October 2016"
+ },
+ "1438-03": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 29th November 2016"
+ },
+ "1438-04": {
+  "awqaf": "negative",
+  "ev29": "Thursday 29 December 2016"
+ },
+ "1438-05": {
+  "awqaf": "negative",
+  "ev29": "Saturday 28 January 2017"
+ },
+ "1438-06": {
+  "awqaf": "positive",
+  "ev29": "Monday 27th February 2017"
+ },
+ "1438-07": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 28th March 2017"
+ },
+ "1438-08": {
+  "awqaf": "positive",
+  "ev29": "Thursday 27th April 2017"
+ },
+ "1438-09": {
+  "awqaf": "positive",
+  "ev29": "Friday 26th May 2017"
+ },
+ "1438-10": {
+  "awqaf": "negative",
+  "ev29": "Saturday 24th June 2017"
+ },
+ "1438-11": {
+  "awqaf": "positive",
+  "ev29": "Monday 24th July 2017"
+ },
+ "1438-12": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 22nd August 2017"
+ },
+ "1439-01": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 20th September 2017"
+ },
+ "1439-02": {
+  "awqaf": "positive",
+  "ev29": "Friday 20th October 2017"
+ },
+ "1439-03": {
+  "awqaf": "negative",
+  "ev29": "Saturday 18th November 2017"
+ },
+ "1439-04": {
+  "awqaf": "negative",
+  "ev29": "Monday 18 December 2017"
+ },
+ "1439-05": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 17 January 2018"
+ },
+ "1439-06": {
+  "awqaf": "negative",
+  "ev29": "Friday 16th February 2018"
+ },
+ "1439-07": {
+  "awqaf": "positive",
+  "ev29": "Sunday 18th March 2018"
+ },
+ "1439-08": {
+  "awqaf": "negative",
+  "ev29": "Monday 16th April 2018"
+ },
+ "1439-09": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 16th May 2018"
+ },
+ "1439-10": {
+  "awqaf": "positive",
+  "ev29": "Thursday 14th June 2018"
+ },
+ "1439-11": {
+  "awqaf": "negative",
+  "ev29": "Friday 13th July 2018"
+ },
+ "1439-12": {
+  "awqaf": "positive",
+  "ev29": "Sunday 12th August 2018"
+ },
+ "1440-01": {
+  "awqaf": "positive",
+  "ev29": "Monday 10th September 2018"
+ },
+ "1440-02": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 9th October 2018"
+ },
+ "1440-03": {
+  "awqaf": "positive",
+  "ev29": "Thursday 8th November 2018"
+ },
+ "1440-04": {
+  "awqaf": "negative",
+  "ev29": "Friday 7th December 2018"
+ },
+ "1440-05": {
+  "awqaf": "negative",
+  "ev29": "Sunday 6th January 2019"
+ },
+ "1440-06": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 5th February 2019"
+ },
+ "1440-07": {
+  "awqaf": "positive",
+  "ev29": "Thursday 7th March 2019"
+ },
+ "1440-08": {
+  "awqaf": "negative",
+  "ev29": "Friday 5th April 2019"
+ },
+ "1440-09": {
+  "awqaf": "negative",
+  "ev29": "Sunday 5th May 2019"
+ },
+ "1440-10": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 4th June 2019"
+ },
+ "1440-11": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 3rd July 2019"
+ },
+ "1440-12": {
+  "awqaf": "negative",
+  "ev29": "Thursday 1st August 2019"
+ },
+ "1441-01": {
+  "awqaf": "positive",
+  "ev29": "Saturday 31st August 2019"
+ },
+ "1441-02": {
+  "awqaf": "positive",
+  "ev29": "Sunday 29th September 2019"
+ },
+ "1441-03": {
+  "awqaf": "negative",
+  "ev29": "Monday 28th October 2019"
+ },
+ "1441-04": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 27th November 2019"
+ },
+ "1441-05": {
+  "awqaf": "negative",
+  "ev29": "Thursday 26th December 2019"
+ },
+ "1441-06": {
+  "awqaf": "negative",
+  "ev29": "Saturday 25th January 2020"
+ },
+ "1441-07": {
+  "awqaf": "positive",
+  "ev29": "Monday 24th February 2020"
+ },
+ "1441-08": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 24th March 2020"
+ },
+ "1441-09": {
+  "awqaf": "negative",
+  "ev29": "Thursday 23rd April 2020"
+ },
+ "1441-10": {
+  "awqaf": "positive",
+  "ev29": "Saturday 23rd May 2020"
+ },
+ "1441-11": {
+  "awqaf": "negative",
+  "ev29": "Sunday 21st June 2020"
+ },
+ "1441-12": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 21st July 2020"
+ },
+ "1442-01": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 19th August 2020"
+ },
+ "1442-02": {
+  "awqaf": "positive",
+  "ev29": "Friday 18th September 2020"
+ },
+ "1442-03": {
+  "awqaf": "positive",
+  "ev29": "Saturday 17th October 2020"
+ },
+ "1442-04": {
+  "awqaf": "negative",
+  "ev29": "Sunday 15th November 2020"
+ },
+ "1442-05": {
+  "awqaf": "positive",
+  "ev29": "Tuesday 15th December 2020"
+ },
+ "1442-06": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 13th January 2021"
+ },
+ "1442-07": {
+  "awqaf": "positive",
+  "ev29": "Friday 12th February 2021"
+ },
+ "1442-08": {
+  "awqaf": "negative",
+  "ev29": "Saturday 13th March 2021"
+ },
+ "1442-09": {
+  "awqaf": "negative",
+  "ev29": "Monday 12th April 2021"
+ },
+ "1442-10": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 12th May 2021"
+ },
+ "1442-11": {
+  "awqaf": "negative",
+  "ev29": "Thursday 10th June 2021"
+ },
+ "1442-12": {
+  "awqaf": "negative",
+  "ev29": "Saturday 10th July 2021"
+ },
+ "1443-01": {
+  "awqaf": "positive",
+  "ev29": "Monday 9th August 2021"
+ },
+ "1443-02": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 7th September 2021"
+ },
+ "1443-03": {
+  "awqaf": "positive",
+  "ev29": "Thursday 7th October 2021"
+ },
+ "1443-04": {
+  "awqaf": "negative",
+  "ev29": "Friday 5th November 2021"
+ },
+ "1443-05": {
+  "awqaf": "positive",
+  "ev29": "Sunday 5th December 2021"
+ },
+ "1443-06": {
+  "awqaf": "positive",
+  "ev29": "Monday 3rd January 2022"
+ },
+ "1443-07": {
+  "awqaf": "negative",
+  "ev29": "Tuesday 1st February 2022"
+ },
+ "1443-08": {
+  "awqaf": "positive",
+  "ev29": "Thursday 3rd March 2022"
+ },
+ "1443-09": {
+  "awqaf": "negative",
+  "ev29": "Friday 1st April 2022"
+ },
+ "1443-10": {
+  "awqaf": "positive",
+  "ev29": "Sunday 1st May 2022"
+ },
+ "1443-11": {
+  "awqaf": "negative",
+  "ev29": "Monday 30th May 2022"
+ },
+ "1443-12": {
+  "awqaf": "negative",
+  "ev29": "Wednesday 29th June 2022"
+ },
+ "1444-01": {
+  "awqaf": "positive",
+  "ev29": "Friday 29th July 2022"
+ },
+ "1444-02": {
+  "awqaf": "negative",
+  "ev29": "Saturday 27th August 2022"
+ },
+ "1444-03": {
+  "awqaf": "negative",
+  "ev29": "Monday 26th September 2022"
+ },
+ "1444-04": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 26th October 2022"
+ },
+ "1444-05": {
+  "awqaf": "negative",
+  "ev29": "Thursday 24th November 2022"
+ },
+ "1444-06": {
+  "awqaf": "positive",
+  "ev29": "Saturday 24 December 2022"
+ },
+ "1444-07": {
+  "awqaf": "positive",
+  "ev29": "Sunday 22nd January 2023"
+ },
+ "1444-08": {
+  "awqaf": "negative",
+  "ev29": "Monday 20th February 2023"
+ },
+ "1444-09": {
+  "awqaf": "positive",
+  "ev29": "Wednesday 22nd March 2023"
+ },
+ "1444-10": {
+  "awqaf": "negative",
+  "ev29": "Thursday 20th April 2023"
+ },
+ "1444-11": {
+  "awqaf": "positive",
+  "ev29": "Saturday, 20th May 2023"
+ },
+ "1444-12": {
+  "awqaf": "negative",
+  "ev29": "Sunday, 18th June 2023"
+ },
+ "1445-01": {
+  "ma_start": "Wednesday, 19th July 2023",
+  "ev29": "Tuesday, 18th July 2023"
+ },
+ "1445-02": {
+  "ma_start": "Friday, 18th August 2023",
+  "ev29": "Thursday, 17th August 2023"
+ },
+ "1445-03": {
+  "ma_start": "Sunday, 17th September 2023",
+  "ev29": "Friday, 15th September 2023"
+ },
+ "1445-04": {
+  "ma_start": "Tuesday, 17th October 2023",
+  "ev29": "Sunday, 15th October 2023"
+ },
+ "1445-05": {
+  "ma_start": "Wednesday, 15th November 2023",
+  "ev29": "Tuesday, 14th November 2023"
+ },
+ "1445-06": {
+  "ma_start": "Friday, 15th December 2023",
+  "ev29": "Thursday, 14th December 2023"
+ },
+ "1445-07": {
+  "ma_start": "Saturday, 13th January 2024"
+ },
+ "1445-08": {
+  "ma_start": "Sunday, 11th February 2024",
+  "ev29": "Saturday, 10th February 2024"
+ },
+ "1445-09": {
+  "ma_start": "Tuesday, 12th March 2024",
+  "ev29": "Monday, 11th March 2024"
+ },
+ "1445-10": {
+  "ma_start": "Wednesday, 10th April 2024",
+  "ev29": "Tuesday, 9th April 2024"
+ },
+ "1445-11": {
+  "ma_start": "Friday, 10th May 2024",
+  "ev29": "Wednesday, 8th May 2024"
+ },
+ "1445-12": {
+  "ma_start": "Saturday, 8th June 2024",
+  "ev29": "Friday, 7th June 2024"
+ },
+ "1446-01": {
+  "ma_start": "Sunday, 7th July 2024",
+  "ev29": "Saturday, 6th July 2024"
+ },
+ "1446-02": {
+  "ma_start": "Tuesday, 6th August 2024",
+  "ev29": "Monday, 5th August 2024"
+ },
+ "1446-03": {
+  "ma_start": "Thursday, 5th September 2024",
+  "ev29": "Tuesday, 3rd September 2024"
+ },
+ "1446-04": {
+  "ma_start": "Saturday, 5th October 2024",
+  "ev29": "Thursday, 3rd October 2024"
+ },
+ "1446-05": {
+  "ma_start": "Monday, 4th November 2024",
+  "ev29": "Saturday, 2nd November 2024"
+ },
+ "1446-06": {
+  "ma_start": "Tuesday, 3rd December 2024",
+  "ev29": "Monday, 2nd December 2024"
+ },
+ "1446-07": {
+  "ma_start": "Thursday, 2nd January 2025",
+  "ev29": "Wednesday, 1st January 2025"
+ },
+ "1446-08": {
+  "ma_start": "Friday, 31st January 2025",
+  "ev29": "Thursday, 30th January 2025"
+ },
+ "1446-09": {
+  "ev29": "Friday, 28th February 2025"
+ },
+ "1446-10": {
+  "ma_start": "Monday, 31st March 2025",
+  "ev29": "Saturday, 29th March 2025"
+ },
+ "1446-11": {
+  "ma_start": "Tuesday, 29th April 2025",
+  "ev29": "Monday, 28th April 2025"
+ },
+ "1446-12": {
+  "ev29": "Tuesday, 27th May 2025"
+ },
+ "1447-01": {
+  "ev29": "Wednesday, 25th June 2025"
+ },
+ "1447-02": {
+  "ev29": "Friday, 25th July 2025"
+ },
+ "1447-03": {
+  "ev29": "Sunday, 24th August 2025"
+ },
+ "1447-04": {
+  "ev29": "Tuesday, 23rd September 2025"
+ },
+ "1447-05": {
+  "ev29": "Thursday, 23rd October 2025"
+ },
+ "1447-06": {
+  "ev29": "Saturday, 22nd November 2025"
+ },
+ "1447-07": {
+  "ev29": "Monday, 22nd December 2025"
+ },
+ "1447-08": {
+  "ev29": "Tuesday, 20th January 2026"
+ },
+ "1447-09": {
+  "ev29": "Wednesday, 18th February 2026"
+ },
+ "1447-10": {
+  "ev29": "Thursday, 19th March 2026"
+ },
+ "1447-11": {
+  "ma_start": "Sunday, 19th April 2026",
+  "ev29": "Friday, 17th April 2026"
+ },
+ "1447-12": {
+  "ma_start": "Monday, 18th May 2026",
+  "ev29": "Sunday, 17th May 2026"
+ },
+ "1448-01": {
+  "ev29": "Monday, 15th June 2025"
+ },
+ "1448-02": {
+  "ev29": "Wednesday, 15th July 2026"
+ },
+ "1448-03": {
+  "ev29": "Thursday, 13th August 2026"
+ },
+ "1448-04": {
+  "ev29": "Saturday, 12th September 2026"
+ },
+ "1448-05": {
+  "ev29": "Monday, 12th October 2026"
+ },
+ "1448-06": {
+  "ev29": "Wednesday, 11th November 2026"
+ },
+ "1448-07": {
+  "ev29": "Friday, 11th December 2026"
+ },
+ "1448-08": {},
+ "1448-09": {
+  "ev29": "Sunday, 7th February 2027"
+ },
+ "1448-10": {
+  "ev29": "Monday, 8th March 2027"
+ },
+ "1448-11": {
+  "ma_start": "Thursday, 8th April 2027",
+  "ev29": "Wednesday, 7th April 2027"
+ },
+ "1448-12": {
+  "ev29": "Thursday, 6th May 2027"
+ }
+}

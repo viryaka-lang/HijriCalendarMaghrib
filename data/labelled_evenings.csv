@@ -1,0 +1,138 @@
+evening_date,decides_hijri_year,decides_month,reported_seen,source,map_file,share_A,share_B,share_C,share_D,share_none
+2015-10-13,1437,1,0,ms-report,1437 AH/01 Muharram (MUH)/1437-01_MUH_2015-10-13_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2015-11-12,1437,2,1,ms-report,1437 AH/02 Safar (SFR)/1437-02_SFR_2015-11-12_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2015-12-11,1437,3,0,ms-report,1437 AH/03 Rabi al-Awwal (RBA)/1437-03_RBA_2015-12-11_evening1.gif,0.0,0.0,0.002,0.0,0.998
+2016-01-10,1437,4,0,ms-report,1437 AH/04 Rabi al-Thani (RBT)/1437-04_RBT_2016-01-10_evening1.gif,0.0,0.0,1.0,0.0,0.0
+2016-02-09,1437,5,1,ms-report,1437 AH/05 Jumada al-Ula (JMO)/1437-05_JMO_2016-02-09_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2016-03-09,1437,6,0,ms-report,1437 AH/06 Jumada al-Thani (JMT)/1437-06_JMT_2016-03-09_evening1.gif,0.0,0.305,0.695,0.0,0.0
+2016-04-08,1437,7,1,derived,1437 AH/07 Rajab (RJB)/1437-07_RJB_2016-04-08_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2016-05-07,1437,8,1,ms-report,1437 AH/08 Shaban (SHB)/1437-08_SHB_2016-05-07_evening2.gif,0.906,0.088,0.006,0.0,0.0
+2016-06-05,1437,9,0,ms-report,1437 AH/09 Ramadan (RMD)/1437-09_RMD_2016-06-05_evening1.gif,0.0,0.0,0.002,0.897,0.101
+2016-07-05,1437,10,1,ms-report,1437 AH/10 Shawwal (SHW)/1437-10_SHW_2016-07-05_evening2.gif,0.777,0.216,0.007,0.0,0.0
+2016-08-03,1437,11,0,ms-report,1437 AH/11 Dhul-Qadah (ZQD)/1437-11_ZQD_2016-08-03_evening2.gif,0.0,0.0,0.096,0.903,0.001
+2016-09-02,1437,12,1,ms-report,1437 AH/12 Dhul-Hijjah (ZHJ)/1437-12_ZHJ_2016-09-02_evening2.gif,0.465,0.529,0.006,0.0,0.0
+2016-10-01,1438,1,0,ms-report,1438 AH/01 Muharram (MUH)/1438-01_MUH_2016-10-01_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2016-10-31,1438,2,1,ms-report,1438 AH/02 Safar (SFR)/1438-02_SFR_2016-10-31_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2016-11-29,1438,3,0,ms-report,1438 AH/03 Rabi al-Awwal (RBA)/1438-03_RBA_2016-11-29_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2016-12-29,1438,4,0,ms-report,1438 AH/04 Rabi al-Thani (RBT)/1438-04_RBT_2016-12-29_evening1.gif,0.0,0.0,0.0,0.623,0.377
+2017-01-28,1438,5,0,ms-report,1438 AH/05 Jumada al-Ula (JMO)/1438-05_JMO_2017-01-28_evening1.gif,0.0,0.0,1.0,0.0,0.0
+2017-02-27,1438,6,1,ms-report,1438 AH/06 Jumada al-Thani (JMT)/1438-06_JMT_2017-02-27_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2017-03-28,1438,7,0,ms-report,1438 AH/07 Rajab (RJB)/1438-07_RJB_2017-03-28_evening1.gif,0.0,0.0,0.704,0.296,0.0
+2017-04-27,1438,8,1,ms-report,1438 AH/08 Shaban (SHB)/1438-08_SHB_2017-04-27_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2017-05-26,1438,9,1,ms-report,1438 AH/09 Ramadan (RMD)/1438-09_RMD_2017-05-26_evening2.gif,0.467,0.533,0.0,0.0,0.0
+2017-06-24,1438,10,0,ms-report,1438 AH/10 Shawwal (SHW)/1438-10_SHW_2017-06-24_evening1.gif,0.0,0.0,0.0,0.938,0.062
+2017-07-24,1438,11,1,ms-report,1438 AH/11 Dhul-Qadah (ZQD)/1438-11_ZQD_2017-07-24_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2017-08-22,1438,12,1,ms-report,1438 AH/12 Dhul-Hijjah (ZHJ)/1438-12_ZHJ_2017-08-22_evening2.gif,0.0,0.736,0.264,0.0,0.0
+2017-09-20,1439,1,0,ms-report,1439 AH/01 Muharram (MUH)/1439-01_MUH_2017-09-20_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2017-10-20,1439,2,1,ms-report,1439 AH/02 Safar (SFR)/1439-02_SFR_2017-10-20_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2017-11-18,1439,3,0,ms-report,1439 AH/03 Rabi al-Awwal (RBA)/1439-03_RBA_2017-11-18_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2017-12-18,1439,4,0,ms-report,1439 AH/04 Rabi al-Thani (RBT)/1439-04_RBT_2017-12-18_evening1.gif,0.0,0.0,0.004,0.012,0.984
+2018-01-17,1439,5,0,ms-report,1439 AH/05 Jumada al-Ula (JMO)/1439-05_JMO_2018-01-17_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2018-02-16,1439,6,0,ms-report,1439 AH/06 Jumada al-Thani (JMT)/1439-06_JMT_2018-02-16_evening2.gif,0.0,0.292,0.708,0.0,0.0
+2018-03-18,1439,7,1,ms-report,1439 AH/07 Rajab (RJB)/1439-07_RJB_2018-03-18_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2018-04-16,1439,8,0,ms-report,1439 AH/08 Shaban (SHB)/1439-08_SHB_2018-04-16_evening1.gif,0.0,0.0,0.56,0.44,0.0
+2018-05-16,1439,9,1,ms-report,1439 AH/09 Ramadan (RMD)/1439-09_RMD_2018-05-16_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2018-06-14,1439,10,1,ms-report,1439 AH/10 Shawwal (SHW)/1439-10_SHW_2018-06-14_evening2.gif,0.21,0.79,0.0,0.0,0.0
+2018-07-13,1439,11,0,ms-report,1439 AH/11 Dhul-Qadah (ZQD)/1439-11_ZQD_2018-07-13_evening1.gif,0.0,0.0,0.061,0.939,0.0
+2018-08-12,1439,12,1,ms-report,1439 AH/12 Dhul-Hijjah (ZHJ)/1439-12_ZHJ_2018-08-12_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2018-09-10,1440,1,1,ms-report,1440 AH/01 Muharram (MUH)/1440-01_MUH_2018-09-10_evening2.gif,0.818,0.182,0.0,0.0,0.0
+2018-10-09,1440,2,0,ms-report,1440 AH/02 Safar (SFR)/1440-02_SFR_2018-10-09_evening1.gif,0.0,0.0,0.938,0.062,0.0
+2018-11-08,1440,3,1,ms-report,1440 AH/03 Rabi al-Awwal (RBA)/1440-03_RBA_2018-11-08_evening2.gif,0.708,0.292,0.0,0.0,0.0
+2018-12-07,1440,4,0,ms-report,1440 AH/04 Rabi al-Thani (RBT)/1440-04_RBT_2018-12-07_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2019-01-06,1440,5,0,ms-report,1440 AH/05 Jumada al-Ula (JMO)/1440-05_JMO_2019-01-06_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2019-02-05,1440,6,0,ms-report,1440 AH/06 Jumada al-Thani (JMT)/1440-06_JMT_2019-02-05_evening2.gif,0.0,0.0,0.803,0.197,0.0
+2019-03-07,1440,7,1,ms-report,1440 AH/07 Rajab (RJB)/1440-07_RJB_2019-03-07_evening2.gif,0.263,0.737,0.0,0.0,0.0
+2019-04-05,1440,8,0,ms-report,1440 AH/08 Shaban (SHB)/1440-08_SHB_2019-04-05_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2019-05-05,1440,9,0,derived,1440 AH/09 Ramadan (RMD)/1440-09_RMD_2019-05-05_evening2.gif,0.0,0.107,0.893,0.0,0.0
+2019-06-04,1440,10,1,ms-report,1440 AH/10 Shawwal (SHW)/1440-10_SHW_2019-06-04_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2019-07-03,1440,11,1,ms-report,1440 AH/11 Dhul-Qadah (ZQD)/1440-11_ZQD_2019-07-03_evening2.gif,0.263,0.737,0.0,0.0,0.0
+2019-08-01,1440,12,0,ms-report,1440 AH/12 Dhul-Hijjah (ZHJ)/1440-12_ZHJ_2019-08-01_evening1.gif,0.0,0.0,0.704,0.296,0.0
+2019-08-31,1441,1,1,ms-report,1441 AH/01 Muharram (MUH)/1441-01_MUH_2019-08-31_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2019-09-29,1441,2,1,ms-report,1441 AH/02 Safar (SFR)/1441-02_SFR_2019-09-29_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2019-10-28,1441,3,0,ms-report,1441 AH/03 Rabi al-Awwal (RBA)/1441-03_RBA_2019-10-28_evening1.gif,0.0,0.0,0.614,0.386,0.0
+2019-11-27,1441,4,1,ms-report,1441 AH/04 Rabi al-Thani (RBT)/1441-04_RBT_2019-11-27_evening2.gif,0.679,0.321,0.0,0.0,0.0
+2019-12-26,1441,5,0,ms-report,1441 AH/05 Jumada al-Ula (JMO)/1441-05_JMO_2019-12-26_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2020-01-25,1441,6,0,ms-report,1441 AH/06 Jumada al-Thani (JMT)/1441-06_JMT_2020-01-25_evening2.gif,0.0,0.0,0.614,0.386,0.0
+2020-02-24,1441,7,1,ms-report,1441 AH/07 Rajab (RJB)/1441-07_RJB_2020-02-24_evening2.gif,0.295,0.705,0.0,0.0,0.0
+2020-03-24,1441,8,0,ms-report,1441 AH/08 Shaban (SHB)/1441-08_SHB_2020-03-24_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2020-04-23,1441,9,0,ms-report,1441 AH/09 Ramadan (RMD)/1441-09_RMD_2020-04-23_evening1.gif,0.0,0.0,0.0,0.999,0.001
+2020-05-23,1441,10,1,ms-report,1441 AH/10 Shawwal (SHW)/1441-10_SHW_2020-05-23_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2020-06-21,1441,11,0,ms-report,1441 AH/11 Dhul-Qadah (ZQD)/1441-11_ZQD_2020-06-21_evening1.gif,0.0,0.0,0.004,0.004,0.992
+2020-07-21,1441,12,1,ms-report,1441 AH/12 Dhul-Hijjah (ZHJ)/1441-12_ZHJ_2020-07-21_evening2.gif,0.978,0.022,0.0,0.0,0.0
+2020-08-19,1442,1,0,ms-report,1442 AH/01 Muharram (MUH)/1442-01_MUH_2020-08-19_evening1.gif,0.0,0.328,0.672,0.0,0.0
+2020-09-18,1442,2,1,ms-report,1442 AH/02 Safar (SFR)/1442-02_SFR_2020-09-18_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2020-10-17,1442,3,1,ms-report,1442 AH/03 Rabi al-Awwal (RBA)/1442-03_RBA_2020-10-17_evening2.gif,0.392,0.608,0.0,0.0,0.0
+2020-11-15,1442,4,0,ms-report,1442 AH/04 Rabi al-Thani (RBT)/1442-04_RBT_2020-11-15_evening1.gif,0.0,0.0,0.0,0.679,0.321
+2020-12-15,1442,5,1,ms-report,1442 AH/05 Jumada al-Ula (JMO)/1442-05_JMO_2020-12-15_evening2.gif,0.467,0.533,0.0,0.0,0.0
+2021-01-13,1442,6,0,ms-report,1442 AH/06 Jumada al-Thani (JMT)/1442-06_JMT_2021-01-13_evening1.gif,0.0,0.0,0.0,0.182,0.818
+2021-02-12,1442,7,1,ms-report,1442 AH/07 Rajab (RJB)/1442-07_RJB_2021-02-12_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2021-03-13,1442,8,0,ms-report,1442 AH/08 Shaban (SHB)/1442-08_SHB_2021-03-13_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2021-04-12,1442,9,0,ms-report,1442 AH/09 Ramadan (RMD)/1442-09_RMD_2021-04-12_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2021-05-12,1442,10,1,derived,1442 AH/10 Shawwal (SHW)/1442-10_SHW_2021-05-12_evening2.gif,0.0,0.778,0.222,0.0,0.0
+2021-06-10,1442,11,0,ms-report,1442 AH/11 Dhul-Qadah (ZQD)/1442-11_ZQD_2021-06-10_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2021-07-10,1442,12,0,ms-report,1442 AH/12 Dhul-Hijjah (ZHJ)/1442-12_ZHJ_2021-07-10_evening1.gif,0.0,0.0,1.0,0.0,0.0
+2021-08-09,1443,1,1,ms-report,1443 AH/01 Muharram (MUH)/1443-01_MUH_2021-08-09_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2021-09-07,1443,2,0,ms-report,1443 AH/02 Safar (SFR)/1443-02_SFR_2021-09-07_evening1.gif,0.0,0.384,0.616,0.0,0.0
+2021-10-07,1443,3,1,ms-report,1443 AH/03 Rabi al-Awwal (RBA)/1443-03_RBA_2021-10-07_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2021-11-05,1443,4,0,ms-report,1443 AH/04 Rabi al-Thani (RBT)/1443-04_RBT_2021-11-05_evening2.gif,0.0,0.246,0.736,0.018,0.0
+2021-12-05,1443,5,1,ms-report,1443 AH/05 Jumada al-Ula (JMO)/1443-05_JMO_2021-12-05_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2022-01-03,1443,6,1,ms-report,1443 AH/06 Jumada al-Thani (JMT)/1443-06_JMT_2022-01-03_evening2.gif,0.378,0.622,0.0,0.0,0.0
+2022-02-01,1443,7,0,ms-report,1443 AH/07 Rajab (RJB)/1443-07_RJB_2022-02-01_evening1.gif,0.0,0.0,0.0,0.476,0.524
+2022-03-03,1443,8,1,ms-report,1443 AH/08 Shaban (SHB)/1443-08_SHB_2022-03-03_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2022-04-01,1443,9,0,ms-report,1443 AH/09 Ramadan (RMD)/1443-09_RMD_2022-04-01_evening1.gif,0.0,0.0,0.0,0.239,0.761
+2022-05-01,1443,10,1,derived,1443 AH/10 Shawwal (SHW)/1443-10_SHW_2022-05-01_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2022-05-30,1443,11,0,ms-report,1443 AH/11 Dhul-Qadah (ZQD)/1443-11_ZQD_2022-05-30_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2022-06-29,1443,12,0,ms-report,1443 AH/12 Dhul-Hijjah (ZHJ)/1443-12_ZHJ_2022-06-29_evening1.gif,0.0,0.0,0.511,0.489,0.0
+2022-07-29,1444,1,1,ms-report,1444 AH/01 Muharram (MUH)/1444-01_MUH_2022-07-29_evening2.gif,0.21,0.79,0.0,0.0,0.0
+2022-08-27,1444,2,0,ms-report,1444 AH/02 Safar (SFR)/1444-02_SFR_2022-08-27_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2022-09-26,1444,3,0,ms-report,1444 AH/03 Rabi al-Awwal (RBA)/1444-03_RBA_2022-09-26_evening2.gif,0.0,0.0,0.647,0.353,0.0
+2022-10-26,1444,4,1,ms-report,1444 AH/04 Rabi al-Thani (RBT)/1444-04_RBT_2022-10-26_evening2.gif,0.474,0.522,0.004,0.0,0.0
+2022-11-24,1444,5,0,ms-report,1444 AH/05 Jumada al-Ula (JMO)/1444-05_JMO_2022-11-24_evening2.gif,0.0,0.0,0.01,0.874,0.116
+2022-12-24,1444,6,1,ms-report,1444 AH/06 Jumada al-Thani (JMT)/1444-06_JMT_2022-12-24_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2023-01-22,1444,7,1,ms-report,1444 AH/07 Rajab (RJB)/1444-07_RJB_2023-01-22_evening2.gif,0.251,0.749,0.0,0.0,0.0
+2023-02-20,1444,8,0,ms-report,1444 AH/08 Shaban (SHB)/1444-08_SHB_2023-02-20_evening1.gif,0.0,0.0,0.014,0.408,0.579
+2023-03-22,1444,9,1,ms-report,1444 AH/09 Ramadan (RMD)/1444-09_RMD_2023-03-22_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2023-04-20,1444,10,0,ms-report,1444 AH/10 Shawwal (SHW)/1444-10_SHW_2023-04-20_evening1.gif,0.0,0.0,0.0,1.0,0.0
+2023-05-20,1444,11,1,ms-report,1444 AH/11 Dhul-Qadah (ZQD)/1444-11_ZQD_2023-05-20_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2023-06-18,1444,12,0,derived,1444 AH/12 Dhul-Hijjah (ZHJ)/1444-12_ZHJ_2023-06-18_evening1.gif,0.0,0.0,0.083,0.917,0.0
+2023-07-18,1445,1,1,ms-start-dates,1445 AH/01 Muharram (MUH)/1445-01_MUH_2023-07-18_evening2.gif,0.039,0.961,0.0,0.0,0.0
+2023-08-16,1445,2,0,ms-start-dates,1445 AH/02 Safar (SFR)/1445-02_SFR_2023-08-16_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2023-09-15,1445,3,0,ms-start-dates,1445 AH/03 Rabi al-Awwal (RBA)/1445-03_RBA_2023-09-15_evening1.gif,0.0,0.0,0.0,0.676,0.324
+2023-10-15,1445,4,0,ms-start-dates,1445 AH/04 Rabi al-Thani (RBT)/1445-04_RBT_2023-10-15_evening2.gif,0.0,0.0,0.111,0.889,0.0
+2023-11-14,1445,5,1,ms-start-dates,1445 AH/05 Jumada al-Ula (JMO)/1445-05_JMO_2023-11-14_evening2.gif,0.21,0.64,0.15,0.0,0.0
+2023-12-13,1445,6,0,ms-start-dates,1445 AH/06 Jumada al-Thani (JMT)/1445-06_JMT_2023-12-13_evening2.gif,0.0,0.0,0.0,0.497,0.503
+2024-01-12,1445,7,1,ms-start-dates,1445 AH/07 Rajab (RJB)/1445-07_RJB_2024-01-12_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2024-02-10,1445,8,1,ms-start-dates,1445 AH/08 Shaban (SHB)/1445-08_SHB_2024-02-10_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2024-03-10,1445,9,0,ms-start-dates,1445 AH/09 Ramadan (RMD)/1445-09_RMD_2024-03-10_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2024-04-09,1445,10,1,ms-start-dates,1445 AH/10 Shawwal (SHW)/1445-10_SHW_2024-04-09_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2024-05-08,1445,11,0,ms-start-dates,1445 AH/11 Dhul-Qadah (ZQD)/1445-11_ZQD_2024-05-08_evening1.gif,0.0,0.0,1.0,0.0,0.0
+2024-06-07,1445,12,1,ms-start-dates,1445 AH/12 Dhul-Hijjah (ZHJ)/1445-12_ZHJ_2024-06-07_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2024-07-06,1446,1,1,ms-start-dates,1446 AH/01 Muharram (MUH)/1446-01_MUH_2024-07-06_evening2.gif,0.0,1.0,0.0,0.0,0.0
+2024-08-04,1446,2,0,ms-start-dates,1446 AH/02 Safar (SFR)/1446-02_SFR_2024-08-04_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2024-09-03,1446,3,0,ms-start-dates,1446 AH/03 Rabi al-Awwal (RBA)/1446-03_RBA_2024-09-03_evening1.gif,0.0,0.0,0.015,0.322,0.663
+2024-10-03,1446,4,0,ms-start-dates,1446 AH/04 Rabi al-Thani (RBT)/1446-04_RBT_2024-10-03_evening2.gif,0.0,0.0,0.0,0.482,0.518
+2024-11-02,1446,5,0,ms-start-dates,1446 AH/05 Jumada al-Ula (JMO)/1446-05_JMO_2024-11-02_evening2.gif,0.0,0.0,0.28,0.702,0.019
+2024-12-02,1446,6,1,ms-start-dates,1446 AH/06 Jumada al-Thani (JMT)/1446-06_JMT_2024-12-02_evening2.gif,0.526,0.474,0.0,0.0,0.0
+2024-12-31,1446,7,0,official,1446 AH/07 Rajab (RJB)/1446-07_RJB_2024-12-31_evening2.gif,0.0,0.0,0.206,0.789,0.005
+2025-01-30,1446,8,1,official,1446 AH/08 Shaban (SHB)/1446-08_SHB_2025-01-30_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2025-02-28,1446,9,0,official,1446 AH/09 Ramadan (RMD)/1446-09_RMD_2025-02-28_evening1.gif,0.0,0.646,0.354,0.0,0.0
+2025-03-30,1446,10,1,official,1446 AH/10 Shawwal (SHW)/1446-10_SHW_2025-03-30_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2025-04-28,1446,11,1,official,1446 AH/11 Dhul-Qadah (ZQD)/1446-11_ZQD_2025-04-28_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2025-05-27,1446,12,0,official,1446 AH/12 Dhul-Hijjah (ZHJ)/1446-12_ZHJ_2025-05-27_evening1.gif,0.0,1.0,0.0,0.0,0.0
+2025-06-26,1447,1,1,official,1447 AH/01 Muharram (MUH)/1447-01_MUH_2025-06-26_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2025-07-25,1447,2,1,official,1447 AH/02 Safar (SFR)/1447-02_SFR_2025-07-25_evening2.gif,0.006,0.993,0.001,0.0,0.0
+2025-08-23,1447,3,0,official,1447 AH/03 Rabi al-Awwal (RBA)/1447-03_RBA_2025-08-23_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2025-09-22,1447,4,0,official,1447 AH/04 Rabi al-Thani (RBT)/1447-04_RBT_2025-09-22_evening2.gif,0.0,0.0,0.0,0.272,0.728
+2025-10-22,1447,5,0,official,1447 AH/05 Jumada al-Ula (JMO)/1447-05_JMO_2025-10-22_evening2.gif,0.0,0.0,0.115,0.602,0.283
+2025-11-21,1447,6,1,official,1447 AH/06 Jumada al-Thani (JMT)/1447-06_JMT_2025-11-21_evening2.gif,0.0,0.509,0.489,0.002,0.0
+2025-12-20,1447,7,0,official,1447 AH/07 Rajab (RJB)/1447-07_RJB_2025-12-20_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2026-01-19,1447,8,0,official,1447 AH/08 Shaban (SHB)/1447-08_SHB_2026-01-19_evening2.gif,0.0,0.372,0.628,0.0,0.0
+2026-02-18,1447,9,1,official,1447 AH/09 Ramadan (RMD)/1447-09_RMD_2026-02-18_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2026-03-19,1447,10,1,official,1447 AH/10 Shawwal (SHW)/1447-10_SHW_2026-03-19_evening1.gif,0.0,0.006,0.994,0.0,0.0
+2026-04-17,1447,11,0,official,1447 AH/11 Dhul-Qadah (ZQD)/1447-11_ZQD_2026-04-17_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2026-05-17,1447,12,1,official,1447 AH/12 Dhul-Hijjah (ZHJ)/1447-12_ZHJ_2026-05-17_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2026-06-15,1448,1,0,official,1448 AH/01 Muharram (MUH)/1448-01_MUH_2026-06-15_evening1.gif,0.0,1.0,0.0,0.0,0.0
+2026-07-15,1448,2,1,official,1448 AH/02 Safar (SFR)/1448-02_SFR_2026-07-15_evening2.gif,1.0,0.0,0.0,0.0,0.0
+2026-08-13,1448,3,1,official,1448 AH/03 Rabi al-Awwal (RBA)/1448-03_RBA_2026-08-13_evening2.gif,0.0,0.485,0.515,0.0,0.0
+2026-09-11,1448,4,0,official,1448 AH/04 Rabi al-Thani (RBT)/1448-04_RBT_2026-09-11_evening1.gif,0.0,0.0,0.0,0.0,1.0
+2026-10-11,1448,5,0,official,1448 AH/05 Jumada al-Ula (JMO)/1448-05_JMO_2026-10-11_evening2.gif,0.0,0.0,0.001,0.488,0.511
